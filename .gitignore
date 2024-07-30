@@ -7,7 +7,6 @@ ENV/
 # Ignorar archivos de PyInstaller
 dist/
 build/
-*.spec
 
 # Archivos de caché de Python
 __pycache__/

@@ -24,3 +24,10 @@ def mostrar_mensaje(titulo, mensaje):
     tk.Button(mensaje_dialog, text="Aceptar", command=mensaje_dialog.destroy).pack(pady=10)
     mensaje_dialog.deiconify()
     mensaje_dialog.mainloop()
+
+
+def ruta_relativa_recurso(relativa):
+    if hasattr(sys, '_MEIPASS'):
+        # Si esta corriendo dentro de un ejecutable PyInstaller
+        return os.path.join(sys._MEIPASS, relativa)
+    return os.path.join(os.path.dirname(__file__), relativa)

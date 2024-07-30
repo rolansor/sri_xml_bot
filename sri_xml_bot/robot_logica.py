@@ -1,7 +1,6 @@
 import os
 import re
 import logging
-import sys
 import pandas as pd
 import tkinter as tk
 import time
@@ -14,19 +13,11 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select
 from selenium.common.exceptions import TimeoutException
 from datetime import datetime
-from librerias.auxiliares import mostrar_mensaje, centrar_ventana
+from librerias.auxiliares import mostrar_mensaje, centrar_ventana, ruta_relativa_recurso
 
 # Configuración del logging
 logging.basicConfig(filename='sri_robot.log', level=logging.INFO,
                     format='%(asctime)s:%(levelname)s:%(message)s')
-
-
-def ruta_relativa_recurso(relativa):
-    if hasattr(sys, '_MEIPASS'):
-        # Si esta corriendo dentro de un ejecutable PyInstaller
-        return os.path.join(sys._MEIPASS, relativa)
-    return os.path.join(os.path.dirname(__file__), relativa)
-
 
 def medir_tiempo(func):
     def wrapper(*args, **kwargs):
@@ -431,12 +422,12 @@ def pedir_opcion_centrada(titulo, root, mensaje, opciones):
 
 def cargar_rucs_credenciales_desde_archivo():
     rucs = {}
-    ruta_archivo = ruta_relativa_recurso('archivos_necesarios/rucs_descarga.txt')
+    ruta_archivo = ruta_relativa_recurso('archivos_necesarios/credenciales_rucs.txt')
 
     # Verificación de existencia del archivo
     if not os.path.exists(ruta_archivo):
         directorio_actual = os.path.dirname(os.path.abspath(__file__))
-        ruta_archivo = os.path.join(directorio_actual, '../archivos_necesarios/rucs_descarga.txt')
+        ruta_archivo = os.path.join(directorio_actual, '../archivos_necesarios/credenciales_rucs.txt')
 
     try:
         with open(ruta_archivo, 'r') as archivo:
