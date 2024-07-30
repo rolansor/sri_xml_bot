@@ -16,6 +16,7 @@ a = Analysis(
     datas=[
         ('archivos_necesarios/rucs.txt', 'archivos_necesarios'),
         ('archivos_necesarios/credenciales_rucs.txt', 'archivos_necesarios'),
+        ('archivos_necesarios/chromedriver.exe', 'archivos_necesarios'),
     ],
     hiddenimports=hiddenimports,
     hookspath=[],
