@@ -1,10 +1,16 @@
+import datetime
+import threading
 import tkinter as tk
 from tkinter import messagebox, scrolledtext
-from librerias.auxiliares import centrar_ventana
+from librerias.auxiliares import centrar_ventana, mostrar_mensaje
 from sri_xml_bot.generar_reporte import seleccionar_raiz
 from sri_xml_bot.imprimir_pdf import iniciar_impresion, seleccionar_carpeta_impresion
 from sri_xml_bot.ordenar_xmls import cargar_rucs_desde_archivo, seleccionar_carpeta_ordenar
 from sri_xml_bot.renombrar_xmls import actualizar_nombres_xml
+from sri_xml_bot.robot_logica import pedir_opcion_centrada, pedir_input_centrado, pedir_fecha, configurar_webdriver, \
+    iniciar_sesion, seleccionar_opciones_de_consulta, click_consulta, leer_y_procesar_excel, descargar_comprobantes, \
+    navegar_a_la_pagina_siguiente, cargar_rucs_credenciales_desde_archivo
+from sri_xml_bot.xml_a_pdf import mostrar_progreso, procesar_xml_pdf, seleccionar_carpeta_topdf
 
 
 # Función para cerrar la aplicación
@@ -16,8 +22,67 @@ def cerrar_aplicacion(root):
 
 # Funciones para cada opción
 def descargar_documentos(root):
-    nueva_ventana = tk.Toplevel(root)
-    nueva_ventana.title("Ordenar Documentos")
+    opciones_ruc = cargar_rucs_credenciales_desde_archivo()
+
+    opcion = pedir_opcion_centrada("RUC", root, "Por favor, elige el RUC que deseas procesar:", opciones_ruc)
+
+    if not opcion:
+        mostrar_mensaje("Proceso Cancelado", "No se seleccionó ninguna opción. El proceso ha sido cancelado.")
+        return
+
+    if opcion == "manual":
+        usuario = pedir_input_centrado("RUC", "Introduce el RUC manualmente:", root).strip()
+        contrasena = pedir_input_centrado("Contraseña", "Introduce la contraseña manualmente:", show='*').strip()
+    else:
+        usuario, contrasena = opciones_ruc[opcion]
+
+    tipos_documento = {
+        "Factura": "Factura",
+        "Liquidación de compra de bienes y prestación de servicios": "Liquidación de compra de bienes y prestación de servicios",
+        "Notas de Crédito": "Notas de Crédito",
+        "Notas de Débito": "Notas de Débito",
+        "Comprobante de Retención": "Comprobante de Retención",
+    }
+
+    tipo_documento = pedir_opcion_centrada("Tipo de Documento", root,
+                                           "Por favor, elige el tipo de Documento que deseas descargar:",
+                                           tipos_documento)
+
+    if not tipo_documento:
+        mostrar_mensaje("Proceso Cancelado", "No se seleccionó ninguna opción. El proceso ha sido cancelado.")
+        return
+
+    anio_actual = str(datetime.datetime.now().year)
+    anios = {str(i): str(i) for i in range(2020, int(anio_actual) + 1)}
+    mes_opciones = {str(i): str(i) for i in range(1, 13)}
+    dia_opciones = {str(i): str(i) for i in range(1, 32)}
+
+    anio, mes, dia, tipo_descarga = pedir_fecha("Fecha", root, "Introduce la fecha correspondiente:", anios,
+                                                mes_opciones,
+                                                dia_opciones)
+
+    if not anio or not mes or not dia or not tipo_descarga:
+        mostrar_mensaje("Proceso Cancelado", "No se seleccionó ninguna opción. El proceso ha sido cancelado.")
+        return
+
+    root.deiconify()  # Mostrar la ventana de nuevo si es necesario
+    driver = configurar_webdriver()
+
+    try:
+        iniciar_sesion(driver, usuario, contrasena)
+        seleccionar_opciones_de_consulta(driver, anio, mes, dia, tipo_documento)
+        click_consulta(driver)
+        while True:
+            filas_a_procesar = leer_y_procesar_excel(driver, usuario, anio, mes)
+            filas_procesadas = descargar_comprobantes(driver, tipo_descarga, filas_a_procesar)
+            leer_y_procesar_excel(driver, usuario, anio, mes, procesados=filas_procesadas)
+            if not navegar_a_la_pagina_siguiente(driver):
+                break
+    except Exception as e:
+        mostrar_mensaje("Error", f"Se encontró un error: {e}")
+    finally:
+        driver.quit()
+        mostrar_mensaje("Proceso Completado", "Proceso completado. Revisa los resultados en la carpeta de descargas.")
 
 
 def ordenar_documentos(root):
@@ -81,8 +146,34 @@ def generar_reporte(root):
 
 
 def generar_pdf(root):
-    nueva_ventana = tk.Toplevel(root)
-    nueva_ventana.title("Ordenar Documentos")
+    root.withdraw()  # Ocultar la ventana mientras se selecciona la carpeta
+
+    # Seleccionar carpeta para procesar
+    folder_path = seleccionar_carpeta_topdf()
+    if not folder_path:
+        print("No se seleccionó ninguna carpeta.")
+        root.destroy()
+        return
+
+    root.deiconify()  # Mostrar la ventana de nuevo si es necesario
+
+    # Mostrar la ventana de progreso
+    progress_window, progress_label, progress_bar = mostrar_progreso()
+
+    def finalizar_proceso():
+        # Esta función se llama cuando se completa el hilo de procesamiento
+        progress_window.destroy()  # Cierra la ventana de progreso
+
+    def procesar():
+        procesar_xml_pdf(progress_window, progress_label, progress_bar, folder_path)
+        root.after(0, finalizar_proceso)  # Llama a finalizar_proceso desde el hilo principal de Tkinter
+
+    # Iniciar el procesamiento de XML a PDF en un hilo separado
+    main_thread = threading.Thread(target=procesar)
+    main_thread.start()
+
+    # Mantener la ventana de progreso abierta hasta que termine el proceso
+    progress_window.mainloop()
 
 
 def imprimir_pdf(root):

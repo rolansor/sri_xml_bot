@@ -1,6 +1,6 @@
-import sys
 import os
 import shutil
+import sys
 from tkinter import filedialog
 from librerias.auxiliares import mostrar_mensaje
 from librerias.leer_xmls import procesar_archivo_xml, extraer_tipo, extraer_ruc_receptor, extraer_ruc_emisor, \
@@ -10,7 +10,7 @@ from librerias.manejo_archivos import encontrar_y_eliminar_duplicados
 
 def ruta_relativa_recurso(relativa):
     if hasattr(sys, '_MEIPASS'):
-        # Si está corriendo dentro de un ejecutable PyInstaller
+        # Si esta corriendo dentro de un ejecutable PyInstaller
         return os.path.join(sys._MEIPASS, relativa)
     return os.path.join(os.path.dirname(__file__), relativa)
 
