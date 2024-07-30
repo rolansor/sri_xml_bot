@@ -1,7 +1,33 @@
+import hashlib
+import os
 import re
 import xml.etree.ElementTree as ET
 from librerias.diccionarios import nombres_comprobantes
-from funciones_auxiliares import comprobante_a_dic_factura, comprobante_a_dic_retencion, comprobante_a_dic_nota_credito
+from librerias.funciones_auxiliares import comprobante_a_dic_factura, comprobante_a_dic_retencion, comprobante_a_dic_nota_credito
+
+
+def calcular_hash(archivo):
+    with open(archivo, 'rb') as f:
+        contenido = f.read()
+        return hashlib.sha256(contenido).hexdigest()
+
+
+def encontrar_y_eliminar_duplicados(directorio):
+    hashes = {}
+    duplicados = []
+    mensajes = []
+
+    for archivo in os.listdir(directorio):
+        ruta_completa = os.path.join(directorio, archivo)
+        if os.path.isfile(ruta_completa) and archivo.endswith('.xml'):
+            hash_archivo = calcular_hash(ruta_completa)
+            if hash_archivo in hashes:
+                duplicados.append(archivo)
+            else:
+                hashes[hash_archivo] = archivo
+
+    mensajes.append(f'Se han eliminado {len(duplicados)} archivos duplicados.')
+    return mensajes
 
 
 def procesar_archivo_xml(file_path):

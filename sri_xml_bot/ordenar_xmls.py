@@ -1,11 +1,11 @@
 import sys
 import os
-import hashlib
 import shutil
 from tkinter import filedialog
 from librerias.auxiliares import mostrar_mensaje
 from librerias.leer_xmls import procesar_archivo_xml, extraer_tipo, extraer_ruc_receptor, extraer_ruc_emisor, \
     extraer_clave_autorizacion, extraer_secuencial, extraer_fecha
+from librerias.manejo_archivos import encontrar_y_eliminar_duplicados
 
 
 def ruta_relativa_recurso(relativa):
@@ -50,30 +50,6 @@ def cargar_rucs_desde_archivo():
         print(f"Error inesperado: {e}")
 
     return rucs, meses_opciones
-
-
-def calcular_hash(archivo):
-    with open(archivo, 'rb') as f:
-        contenido = f.read()
-        return hashlib.sha256(contenido).hexdigest()
-
-
-def encontrar_y_eliminar_duplicados(directorio):
-    hashes = {}
-    duplicados = []
-    mensajes = []
-
-    for archivo in os.listdir(directorio):
-        ruta_completa = os.path.join(directorio, archivo)
-        if os.path.isfile(ruta_completa) and archivo.endswith('.xml'):
-            hash_archivo = calcular_hash(ruta_completa)
-            if hash_archivo in hashes:
-                duplicados.append(archivo)
-            else:
-                hashes[hash_archivo] = archivo
-
-    mensajes.append(f'Se han eliminado {len(duplicados)} archivos duplicados.')
-    return mensajes
 
 
 def organizar_archivos_xml(directorio, opcion_nomenclatura, ruc_procesado, mes_seleccionado, tipo_documento):

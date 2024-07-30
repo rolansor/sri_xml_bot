@@ -2,9 +2,9 @@ import os
 import tkinter as tk
 from tkinter import filedialog, messagebox
 from tkinter import ttk
-from auxiliares import centrar_ventana
-from funciones_excel import guardar_documentos_emitidos
-from manejo_archivos import procesar_archivo_xml
+from librerias.auxiliares import centrar_ventana
+from librerias.funciones_excel import guardar_documentos_emitidos
+from librerias.manejo_archivos import procesar_archivo_xml
 
 
 def crear_ventana_progreso():
