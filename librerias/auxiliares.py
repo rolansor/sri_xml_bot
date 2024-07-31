@@ -7,7 +7,7 @@ import tkinter as tk
 def centrar_ventana(ventana):
     ventana.update_idletasks()
     ancho = 400
-    alto = 400
+    alto = 700
     x = (ventana.winfo_screenwidth() // 2) - (ancho // 2)
     y = (ventana.winfo_screenheight() // 2) - (alto // 2)
     ventana.geometry(f'{ancho}x{alto}+{x}+{y}')
@@ -20,6 +20,7 @@ def mostrar_mensaje(titulo, mensaje):
     mensaje_dialog.withdraw()
     mensaje_dialog.title(titulo)
     centrar_ventana(mensaje_dialog)
+    mensaje_dialog.attributes("-topmost", True)  # Asegura que esté al frente
     tk.Label(mensaje_dialog, text=mensaje, wraplength=280).pack(pady=20)
     tk.Button(mensaje_dialog, text="Aceptar", command=mensaje_dialog.destroy).pack(pady=10)
     mensaje_dialog.deiconify()

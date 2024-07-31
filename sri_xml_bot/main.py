@@ -67,22 +67,16 @@ def descargar_documentos(root):
 
     root.deiconify()  # Mostrar la ventana de nuevo si es necesario
     driver = configurar_webdriver()
-
-    try:
-        iniciar_sesion(driver, usuario, contrasena)
-        seleccionar_opciones_de_consulta(driver, anio, mes, dia, tipo_documento)
-        click_consulta(driver)
-        while True:
-            filas_a_procesar = leer_y_procesar_excel(driver, usuario, anio, mes)
-            filas_procesadas = descargar_comprobantes(driver, tipo_descarga, filas_a_procesar)
-            leer_y_procesar_excel(driver, usuario, anio, mes, procesados=filas_procesadas)
-            if not navegar_a_la_pagina_siguiente(driver):
-                break
-    except Exception as e:
-        mostrar_mensaje("Error", f"Se encontró un error: {e}")
-    finally:
-        driver.quit()
-        mostrar_mensaje("Proceso Completado", "Proceso completado. Revisa los resultados en la carpeta de descargas.")
+    iniciar_sesion(driver, usuario, contrasena)
+    seleccionar_opciones_de_consulta(driver, anio, mes, dia, tipo_documento)
+    click_consulta(driver)
+    while True:
+        filas_a_procesar = leer_y_procesar_excel(driver, usuario, anio, mes)
+        filas_procesadas = descargar_comprobantes(driver, tipo_descarga, filas_a_procesar)
+        leer_y_procesar_excel(driver, usuario, anio, mes, procesados=filas_procesadas)
+        if not navegar_a_la_pagina_siguiente(driver):
+            break
+    mostrar_mensaje("Proceso Completado", "Proceso completado. Revisa los resultados en la carpeta de descargas.")
 
 
 def ordenar_documentos(root):

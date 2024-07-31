@@ -4,6 +4,7 @@ import logging
 import pandas as pd
 import tkinter as tk
 import time
+import atexit
 from tkinter import ttk
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
@@ -11,13 +12,28 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select
-from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import TimeoutException, NoSuchWindowException, SessionNotCreatedException
 from datetime import datetime
 from librerias.auxiliares import mostrar_mensaje, centrar_ventana, ruta_relativa_recurso
 
 # Configuración del logging
 logging.basicConfig(filename='sri_robot.log', level=logging.INFO,
                     format='%(asctime)s:%(levelname)s:%(message)s')
+
+driver = None  # Definir el driver a nivel global para acceder a él en todas las funciones
+
+
+# Función para liberar recursos
+def liberar_recursos():
+    global driver
+    if driver:
+        driver.quit()
+        logging.info("WebDriver cerrado y recursos liberados.")
+
+
+# Registrar la función para ejecutar al finalizar el script
+atexit.register(liberar_recursos)
+
 
 def medir_tiempo(func):
     def wrapper(*args, **kwargs):
@@ -38,6 +54,21 @@ def manejar_excepcion(func):
         except TimeoutException:
             verificar_y_recargar(driver)
             return func(*args, **kwargs)
+        except NoSuchWindowException:
+            logging.error("No se encontró la ventana del navegador: ChromeDriver cerrado inesperadamente.")
+            mostrar_mensaje("Error", "El navegador ChromeDriver se cerró inesperadamente.")
+            liberar_recursos()
+            exit(1)
+        except FileNotFoundError as e:
+            logging.error(f"No se encontró el archivo: {e}")
+            mostrar_mensaje("Error", f"No se encontró el archivo: {e}")
+            liberar_recursos()
+            exit(1)
+        except Exception as e:
+            logging.error(f"Excepción no manejada: {e}")
+            mostrar_mensaje("Error", f"Excepción no manejada: {e}")
+            liberar_recursos()
+            exit(1)
     return wrapper
 
 
@@ -52,25 +83,63 @@ def separar_tipo_y_serie(comprobante):
         return None, None
 
 
+@manejar_excepcion
+@medir_tiempo
+def verificar_y_recargar(driver):
+    """
+    Verifica si la página contiene el mensaje específico y recarga la página después de 5 segundos.
+    """
+    intentos = 0
+    while intentos < 5:
+        try:
+            body_style = driver.find_element(By.CSS_SELECTOR, "body").get_attribute("style")
+            if "background" in body_style and "sri_mant_pro.jpg" in body_style:
+                mostrar_mensaje("Página de mantenimiento detectada", "Se detectó la página de mantenimiento. Esperando 5 segundos para recargar la página.")
+                time.sleep(5)
+                driver.refresh()
+                mostrar_mensaje("Página recargada", "La página se ha recargado con éxito.")
+                return 1
+            else:
+                mostrar_mensaje("Excepción Lanzada", "Se detectó una falta de acceso. Esperando 5 segundos para recargar la página.")
+                time.sleep(5)
+                driver.refresh()
+                mostrar_mensaje("Página recargada", "La página se ha recargado con éxito.")
+                return 0
+        except Exception as e:
+            logging.error(f"Error al verificar el fondo de la página: {e}")
+            intentos += 1
+            if intentos >= 5:
+                mostrar_mensaje("Error", "No se pudo recargar la página después de 5 intentos.")
+                return 0
+            time.sleep(5)
+    return 0
+
+
 # Configura el WebDriver de Chrome
 @medir_tiempo
 def configurar_webdriver():
-    chrome_options = webdriver.ChromeOptions()
-    prefs = {
-        "download.prompt_for_download": "False",
-        "safebrowsing.enabled": "False",
-        "profile.default_content_setting_values.automatic_downloads": 1  # Permite múltiples descargas
-    }
-    chrome_options.add_experimental_option("prefs", prefs)
-    ruta_chromedriver = ruta_relativa_recurso('archivos_necesarios/chromedriver.exe')
-    # Verificación de existencia del archivo
-    if not os.path.exists(ruta_chromedriver):
-        directorio_actual = os.path.dirname(os.path.abspath(__file__))
-        ruta_chromedriver = os.path.join(directorio_actual, '../archivos_necesarios/chromedriver.exe')
+    try:
+        chrome_options = webdriver.ChromeOptions()
+        prefs = {
+            "download.prompt_for_download": "False",
+            "safebrowsing.enabled": "False",
+            "profile.default_content_setting_values.automatic_downloads": 1  # Permite múltiples descargas
+        }
+        chrome_options.add_experimental_option("prefs", prefs)
+        ruta_chromedriver = ruta_relativa_recurso('archivos_necesarios/chromedriver.exe')
+        # Verificación de existencia del archivo
+        if not os.path.exists(ruta_chromedriver):
+            directorio_actual = os.path.dirname(os.path.abspath(__file__))
+            ruta_chromedriver = os.path.join(directorio_actual, '../archivos_necesarios/chromedriver.exe')
 
-    service = Service(executable_path=ruta_chromedriver)
-    driver = webdriver.Chrome(service=service, options=chrome_options)
-    return driver
+        service = Service(executable_path=ruta_chromedriver)
+        driver = webdriver.Chrome(service=service, options=chrome_options)
+        return driver
+    except SessionNotCreatedException:
+        logging.error("La versión de ChromeDriver no es compatible con la versión de Chrome instalada.")
+        mostrar_mensaje("Error", "ChromeDriver desactualizado o incompatible con la versión de Chrome instalada.")
+        liberar_recursos()
+        exit(1)
 
 
 # Inicia sesión en el sitio web del SRI
@@ -99,6 +168,7 @@ def seleccionar_opciones_de_consulta(driver, anio, mes, dia, tipo_comprobante):
     Select(driver.find_element(By.ID, 'frmPrincipal:cmbTipoComprobante')).select_by_visible_text(tipo_comprobante)
     time.sleep(2)
 
+
 @manejar_excepcion
 @medir_tiempo
 def click_consulta(driver):
@@ -108,17 +178,17 @@ def click_consulta(driver):
     driver.find_element(By.ID, 'btnRecaptcha').click()
 
     try:
+        WebDriverWait(driver, 10).until(
+        EC.frame_to_be_available_and_switch_to_it((By.XPATH, "//iframe[contains(@title, 'reCAPTCHA')]")))
+        logging.info("reCAPTCHA aparecio. Resuelvelo para continuar con la consulta...")
+    except Exception as e:
+        logging.info(f"No se encontró el reCAPTCHA u ocurrió otro problema: {e}")
+    finally:
+        # Cambia de nuevo al contenido principal
+        driver.switch_to.default_content()
         try:
-            WebDriverWait(driver, 10).until(
-            EC.frame_to_be_available_and_switch_to_it((By.XPATH, "//iframe[contains(@title, 'reCAPTCHA')]")))
-            logging.info("reCAPTCHA aparecio. Resuelvelo para continuar con la consulta...")
-        except:
-            logging.info("No se encontro el reCAPTCHA. Continuando con la consulta...")
-        finally:
-            # Cambia de nuevo al contenido principal
             # Espera hasta que el reCAPTCHA sea resuelto manualmente (máximo 2 minutos)
             # Localiza el desplegable para seleccionar el número de elementos por página
-            driver.switch_to.default_content()
             num_elementos_selector = WebDriverWait(driver, 120).until(
                 EC.element_to_be_clickable((By.CSS_SELECTOR, ".ui-paginator-rpp-options"))
             )
@@ -126,8 +196,8 @@ def click_consulta(driver):
             # Intenta seleccionar 75
             Select(num_elementos_selector).select_by_value("75")
             time.sleep(2)
-    except Exception as e:
-        logging.error(f"Error al hacer clic en el botón de consulta: {e}")
+        except Exception as e:
+            logging.error(f"Error al interactuar con el selector de elementos por página: {e}")
 
 @manejar_excepcion
 @medir_tiempo
@@ -140,17 +210,15 @@ def navegar_a_la_pagina_siguiente(driver):
         next_button = WebDriverWait(driver, 20).until(
             EC.element_to_be_clickable((By.CSS_SELECTOR, ".ui-paginator-next.ui-state-default.ui-corner-all:not(.ui-state-disabled)")))
         next_button.click()
-        time.sleep(2)  # Espera a que la página cargue completamente
         return True
-    except Exception:
+    except TimeoutException:
         try:
             next_button = WebDriverWait(driver, 20).until(
                 EC.element_to_be_clickable(
                     (By.CSS_SELECTOR, ".ui-paginator-next.ui-state-default.ui-corner-all:not(.ui-state-disabled)")))
             next_button.click()
-            time.sleep(2)  # Espera a que la página cargue completamente
             return True
-        except Exception:
+        except TimeoutException:
             return False
 
 
@@ -254,61 +322,27 @@ def leer_y_procesar_excel(driver, ruc, anio=None, mes=None, procesados=None):
             mostrar_mensaje("Error al actualizar el archivo Excel", f"Se produjo un error al actualizar el archivo Excel: {e}")
 
 
+@manejar_excepcion
 @medir_tiempo
 def obtener_filas_a_procesar(driver, datos_existentes):
     filas_a_procesar = []
-    try:
-        tabla = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.ID, "frmPrincipal:tablaCompRecibidos_data"))
-        )
-        filas = tabla.find_elements(By.TAG_NAME, "tr")
-        for fila in filas:
-            celdas = fila.find_elements(By.TAG_NAME, "td")
-            if len(celdas) < 6:
-                continue
-            nro = int(celdas[0].text.strip())
-            ruc = celdas[1].text.strip().split("\n")[0]
-            tipo_documento, serie_comprobante = separar_tipo_y_serie(celdas[2].text.strip())
-            anio = int(celdas[5].text.strip().split("/")[2])
-            mes = int(celdas[5].text.strip().split("/")[1])
-            fila_datos = (anio, mes, nro, ruc, tipo_documento, serie_comprobante)
-            if fila_datos not in [(int(row[0]), int(row[1]), int(row[2]), row[3], row[4], row[5]) for row in datos_existentes] or not any((fila_datos == (int(row[0]), int(row[1]), int(row[2]), row[3], row[4], row[5]) and row[6] == "Procesada" and pd.notna(row[7])) for row in datos_existentes):
-                filas_a_procesar.append(fila_datos)
-
-    except Exception as e:
-        mostrar_mensaje("Error al leer la tabla", f"Se produjo un error al leer la tabla: {e}")
-
+    tabla = WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.ID, "frmPrincipal:tablaCompRecibidos_data"))
+    )
+    filas = tabla.find_elements(By.TAG_NAME, "tr")
+    for fila in filas:
+        celdas = fila.find_elements(By.TAG_NAME, "td")
+        if len(celdas) < 6:
+            continue
+        nro = int(celdas[0].text.strip())
+        ruc = celdas[1].text.strip().split("\n")[0]
+        tipo_documento, serie_comprobante = separar_tipo_y_serie(celdas[2].text.strip())
+        anio = int(celdas[5].text.strip().split("/")[2])
+        mes = int(celdas[5].text.strip().split("/")[1])
+        fila_datos = (anio, mes, nro, ruc, tipo_documento, serie_comprobante)
+        if fila_datos not in [(int(row[0]), int(row[1]), int(row[2]), row[3], row[4], row[5]) for row in datos_existentes] or not any((fila_datos == (int(row[0]), int(row[1]), int(row[2]), row[3], row[4], row[5]) and row[6] == "Procesada" and pd.notna(row[7])) for row in datos_existentes):
+            filas_a_procesar.append(fila_datos)
     return filas_a_procesar
-
-@medir_tiempo
-def verificar_y_recargar(driver):
-    """
-    Verifica si la página contiene el mensaje específico y recarga la página después de 5 segundos.
-    """
-    intentos = 0
-    while intentos < 5:
-        try:
-            body_style = driver.find_element(By.CSS_SELECTOR, "body").get_attribute("style")
-            if "background" in body_style and "sri_mant_pro.jpg" in body_style:
-                mostrar_mensaje("Página de mantenimiento detectada", "Se detectó la página de mantenimiento. Esperando 5 segundos para recargar la página.")
-                time.sleep(5)
-                driver.refresh()
-                mostrar_mensaje("Página recargada", "La página se ha recargado con éxito.")
-                return 1
-            else:
-                mostrar_mensaje("Excepción Lanzada", "Se detectó una falta de acceso. Esperando 5 segundos para recargar la página.")
-                time.sleep(5)
-                driver.refresh()
-                mostrar_mensaje("Página recargada", "La página se ha recargado con éxito.")
-                return 0
-        except Exception as e:
-            logging.error(f"Error al verificar el fondo de la página: {e}")
-            intentos += 1
-            if intentos >= 5:
-                mostrar_mensaje("Error", "No se pudo recargar la página después de 5 intentos.")
-                return 0
-            time.sleep(5)
-    return 0
 
 
 def pedir_input_centrado(titulo, mensaje, root, show=None):
