@@ -73,8 +73,8 @@ def obtener_ruta_logo():
     """
     if hasattr(sys, '_MEIPASS'):
         # Si está corriendo dentro de un ejecutable PyInstaller
-        return os.path.join(sys._MEIPASS, 'xml_a_pdf/nologo.png')
-    return os.path.join(os.path.dirname(__file__), 'librerias/xml_a_pdf/nologo.png')
+        return os.path.join(sys._MEIPASS, 'archivos_necesarios/nologo.png')
+    return os.path.join(os.path.dirname(__file__), 'archivos_necesarios/nologo.png')
 
 
 def procesar_xml_pdf(progress_window, progress_label, progress_bar, folder_path):
