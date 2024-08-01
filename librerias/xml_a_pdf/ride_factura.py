@@ -259,7 +259,8 @@ def contenido_fac(pdf, ult_x, ult_y, detalles):
         # Extracción de los campos requeridos del detalle
         codigo_principal = detalle.get('codigoPrincipal', '')
         codigo_auxiliar = detalle.get('codigoAuxiliar', '')  # Usa get para manejar la ausencia del campo
-        descripcion = detalle['descripcion']
+        descripcion = detalle['descripcion'] + (' -**- ' + detalle.get('marcaProducto', '') if detalle.get('marcaProducto') else '')
+
         # Formatear los valores numéricos
         cantidad = int(float(detalle['cantidad']))  # Convertir a entero
         precio_unitario = '{:.3f}'.format(float(detalle['precioUnitario']))
@@ -269,6 +270,7 @@ def contenido_fac(pdf, ult_x, ult_y, detalles):
         data.append([
             Paragraph(codigo_principal, p8_center),
             Paragraph(codigo_auxiliar, p8_center),
+            Paragraph('', p8_center),
             Paragraph(descripcion, p8_center),
             Paragraph(str(cantidad), p8_center),  # Convertir cantidad a cadena
             Paragraph(precio_unitario, p8_right),
@@ -277,7 +279,7 @@ def contenido_fac(pdf, ult_x, ult_y, detalles):
         ])
     col_width = (ancho_bloque / float(24))
     tabla_contenido = Table(data,
-                            colWidths=[col_width * 3 * mm, col_width * 3 * mm, col_width * 10 * mm,
+                            colWidths=[col_width * 3 * mm, col_width * 3 * mm, col_width * 2 * mm, col_width * 8 * mm,
                                        col_width * 2 * mm,
                                        col_width * 2 * mm, col_width * 2 * mm, col_width * 2 * mm])
     tabla_contenido.setStyle(TableStyle([('GRID', (0, 0), (-1, -1), 1, colors.black)]))
@@ -491,6 +493,11 @@ def obtener_formas_pago_fac(datos_factura):
         for pago in pagos:
             forma_pago_nombre = nombres_formapago.get(pago['formaPago'], 'Desconocido')
             formas_pago.append(f'{forma_pago_nombre}: {pago["total"]}')
+    formas_pago.append(f'# FACTURA ROLFER: ')
+    formas_pago.append(f'# RETENCIÓN: ')
+    formas_pago.append(f'FORMA PAGO/#: ')
+    formas_pago.append(f'REVISADO/FECHA: ')
+    formas_pago.append(f'ETIQUETADO/FECHA: ')
     return formas_pago
 
 
