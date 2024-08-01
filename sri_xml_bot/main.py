@@ -76,7 +76,6 @@ def descargar_documentos(root):
         leer_y_procesar_excel(driver, usuario, anio, mes, procesados=filas_procesadas)
         if not navegar_a_la_pagina_siguiente(driver):
             break
-    mostrar_mensaje("Proceso Completado", "Proceso completado. Revisa los resultados en la carpeta de descargas.")
 
 
 def ordenar_documentos(root):

@@ -25,4 +25,4 @@ setup(
     },
 )
 
-#pyinstaller --onefile --add-data "archivos_necesarios/rucs.txt;archivos_necesarios" main.spec
+#pyinstaller main.spec
