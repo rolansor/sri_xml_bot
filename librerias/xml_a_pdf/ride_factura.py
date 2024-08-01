@@ -493,7 +493,7 @@ def obtener_formas_pago_fac(datos_factura):
         for pago in pagos:
             forma_pago_nombre = nombres_formapago.get(pago['formaPago'], 'Desconocido')
             formas_pago.append(f'{forma_pago_nombre}: {pago["total"]}')
-    formas_pago.append(f'# FACTURA ROLFER: ')
+    formas_pago.append(f'# FACTURA: ')
     formas_pago.append(f'# RETENCIÓN: ')
     formas_pago.append(f'FORMA PAGO/#: ')
     formas_pago.append(f'REVISADO/FECHA: ')
