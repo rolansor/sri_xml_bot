@@ -30,11 +30,7 @@ def descargar_documentos(root):
         mostrar_mensaje("Proceso Cancelado", "No se seleccionó ninguna opción. El proceso ha sido cancelado.")
         return
 
-    if opcion == "manual":
-        usuario = pedir_input_centrado("RUC", "Introduce el RUC manualmente:", root).strip()
-        contrasena = pedir_input_centrado("Contraseña", "Introduce la contraseña manualmente:", show='*').strip()
-    else:
-        usuario, contrasena = opciones_ruc[opcion]
+    usuario, contrasena = opciones_ruc[opcion]
 
     tipos_documento = {
         "Factura": "Factura",
