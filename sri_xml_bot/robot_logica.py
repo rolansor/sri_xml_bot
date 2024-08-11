@@ -326,9 +326,9 @@ def click_consulta(driver):
     finally:
         # Cambia de nuevo al contenido principal
         driver.switch_to.default_content()
-        # Espera hasta que el reCAPTCHA sea resuelto manualmente (máximo 2 minutos)
+        # Espera hasta que el reCAPTCHA sea resuelto manualmente (máximo 4 minutos)
         # Localiza el desplegable para seleccionar el número de elementos por página
-        num_elementos_selector = WebDriverWait(driver, 120).until(
+        num_elementos_selector = WebDriverWait(driver, 240).until(
             EC.element_to_be_clickable((By.CSS_SELECTOR, ".ui-paginator-rpp-options"))
         )
         logging.info("reCAPTCHA resuelto, seguimos con la consulta.")

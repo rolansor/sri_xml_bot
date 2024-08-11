@@ -29,8 +29,8 @@ def aplanar_diccionario_nc(d, items=None, omitir_campos=None):
         omitir_campos = ['detalles', 'infoAdicional']
     if items is None:
         # Inicializar todas las columnas de IVA en 0
-        items = {'Base 0%': 0, 'Base 12%': 0, 'Base 14%': 0, 'Base 15%': 0, 'Base No Objeto': 0, 'Base Exento': 0,
-                 'IVA 0%': 0, 'IVA 12%': 0, 'IVA 14%': 0, 'IVA 15%': 0, 'IVA No Objeto': 0, 'Exento': 0}
+        items = {'Base 0%': 0, 'Base 5%': 0, 'Base 12%': 0, 'Base 14%': 0, 'Base 15%': 0, 'Base No Objeto': 0, 'Base Exento': 0,
+                 'IVA 0%': 0, 'IVA 5%': 0, 'IVA 12%': 0, 'IVA 14%': 0, 'IVA 15%': 0, 'IVA No Objeto': 0, 'Exento': 0}
     for k, v in d.items():
         if k in omitir_campos:
             continue
@@ -52,6 +52,9 @@ def aplanar_diccionario_nc(d, items=None, omitir_campos=None):
                     elif codigoPorcentaje == '4':
                         items['Base 15%'] += float(impuesto_info.get('baseImponible', 0))
                         items['IVA 15%'] += float(impuesto_info.get('valor', 0))
+                    elif codigoPorcentaje == '5':
+                        items['Base 5%'] += float(impuesto_info.get('baseImponible', 0))
+                        items['IVA 5%'] += float(impuesto_info.get('valor', 0))
                     elif codigoPorcentaje == '6':
                         items['Base No Objeto'] += float(impuesto_info.get('baseImponible', 0))
                         items['IVA No Objeto'] += float(impuesto_info.get('valor', 0))
@@ -109,8 +112,8 @@ def aplanar_diccionario_ret(d, items=None, omitir_campos=None):
 def aplanar_diccionario_fac(d, items=None, omitir_campos=None):
     if items is None:
         items = {
-            'Base 0%': 0, 'Base 12%': 0, 'Base 14%': 0, 'Base 15%': 0, 'Base No Objeto': 0, 'Base Exento': 0,
-            'IVA 0%': 0, 'IVA 12%': 0, 'IVA 14%': 0, 'IVA 15%': 0, 'IVA No Objeto': 0, 'IVA Exento': 0
+            'Base 0%': 0, 'Base 5%': 0, 'Base 12%': 0, 'Base 14%': 0, 'Base 15%': 0, 'Base No Objeto': 0, 'Base Exento': 0,
+            'IVA 0%': 0, 'IVA 5%': 0, 'IVA 12%': 0, 'IVA 14%': 0, 'IVA 15%': 0, 'IVA No Objeto': 0, 'IVA Exento': 0
         }
 
     if omitir_campos is None:
@@ -139,6 +142,9 @@ def aplanar_diccionario_fac(d, items=None, omitir_campos=None):
                     elif codigoPorcentaje == '4':
                         items['Base 15%'] += float(impuesto_info.get('baseImponible', 0))
                         items['IVA 15%'] += float(impuesto_info.get('valor', 0))
+                    elif codigoPorcentaje == '5':
+                        items['Base 5%'] += float(impuesto_info.get('baseImponible', 0))
+                        items['IVA 5%'] += float(impuesto_info.get('valor', 0))
                     elif codigoPorcentaje == '6':
                         items['Base No Objeto'] += float(impuesto_info.get('baseImponible', 0))
                         items['IVA No Objeto'] += float(impuesto_info.get('valor', 0))
@@ -176,7 +182,7 @@ def guardar_documentos_emitidos(diccionario_documento, file_path):
         "obligadoContabilidad", "estab", "ptoEmi", "secuencial",
         "claveAcceso", "fechaEmision", "codDocModificado", "numDocModificado",
         "fechaEmisionDocSustento", "totalSinImpuestos",
-        "Base 0%", "Base 12%", "Base 15%", "Base No Objeto", "Base Exento", "IVA 12%", "IVA 15%", "valorModificacion",
+        "Base 0%", "Base 5%", "Base 12%", "Base 15%", "Base No Objeto", "Base Exento", "IVA 5%", "IVA 12%", "IVA 15%", "valorModificacion",
         "ruc_receptor", "razonSocialComprador"
     ]
 
@@ -190,7 +196,7 @@ def guardar_documentos_emitidos(diccionario_documento, file_path):
         "codDoc", "ruc_emisor", "razonSocial", "contribuyenteEspecial",
         "estab", "ptoEmi", "secuencial",
         "claveAcceso", "fechaEmision", "totalSinImpuestos", "totalDescuento",
-        "Base 0%", "Base 12%", "Base 15%", "Base No Objeto", "Base Exento", "IVA 12%", "IVA 15%", "importeTotal",
+        "Base 0%", "Base 5%", "Base 12%", "Base 15%", "Base No Objeto", "Base Exento", "IVA 5%", "IVA 12%", "IVA 15%", "importeTotal",
         "ruc_receptor", "razonSocialComprador"
     ]
 
@@ -231,8 +237,8 @@ def guardar_documentos_emitidos(diccionario_documento, file_path):
             for col_num, key in enumerate(column_order, start=1):
                 valor = aplanado.get(key, "N/A")
                 # Formatear datos específicos
-                if key in ["totalSinImpuestos", "totalDescuento", "Base 0%", "Base 12%", "Base No Objeto", "Base Exento",
-                           "IVA 0%", "IVA 12%", "IVA 15%", "importeTotal", "valorModificacion", "IVA", "Renta", "ISD"] and valor != "N/A":
+                if key in ["totalSinImpuestos", "totalDescuento", "Base 0%", "Base 5%", "Base 12%", "Base No Objeto", "Base Exento",
+                           "IVA 0%", "IVA 5%", "IVA 12%", "IVA 15%", "importeTotal", "valorModificacion", "IVA", "Renta", "ISD"] and valor != "N/A":
                     valor = float(valor)
                 elif key in ["fechaEmision", "fechaEmisionDocSustento"]:
                     valor = formatear_fecha(valor)

@@ -84,7 +84,7 @@ def procesar_xml_pdf(progress_window, progress_label, progress_bar, folder_path)
     # Verificación de existencia del archivo
     if not os.path.exists(ruta_logo):
         directorio_actual = os.path.dirname(os.path.abspath(__file__))
-        ruta_logo = os.path.join(directorio_actual, '../librerias/xml_a_pdf/nologo.png')
+        ruta_logo = os.path.join(directorio_actual, '../archivos_necesarios/nologo.png')
 
     # Contar el número total de archivos XML para la barra de progreso
     total_xml = sum(len(files) for _, _, files in os.walk(folder_path) if any(f.endswith('.xml') for f in files))

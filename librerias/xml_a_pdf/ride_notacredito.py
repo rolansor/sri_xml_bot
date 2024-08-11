@@ -246,25 +246,29 @@ def totales_nc(pdf, ult_x, ult_y, datos):
 
     # Convertir valores numéricos a cadenas de texto
     subtotal_sin_imp = '{:.2f}'.format(datos['SUBTOTAL SIN IMPUESTOS'])
-    subtotal_12 = '{:.2f}'.format(datos['SUBTOTAL 12%'])
+    subtotal_15 = '{:.2f}'.format(datos['SUBTOTAL 15%'])
+    subtotal_5 = '{:.2f}'.format(datos['SUBTOTAL 5%'])
     subtotal_0 = '{:.2f}'.format(datos['SUBTOTAL 0%'])
     subtotal_no_iva = '{:.2f}'.format(datos['Subtotal No Objeto de IVA'])
     subtotal_exc_iva = '{:.2f}'.format(datos['Subtotal Exento de IVA'])
     total_descuento = '{:.2f}'.format(datos['DESCUENTO'])
     ICE = '{:.2f}'.format(datos['ICE'])
-    IVA_12 = '{:.2f}'.format(datos['IVA 12%'])
+    IVA_15 = '{:.2f}'.format(datos['IVA 15%'])
+    IVA_5 = '{:.2f}'.format(datos['IVA 5%'])
     IRBPNR = '{:.2f}'.format(datos['IRBPNR'])
     PROPINA = '{:.2f}'.format(datos['PROPINA'])
     total = '{:.2f}'.format(datos['TOTAL'])
 
     data = [[Paragraph('SUBTOTAL SIN IMPUESTOS', p8), Paragraph(subtotal_sin_imp, p8_right)],
-            [Paragraph('SUBTOTAL 12%', p8), Paragraph(subtotal_12, p8_right)],
+            [Paragraph('SUBTOTAL 15%', p8), Paragraph(subtotal_15, p8_right)],
+            [Paragraph('SUBTOTAL 5%', p8), Paragraph(subtotal_5, p8_right)],
             [Paragraph('SUBTOTAL 0%', p8), Paragraph(subtotal_0, p8_right)],
             [Paragraph('Subtotal No Objeto de IVA', p8), Paragraph(subtotal_no_iva, p8_right)],
             [Paragraph('Subtotal Exento de IVA', p8), Paragraph(subtotal_exc_iva, p8_right)],
             [Paragraph('TOTAL DESCUENTO', p8), Paragraph(total_descuento, p8_right)],
             [Paragraph('ICE', p8), Paragraph(ICE, p8_right)],
-            [Paragraph('IVA 12%', p8), Paragraph(IVA_12, p8_right)],
+            [Paragraph('IVA 5%', p8), Paragraph(IVA_5, p8_right)],
+            [Paragraph('IVA 15%', p8), Paragraph(IVA_15, p8_right)],
             [Paragraph('IRBPNR', p8), Paragraph(IRBPNR, p8_right)],
             [Paragraph('PROPINA', p8), Paragraph(PROPINA, p8_right)],
             [Paragraph('VALOR TOTAL', p8), Paragraph(total, p8_right)],
@@ -280,7 +284,7 @@ def totales_nc(pdf, ult_x, ult_y, datos):
 
 
 def calcular_totales_nc(datos_factura):
-    subtotal_0 = subtotal_12 = subtotal_no_sujeto = subtotal_exento = ice = iva_12 = irbpnr = 0.0
+    subtotal_0 = subtotal_5 = subtotal_15 = subtotal_no_sujeto = subtotal_exento = ice = iva_5 = iva_15 = irbpnr = 0.0
 
     for impuesto in datos_factura['infoNotaCredito']['totalConImpuestos']:
         base_imponible = float(impuesto['baseImponible'])
@@ -290,9 +294,12 @@ def calcular_totales_nc(datos_factura):
         if impuesto['codigo'] == '2':  # IVA
             if codigo_porcentaje == '0':
                 subtotal_0 += base_imponible
-            elif codigo_porcentaje == '2':
-                subtotal_12 += base_imponible
-                iva_12 += valor
+            elif codigo_porcentaje == '4':
+                subtotal_15 += base_imponible
+                iva_15 += valor
+            elif codigo_porcentaje == '5':
+                subtotal_5 += base_imponible
+                iva_5 += valor
             elif codigo_porcentaje == '6':
                 subtotal_no_sujeto += base_imponible
             elif codigo_porcentaje == '7':
@@ -310,18 +317,20 @@ def calcular_totales_nc(datos_factura):
     importe_total = float(datos_factura['infoNotaCredito'].get('importeTotal', 0))
     # Si importe total no está presente o es 0.00, calcularlo
     if importe_total == 0.00:
-        importe_total = subtotal_sin_impuestos + iva_12 + irbpnr + ice + propina - descuento
+        importe_total = subtotal_sin_impuestos + iva_5 + iva_15 + irbpnr + ice + propina - descuento
 
     return {
         'SUBTOTAL SIN IMPUESTOS': subtotal_sin_impuestos,
-        'SUBTOTAL 12%': subtotal_12,
+        'SUBTOTAL 15%': subtotal_15,
+        'SUBTOTAL 5%': subtotal_5,
         'SUBTOTAL 0%': subtotal_0,
         'Subtotal No Objeto de IVA': subtotal_no_sujeto,
         'Subtotal Exento de IVA': subtotal_exento,
         'DESCUENTO': descuento,
         'ICE': ice,
         'IRBPNR': irbpnr,
-        'IVA 12%': iva_12,
+        'IVA 15%': iva_15,
+        'IVA 5%': iva_5,
         'PROPINA': propina,
         'TOTAL': importe_total
     }
