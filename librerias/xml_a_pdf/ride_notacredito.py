@@ -244,47 +244,27 @@ def totales_nc(pdf, ult_x, ult_y, datos):
     p8 = ParagraphStyle('parrafos', fontSize=TAM_8, fontName="Helvetica")
     p8_right = ParagraphStyle('parrafos', fontSize=TAM_8, fontName="Helvetica", alignment=TA_RIGHT)
 
-    # Convertir valores numéricos a cadenas de texto
-    subtotal_sin_imp = '{:.2f}'.format(datos['SUBTOTAL SIN IMPUESTOS'])
-    subtotal_15 = '{:.2f}'.format(datos['SUBTOTAL 15%'])
-    subtotal_5 = '{:.2f}'.format(datos['SUBTOTAL 5%'])
-    subtotal_0 = '{:.2f}'.format(datos['SUBTOTAL 0%'])
-    subtotal_no_iva = '{:.2f}'.format(datos['Subtotal No Objeto de IVA'])
-    subtotal_exc_iva = '{:.2f}'.format(datos['Subtotal Exento de IVA'])
-    total_descuento = '{:.2f}'.format(datos['DESCUENTO'])
-    ICE = '{:.2f}'.format(datos['ICE'])
-    IVA_15 = '{:.2f}'.format(datos['IVA 15%'])
-    IVA_5 = '{:.2f}'.format(datos['IVA 5%'])
-    IRBPNR = '{:.2f}'.format(datos['IRBPNR'])
-    PROPINA = '{:.2f}'.format(datos['PROPINA'])
-    total = '{:.2f}'.format(datos['TOTAL'])
+    # Filtrar datos para incluir solo aquellos con valores diferentes de 0
+    datos_filtrados = {k: v for k, v in datos.items() if v != 0.0}
 
-    data = [[Paragraph('SUBTOTAL SIN IMPUESTOS', p8), Paragraph(subtotal_sin_imp, p8_right)],
-            [Paragraph('SUBTOTAL 15%', p8), Paragraph(subtotal_15, p8_right)],
-            [Paragraph('SUBTOTAL 5%', p8), Paragraph(subtotal_5, p8_right)],
-            [Paragraph('SUBTOTAL 0%', p8), Paragraph(subtotal_0, p8_right)],
-            [Paragraph('Subtotal No Objeto de IVA', p8), Paragraph(subtotal_no_iva, p8_right)],
-            [Paragraph('Subtotal Exento de IVA', p8), Paragraph(subtotal_exc_iva, p8_right)],
-            [Paragraph('TOTAL DESCUENTO', p8), Paragraph(total_descuento, p8_right)],
-            [Paragraph('ICE', p8), Paragraph(ICE, p8_right)],
-            [Paragraph('IVA 5%', p8), Paragraph(IVA_5, p8_right)],
-            [Paragraph('IVA 15%', p8), Paragraph(IVA_15, p8_right)],
-            [Paragraph('IRBPNR', p8), Paragraph(IRBPNR, p8_right)],
-            [Paragraph('PROPINA', p8), Paragraph(PROPINA, p8_right)],
-            [Paragraph('VALOR TOTAL', p8), Paragraph(total, p8_right)],
-            ]
+    # Construir la tabla con los datos filtrados
+    data = []
+    for key, value in datos_filtrados.items():
+        data.append([Paragraph(key.replace('_', ' ').upper(), p8), Paragraph('{:.2f}'.format(value), p8_right)])
+
     tabla_totales = Table(data, colWidths=(tam_col_izq * mm, tam_col_der * mm))
     tabla_totales.setStyle(TableStyle([('ALIGN', (1, 0), (0, 0), 'LEFT'),
                                        ('ALIGN', (-1, 0), (0, -1), 'RIGHT'),
                                        ('VALIGN', (0, 0), (-1, -1), 'TOP'),
                                        ('GRID', (0, 0), (-1, -1), 1, colors.black),
                                        ]))
+
     w, h = tabla_totales.wrap(0, 0)
     tabla_totales.drawOn(pdf, (x + ancho_bloque_ant + ESPACIADO_BLOQUES_RIDE) * mm, y * mm - h)
 
 
 def calcular_totales_nc(datos_factura):
-    subtotal_0 = subtotal_5 = subtotal_15 = subtotal_no_sujeto = subtotal_exento = ice = iva_5 = iva_15 = irbpnr = 0.0
+    subtotal_0 = subtotal_5 = subtotal_12 = subtotal_14 = subtotal_15 = subtotal_no_sujeto = subtotal_exento = ice = iva_5 = iva_12 = iva_14 = iva_15 = irbpnr = 0.0
 
     for impuesto in datos_factura['infoNotaCredito']['totalConImpuestos']:
         base_imponible = float(impuesto['baseImponible'])
@@ -294,6 +274,12 @@ def calcular_totales_nc(datos_factura):
         if impuesto['codigo'] == '2':  # IVA
             if codigo_porcentaje == '0':
                 subtotal_0 += base_imponible
+            elif codigo_porcentaje == '2':
+                subtotal_12 += base_imponible
+                iva_12 += valor
+            elif codigo_porcentaje == '3':
+                subtotal_14 += base_imponible
+                iva_14 += valor
             elif codigo_porcentaje == '4':
                 subtotal_15 += base_imponible
                 iva_15 += valor
@@ -321,16 +307,20 @@ def calcular_totales_nc(datos_factura):
 
     return {
         'SUBTOTAL SIN IMPUESTOS': subtotal_sin_impuestos,
-        'SUBTOTAL 15%': subtotal_15,
-        'SUBTOTAL 5%': subtotal_5,
         'SUBTOTAL 0%': subtotal_0,
+        'SUBTOTAL 5%': subtotal_5,
+        'SUBTOTAL 12%': subtotal_12,
+        'SUBTOTAL 14%': subtotal_14,
+        'SUBTOTAL 15%': subtotal_15,
         'Subtotal No Objeto de IVA': subtotal_no_sujeto,
         'Subtotal Exento de IVA': subtotal_exento,
         'DESCUENTO': descuento,
         'ICE': ice,
         'IRBPNR': irbpnr,
-        'IVA 15%': iva_15,
         'IVA 5%': iva_5,
+        'IVA 12%': iva_12,
+        'IVA 14%': iva_14,
+        'IVA 15%': iva_15,
         'PROPINA': propina,
         'TOTAL': importe_total
     }
