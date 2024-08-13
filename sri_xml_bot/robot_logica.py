@@ -1,6 +1,7 @@
 import os
 import re
 import logging
+import subprocess
 import pandas as pd
 import tkinter as tk
 import time
@@ -223,12 +224,9 @@ def man_exc_acceso(func):
                         timeout_intentos = 0  # Reiniciar el contador de timeout_intentos después de recargar la página
                     else:
                         time.sleep(1)  # Esperar un segundo antes de intentar nuevamente
-
                 if intentos >= max_intentos:
                     liberar_recursos()
                     exit(1)
-                    return None
-
     return wrapper
 
 
@@ -276,6 +274,8 @@ def configurar_webdriver():
         directorio_actual = os.path.dirname(os.path.abspath(__file__))
         ruta_chromedriver = os.path.join(directorio_actual, '../archivos_necesarios/chromedriver.exe')
     service = Service(executable_path=ruta_chromedriver)
+    # Redirigir la salida estándar y de error para ocultar la ventana cmd
+    service.creationflags = subprocess.CREATE_NO_WINDOW
     driver = webdriver.Chrome(service=service, options=chrome_options)
     return driver
 
@@ -326,9 +326,9 @@ def click_consulta(driver):
     finally:
         # Cambia de nuevo al contenido principal
         driver.switch_to.default_content()
-        # Espera hasta que el reCAPTCHA sea resuelto manualmente (máximo 2 minutos)
+        # Espera hasta que el reCAPTCHA sea resuelto manualmente (máximo 4 minutos)
         # Localiza el desplegable para seleccionar el número de elementos por página
-        num_elementos_selector = WebDriverWait(driver, 120).until(
+        num_elementos_selector = WebDriverWait(driver, 240).until(
             EC.element_to_be_clickable((By.CSS_SELECTOR, ".ui-paginator-rpp-options"))
         )
         logging.info("reCAPTCHA resuelto, seguimos con la consulta.")
@@ -360,7 +360,6 @@ def navegar_a_la_pagina_siguiente(driver):
                                 "Proceso completado. Revisa los resultados en la carpeta de descargas.")
                 liberar_recursos()
                 exit(1)
-                return False
 
         # Intentar hacer clic en el botón "Siguiente"
         next_button = WebDriverWait(driver, 20).until(

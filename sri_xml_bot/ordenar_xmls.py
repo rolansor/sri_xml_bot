@@ -1,6 +1,5 @@
 import os
 import shutil
-import sys
 from tkinter import filedialog
 from librerias.auxiliares import mostrar_mensaje, ruta_relativa_recurso
 from librerias.leer_xmls import procesar_archivo_xml, extraer_tipo, extraer_ruc_receptor, extraer_ruc_emisor, \
@@ -95,3 +94,5 @@ def seleccionar_carpeta_ordenar(opcion_nomenclatura, rucs_opciones, meses_opcion
         mes_valor = meses_opciones[mes_seleccionado.get()]
         mensajes += organizar_archivos_xml(directorio, opcion_nomenclatura, ruc_valor, mes_valor, tipo_documento)
         mostrar_mensaje("Resultado", "\n".join(mensajes))
+
+#CERRAR TODAS LAS VENTANAS AL TERMINAR
