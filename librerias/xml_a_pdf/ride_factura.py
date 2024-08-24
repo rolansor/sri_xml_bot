@@ -249,6 +249,7 @@ def contenido_fac(pdf, ult_x, ult_y, detalles):
     data = []
     data.append([Paragraph('Cod. Principal', p8_center),
                  Paragraph('Cod. Auxiliar', p8_center),
+                 Paragraph('CR', p8_center),
                  Paragraph('Descripción', p8_center),
                  Paragraph('#', p8_center),
                  Paragraph('Precio Uni.', p8_center),
