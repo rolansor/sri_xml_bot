@@ -52,3 +52,6 @@ exe = EXE(
     codesign_identity=None,
     entitlements_file=None,
 )
+
+#correr el script
+#pyinstaller main.spec
