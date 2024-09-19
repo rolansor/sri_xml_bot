@@ -13,42 +13,14 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select
-from selenium.common.exceptions import TimeoutException, NoSuchWindowException, SessionNotCreatedException, \
-    WebDriverException, NoSuchElementException, StaleElementReferenceException
+from selenium.common.exceptions import (TimeoutException, NoSuchWindowException, SessionNotCreatedException,
+                                        NoSuchElementException, StaleElementReferenceException)
 from datetime import datetime
 from librerias.auxiliares import mostrar_mensaje, centrar_ventana, ruta_relativa_recurso
 
 
 logging.basicConfig(filename='sri_robot.log', level=logging.INFO, format='%(asctime)s:%(levelname)s:%(message)s')
 driver = None
-
-
-def pedir_input_centrado(titulo, mensaje, root, show=None):
-    input_dialog = tk.Toplevel()
-    input_dialog.withdraw()
-    input_dialog.title(titulo)
-    input_dialog.geometry("200x100")
-    input_dialog.attributes("-topmost", True)
-    centrar_ventana(input_dialog)
-    tk.Label(input_dialog, text=mensaje).pack(pady=10)
-    input_var = tk.StringVar()
-    input_entry = tk.Entry(input_dialog, textvariable=input_var, show=show)
-    input_entry.pack(pady=10)
-    input_entry.focus_force()
-
-    def on_submit():
-        input_dialog.quit()
-        input_dialog.destroy()
-
-    def cerrar_programa():
-        input_dialog.quit()
-        input_dialog.destroy()
-        root.quit()
-
-    input_dialog.protocol("WM_DELETE_WINDOW", cerrar_programa)
-    input_dialog.deiconify()
-    input_dialog.mainloop()
-    return input_var.get()
 
 
 def pedir_fecha(titulo, root, mensaje, anios, meses, dias):
@@ -312,16 +284,26 @@ def seleccionar_opciones_de_consulta(driver, anio, mes, dia, tipo_comprobante):
 @man_exc_acceso
 @medir_tiempo
 def click_consulta(driver):
-    """
-    Hace clic en el botón de consulta para iniciar la búsqueda de comprobantes.
-    """
+    # Hace clic en el botón de consulta para iniciar la búsqueda de comprobantes.
     driver.find_element(By.ID, 'btnRecaptcha').click()
 
     try:
-        WebDriverWait(driver, 10).until(
-        EC.frame_to_be_available_and_switch_to_it((By.XPATH, "//iframe[contains(@title, 'reCAPTCHA')]")))
+        WebDriverWait(driver, 10).until(EC.frame_to_be_available_and_switch_to_it((By.XPATH, "//iframe[contains(@title, 'El reCAPTCHA caduca dentro de dos minutos')]")))
         logging.info("reCAPTCHA aparecio. Resuelvelo para continuar con la consulta...")
+        site_key = driver.find_element(By.CLASS_NAME, 'g-recaptcha').get_attribute('data-sitekey')
+        driver.switch_to.default_content()
+        from librerias.resolver_captcha import resolver_captcha
+        try:
+            captcha_solution = resolver_captcha(driver, site_key)
+            # Insertar la solución del captcha en el campo correspondiente
+            driver.execute_script(f'document.getElementById("g-recaptcha-response").innerHTML="{captcha_solution}";')
+            # Hacer clic en el botón de envío del formulario
+            driver.find_element(By.ID, 'kc-login').click()
+        except Exception as e:
+            print(f"Error resolviendo captcha: {e}")
+            logging.error(f"Error resolviendo captcha: {e}")
     except Exception as e:
+        print(f"No se encontró el reCAPTCHA u ocurrió otro problema: {e}")
         logging.info(f"No se encontró el reCAPTCHA u ocurrió otro problema: {e}")
     finally:
         # Cambia de nuevo al contenido principal
@@ -329,8 +311,7 @@ def click_consulta(driver):
         # Espera hasta que el reCAPTCHA sea resuelto manualmente (máximo 4 minutos)
         # Localiza el desplegable para seleccionar el número de elementos por página
         num_elementos_selector = WebDriverWait(driver, 240).until(
-            EC.element_to_be_clickable((By.CSS_SELECTOR, ".ui-paginator-rpp-options"))
-        )
+            EC.element_to_be_clickable((By.CSS_SELECTOR, ".ui-paginator-rpp-options")))
         logging.info("reCAPTCHA resuelto, seguimos con la consulta.")
         # Intenta seleccionar 75
         Select(num_elementos_selector).select_by_value("75")
@@ -434,72 +415,98 @@ def descargar_comprobantes(driver, tipo_descarga, filas_a_procesar):
 @man_exc_varias
 @man_exc_acceso
 @medir_tiempo
-def obtener_filas_a_procesar(driver, datos_existentes):
+def obtener_filas_a_procesar_web(driver):
     filas_a_procesar = []
     tabla = WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.ID, "frmPrincipal:tablaCompRecibidos_data")))
+        EC.presence_of_element_located((By.ID, "frmPrincipal:tablaCompRecibidos_data"))
+    )
     filas = tabla.find_elements(By.TAG_NAME, "tr")
     for fila in filas:
         celdas = fila.find_elements(By.TAG_NAME, "td")
         if len(celdas) < 6:
             continue
-        nro = int(celdas[0].text.strip())
-        ruc = celdas[1].text.strip().split("\n")[0]
-        tipo_documento, serie_comprobante = separar_tipo_y_serie(celdas[2].text.strip())
-        anio = int(celdas[5].text.strip().split("/")[2])
-        mes = int(celdas[5].text.strip().split("/")[1])
-        fila_datos = (anio, mes, nro, ruc, tipo_documento, serie_comprobante)
-        if fila_datos not in [(int(row[0]), int(row[1]), int(row[2]), row[3], row[4], row[5]) for row in datos_existentes] or not any((fila_datos == (int(row[0]), int(row[1]), int(row[2]), row[3], row[4], row[5]) and row[6] == "Procesada" and pd.notna(row[7])) for row in datos_existentes):
+        try:
+            nro = int(celdas[0].text.strip())
+            ruc = celdas[1].text.strip().split("\n")[0]
+            tipo_documento, serie_comprobante = separar_tipo_y_serie(celdas[2].text.strip())
+            fecha = celdas[5].text.strip().split("/")
+            anio = int(fecha[2])
+            mes = int(fecha[1])
+            fila_datos = (anio, mes, nro, ruc, tipo_documento, serie_comprobante)
             filas_a_procesar.append(fila_datos)
+        except (ValueError, IndexError) as e:
+            mostrar_mensaje("Error al procesar fila", f"Error en fila: {e}")
     return filas_a_procesar
 
 
-def leer_y_procesar_excel(driver, ruc, anio=None, mes=None, procesados=None):
+def obtener_filas_a_procesar_excel(ruc, anio=None, mes=None):
     archivo_excel = f"docs_{ruc}_2024.xlsx"
-    datos_existentes = set()
-    df_existente = None
+    filas_existentes = []
 
     if os.path.exists(archivo_excel):
         df_existente = pd.read_excel(archivo_excel, dtype=str)
         if anio and mes:
-            df_existente = df_existente[(df_existente['Año'] == str(anio)) & (df_existente['Mes'] == str(mes))]
-        for row in df_existente.itertuples(index=False):
-            datos_existentes.add((int(row.Año), int(row.Mes), int(row.Nro), row.RUC, row.TipoDocumento, row.SerieComprobante, row.Estado, row.FechaHoraProcesado))
+            df_existente_filtro = df_existente[(df_existente['Año'] == str(anio)) & (df_existente['Mes'] == str(mes))]
+        else:
+            df_existente_filtro = df_existente
 
-    if procesados is None:
-        return obtener_filas_a_procesar(driver, datos_existentes)
-    else:
-        try:
-            if procesados:
-                df_nuevas = pd.DataFrame(procesados, columns=["Año", "Mes", "Nro", "RUC", "TipoDocumento", "SerieComprobante", "Estado", "FechaHoraProcesado"])
-                if df_existente is not None:
-                    # Iterar sobre las filas nuevas para actualizar o añadir según corresponda
-                    for index, row in df_nuevas.iterrows():
-                        condition = (
-                            (df_existente['Año'] == str(row['Año'])) &
-                            (df_existente['Mes'] == str(row['Mes'])) &
-                            (df_existente['Nro'] == str(row['Nro'])) &
-                            (df_existente['RUC'] == row['RUC']) &
-                            (df_existente['TipoDocumento'] == row['TipoDocumento']) &
-                            (df_existente['SerieComprobante'] == row['SerieComprobante'])
-                        )
+        for row in df_existente_filtro.itertuples(index=False):
+            fila_datos = (int(row.Año), int(row.Mes), int(row.Nro), row.RUC, row.TipoDocumento, row.SerieComprobante)
+            filas_existentes.append(fila_datos)
+    return filas_existentes
 
-                        if df_existente.loc[condition].empty:
-                            # Si no hay coincidencia, añadir la nueva fila
-                            df_existente = pd.concat([df_existente, row.to_frame().T], ignore_index=True)
-                        else:
-                            # Si hay coincidencia, actualizar la fila existente
-                            df_existente.loc[condition, ['Estado', 'FechaHoraProcesado']] = row[['Estado', 'FechaHoraProcesado']]
 
-                    df_final = df_existente
-                else:
-                    df_final = df_nuevas
+def obtener_filas_modificadas(filas, ignorar_indice):
+    """Transforma cada fila para ignorar el elemento en el índice especificado."""
+    return {tuple(fila[i] for i in range(len(fila)) if i != ignorar_indice) for fila in filas}
 
-                # Convertir las columnas "Año", "Mes" y "Nro" a enteros antes de guardar
-                df_final["Año"] = df_final["Año"].astype(int)
-                df_final["Mes"] = df_final["Mes"].astype(int)
-                df_final["Nro"] = df_final["Nro"].astype(int)
-                df_final.to_excel(archivo_excel, index=False, engine='openpyxl')
 
-        except Exception as e:
-            mostrar_mensaje("Error al actualizar el archivo Excel", f"Se produjo un error al actualizar el archivo Excel: {e}")
+def recuperar_registros_completos(registros_completos, registros_modificados, ignorar_indice):
+    """Recupera los registros completos a partir de los registros modificados."""
+    registros_modificados_set = set(registros_modificados)
+    return {registro for registro in registros_completos if tuple(registro[i] for i in range(len(registro)) if i != ignorar_indice) in registros_modificados_set}
+
+
+def comparar_registros(driver, ruc, anio=None, mes=None):
+    # Obtener registros desde la web y el archivo Excel
+    registros_web = obtener_filas_a_procesar_web(driver)
+    registros_excel = obtener_filas_a_procesar_excel(ruc, anio, mes)
+
+    # Transformar los registros para ignorar el tercer elemento (índice 2)
+    registros_web_modificados = obtener_filas_modificadas(registros_web, 2)
+    registros_excel_modificados = obtener_filas_modificadas(registros_excel, 2)
+
+    # Encontrar registros únicos en la web que no están en el Excel
+    solo_en_web_modificados = registros_web_modificados - registros_excel_modificados
+
+    # Recuperar los registros completos a partir de los registros modificados
+    solo_en_web = recuperar_registros_completos(registros_web, solo_en_web_modificados, 2)
+
+    return solo_en_web
+
+
+def actualizar_excel(ruc, anio=None, mes=None, procesados=None):
+    archivo_excel = f"docs_{ruc}_2024.xlsx"
+
+    try:
+        if procesados:
+            df_nuevas = pd.DataFrame(procesados, columns=["Año", "Mes", "Nro", "RUC", "TipoDocumento", "SerieComprobante", "Estado", "FechaHoraProcesado"])
+
+            if os.path.exists(archivo_excel):
+                # Cargar el archivo existente
+                df_existente = pd.read_excel(archivo_excel, dtype=str)
+                # Añadir nuevas filas al final del DataFrame existente
+                df_final = pd.concat([df_existente, df_nuevas], ignore_index=True)
+            else:
+                # Si no existe el archivo, crear un DataFrame con las nuevas filas
+                df_final = df_nuevas
+
+            # Convertir las columnas "Año", "Mes" y "Nro" a enteros antes de guardar
+            df_final["Año"] = df_final["Año"].astype(int)
+            df_final["Mes"] = df_final["Mes"].astype(int)
+            df_final["Nro"] = df_final["Nro"].astype(int)
+            df_final.to_excel(archivo_excel, index=False, engine='openpyxl')
+
+    except Exception as e:
+        mostrar_mensaje("Error al actualizar el archivo Excel", f"Se produjo un error al actualizar el archivo Excel: {e}")
+

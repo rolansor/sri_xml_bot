@@ -7,9 +7,9 @@ from sri_xml_bot.generar_reporte import seleccionar_raiz
 from sri_xml_bot.imprimir_pdf import iniciar_impresion, seleccionar_carpeta_impresion
 from sri_xml_bot.ordenar_xmls import cargar_rucs_desde_archivo, seleccionar_carpeta_ordenar
 from sri_xml_bot.renombrar_xmls import actualizar_nombres_xml
-from sri_xml_bot.robot_logica import pedir_opcion_centrada, pedir_input_centrado, pedir_fecha, configurar_webdriver, \
-    iniciar_sesion, seleccionar_opciones_de_consulta, click_consulta, leer_y_procesar_excel, descargar_comprobantes, \
-    navegar_a_la_pagina_siguiente, cargar_rucs_credenciales_desde_archivo
+from sri_xml_bot.robot_logica import pedir_opcion_centrada, pedir_fecha, configurar_webdriver, \
+    iniciar_sesion, seleccionar_opciones_de_consulta, click_consulta, actualizar_excel, descargar_comprobantes, \
+    navegar_a_la_pagina_siguiente, cargar_rucs_credenciales_desde_archivo, comparar_registros
 from sri_xml_bot.xml_a_pdf import mostrar_progreso, procesar_xml_pdf, seleccionar_carpeta_topdf
 
 
@@ -67,9 +67,9 @@ def descargar_documentos(root):
     seleccionar_opciones_de_consulta(driver, anio, mes, dia, tipo_documento)
     click_consulta(driver)
     while True:
-        filas_a_procesar = leer_y_procesar_excel(driver, usuario, anio, mes)
-        filas_procesadas = descargar_comprobantes(driver, tipo_descarga, filas_a_procesar)
-        leer_y_procesar_excel(driver, usuario, anio, mes, procesados=filas_procesadas)
+        registros_a_descargar = comparar_registros(driver, usuario, anio, mes)
+        filas_procesadas = descargar_comprobantes(driver, tipo_descarga, registros_a_descargar)
+        actualizar_excel(usuario, anio, mes, filas_procesadas)
         if not navegar_a_la_pagina_siguiente(driver):
             break
 
