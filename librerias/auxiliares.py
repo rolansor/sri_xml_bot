@@ -7,7 +7,7 @@ import tkinter as tk
 def centrar_ventana(ventana):
     ventana.update_idletasks()
     ancho = 400
-    alto = 700
+    alto = 800
     x = (ventana.winfo_screenwidth() // 2) - (ancho // 2)
     y = (ventana.winfo_screenheight() // 2) - (alto // 2)
     ventana.geometry(f'{ancho}x{alto}+{x}+{y}')

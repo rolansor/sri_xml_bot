@@ -2,7 +2,7 @@ import requests
 from selenium.webdriver.common.by import By
 import time
 
-API_KEY = 'c85503ddb340a2ab3e552d82f15c1fa2'
+API_KEY = '41114141'
 
 def resolver_captcha(driver,site_key):
     # Enviar la solicitud a 2Captcha para resolver el reCAPTCHA
