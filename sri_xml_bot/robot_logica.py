@@ -92,7 +92,7 @@ def pedir_opcion_centrada(titulo, root, mensaje, opciones):
     opcion_dialog = tk.Toplevel()
     opcion_dialog.withdraw()
     opcion_dialog.title(titulo)
-    opcion_dialog.geometry("400x300")
+    opcion_dialog.geometry("500x300")
     opcion_dialog.attributes("-topmost", True)
     centrar_ventana(opcion_dialog)
     tk.Label(opcion_dialog, text=mensaje).pack(pady=10)
