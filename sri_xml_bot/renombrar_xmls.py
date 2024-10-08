@@ -46,11 +46,10 @@ def actualizar_nombres_xml(opcion_nomenclatura, root):
 
                         if ruta_completa != nueva_ruta_completa:
                             contador_documentos += 1
-                            print(f'#{contador_documentos} Documento Renombrado: {ruta_completa} a {nueva_ruta_completa}')
+                            #print(f'#{contador_documentos} Documento Renombrado: {ruta_completa} a {nueva_ruta_completa}')
                             shutil.move(ruta_completa, nueva_ruta_completa)
                     else:
-                        print(
-                            f'Error al procesar el archivo {archivo}. No se pudo extraer la información necesaria.')
+                        print(f'Error al procesar el archivo {archivo}. No se pudo extraer la información necesaria.')
         # Preguntar al usuario si desea cerrar la aplicación
-        if messagebox.askyesno("Finalizado", "El proceso ha terminado. ¿Desea cerrar la aplicación?"):
-            root.destroy()
+        messagebox.showinfo("Finalizado", "El proceso ha terminado.")
+        root.destroy()

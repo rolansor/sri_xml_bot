@@ -6,7 +6,7 @@ import pandas as pd
 import tkinter as tk
 import time
 import atexit
-from tkinter import ttk
+from tkinter import ttk, messagebox
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
@@ -16,7 +16,7 @@ from selenium.webdriver.support.ui import Select
 from selenium.common.exceptions import (TimeoutException, NoSuchWindowException, SessionNotCreatedException,
                                         NoSuchElementException, StaleElementReferenceException)
 from datetime import datetime
-from librerias.auxiliares import mostrar_mensaje, centrar_ventana, ruta_relativa_recurso
+from librerias.auxiliares import centrar_ventana, ruta_relativa_recurso
 
 
 logging.basicConfig(filename='sri_robot.log', level=logging.INFO, format='%(asctime)s:%(levelname)s:%(message)s')
@@ -42,7 +42,6 @@ def pedir_fecha(titulo, root, mensaje, anios, meses, dias):
     fecha_dialog = tk.Toplevel()
     fecha_dialog.withdraw()
     fecha_dialog.title(titulo)
-    fecha_dialog.geometry("300x350")
     fecha_dialog.attributes("-topmost", True)
     centrar_ventana(fecha_dialog)
 
@@ -72,7 +71,7 @@ def pedir_fecha(titulo, root, mensaje, anios, meses, dias):
     fecha_dialog.deiconify()
     fecha_dialog.mainloop()
 
-    return fecha["anio"], fecha["mes"], fecha["dia"], fecha["tipo_descarga"]
+    return fecha["anio"], fecha["mes"], fecha["dia"], fecha["tipo_descarga"], fecha_dialog
 
 
 def pedir_opcion_centrada(titulo, root, mensaje, opciones):
@@ -92,7 +91,6 @@ def pedir_opcion_centrada(titulo, root, mensaje, opciones):
     opcion_dialog = tk.Toplevel()
     opcion_dialog.withdraw()
     opcion_dialog.title(titulo)
-    opcion_dialog.geometry("400x300")
     opcion_dialog.attributes("-topmost", True)
     centrar_ventana(opcion_dialog)
     tk.Label(opcion_dialog, text=mensaje).pack(pady=10)
@@ -101,7 +99,7 @@ def pedir_opcion_centrada(titulo, root, mensaje, opciones):
     opcion_dialog.protocol("WM_DELETE_WINDOW", cerrar_programa)
     opcion_dialog.deiconify()
     opcion_dialog.mainloop()
-    return opcion.get()
+    return opcion.get(), opcion_dialog
 
 
 def cargar_rucs_credenciales_desde_archivo():
@@ -191,7 +189,7 @@ def man_exc_acceso(func):
                     timeout_intentos += 1
                     logging.warning(f"TimeoutException: La operación excedió el tiempo de espera. Intento {timeout_intentos} de {max_timeout_intentos}.")
                     if timeout_intentos >= max_timeout_intentos:
-                        mostrar_mensaje("Recargando", "Se detectó una serie de TimeoutExceptions. Recargando la página.")
+                        messagebox.showinfo("Recargando", "Se detectó una serie de TimeoutExceptions. Recargando la página.")
                         driver.refresh()
                         timeout_intentos = 0  # Reiniciar el contador de timeout_intentos después de recargar la página
                     else:
@@ -208,22 +206,22 @@ def man_exc_varias(func):
             return func(*args, **kwargs)
         except NoSuchWindowException:
             logging.error("No se encontró la ventana del navegador: ChromeDriver cerrado inesperadamente.")
-            mostrar_mensaje("Error", "El navegador ChromeDriver se cerró inesperadamente.")
+            messagebox.showerror("Error", "El navegador ChromeDriver se cerró inesperadamente.")
             liberar_recursos()
             exit(1)
         except FileNotFoundError as e:
             logging.error(f"No se encontró el archivo: {e}")
-            mostrar_mensaje("Error", f"No se encontró el archivo: {e}")
+            messagebox.showerror("Error", f"No se encontró el archivo: {e}")
             liberar_recursos()
             exit(1)
         except SessionNotCreatedException:
             logging.error("La versión de ChromeDriver no es compatible con la versión de Chrome instalada.")
-            mostrar_mensaje("Error", "ChromeDriver desactualizado o incompatible con la versión de Chrome instalada.")
+            messagebox.showerror("Error", "ChromeDriver desactualizado o incompatible con la versión de Chrome instalada.")
             liberar_recursos()
             exit(1)
         except Exception as e:
             logging.error(f"Excepción no manejada: {e}")
-            mostrar_mensaje("Error", f"Excepción no manejada: {e}")
+            messagebox.showerror("Error", f"Excepción no manejada: {e}")
             liberar_recursos()
             exit(1)
     return wrapper
@@ -337,8 +335,7 @@ def navegar_a_la_pagina_siguiente(driver):
 
             # Verificar si estamos en la última página
             if pagina_actual >= total_paginas:
-                mostrar_mensaje("Proceso Completado",
-                                "Proceso completado. Revisa los resultados en la carpeta de descargas.")
+                messagebox.showinfo("Proceso Completado", "Proceso completado. Revisa los resultados en la carpeta de descargas.")
                 liberar_recursos()
                 exit(1)
 
@@ -369,7 +366,7 @@ def descargar_comprobantes(driver, tipo_descarga, filas_a_procesar):
             return True
         except Exception as e:
             logging.error(f"Error al intentar descargar con link_id {link_id}: {e}")
-            mostrar_mensaje("Error", f"Error al intentar descargar con link_id {link_id}: {e}")
+            messagebox.showerror("Error", f"Error al intentar descargar con link_id {link_id}: {e}")
             return False
 
     for fila in filas_a_procesar:
@@ -435,7 +432,7 @@ def obtener_filas_a_procesar_web(driver):
             fila_datos = (anio, mes, nro, ruc, tipo_documento, serie_comprobante)
             filas_a_procesar.append(fila_datos)
         except (ValueError, IndexError) as e:
-            mostrar_mensaje("Error al procesar fila", f"Error en fila: {e}")
+            messagebox.showerror("Error al procesar fila", f"Error en fila: {e}")
     return filas_a_procesar
 
 
@@ -508,5 +505,4 @@ def actualizar_excel(ruc, anio=None, mes=None, procesados=None):
             df_final.to_excel(archivo_excel, index=False, engine='openpyxl')
 
     except Exception as e:
-        mostrar_mensaje("Error al actualizar el archivo Excel", f"Se produjo un error al actualizar el archivo Excel: {e}")
-
+        messagebox.showerror("Error al actualizar el archivo Excel", f"Se produjo un error al actualizar el archivo Excel: {e}")

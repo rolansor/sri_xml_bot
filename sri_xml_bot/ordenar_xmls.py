@@ -1,7 +1,7 @@
 import os
 import shutil
-from tkinter import filedialog
-from librerias.auxiliares import mostrar_mensaje, ruta_relativa_recurso
+from tkinter import filedialog, messagebox
+from librerias.auxiliares import ruta_relativa_recurso
 from librerias.leer_xmls import procesar_archivo_xml, extraer_tipo, extraer_ruc_receptor, extraer_ruc_emisor, \
     extraer_clave_autorizacion, extraer_secuencial, extraer_fecha
 from librerias.manejo_archivos import encontrar_y_eliminar_duplicados
@@ -93,6 +93,4 @@ def seleccionar_carpeta_ordenar(opcion_nomenclatura, rucs_opciones, meses_opcion
         ruc_valor, _ = rucs_opciones[ruc_seleccionado.get()]
         mes_valor = meses_opciones[mes_seleccionado.get()]
         mensajes += organizar_archivos_xml(directorio, opcion_nomenclatura, ruc_valor, mes_valor, tipo_documento)
-        mostrar_mensaje("Resultado", "\n".join(mensajes))
-
-#CERRAR TODAS LAS VENTANAS AL TERMINAR
+        messagebox.showinfo("Resultado",  "\n".join(mensajes))

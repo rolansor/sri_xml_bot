@@ -77,7 +77,7 @@ def detalle_ret(pdf, ult_x, ult_y, datos_retencion):
     y -= ESPACIADO_CONTENIDO_RIDE * 2
     y -= dividir_y_centrar_texto(pdf, f'RUC:  {datos_retencion["infoTributaria"]["ruc"]}', y, x, ancho_bloque,
                                  "Helvetica-Bold", TAM_14) * 2
-    y -= dividir_y_centrar_texto(pdf, f'FACTURA', y, x, ancho_bloque,
+    y -= dividir_y_centrar_texto(pdf, f'RETENCIÓN', y, x, ancho_bloque,
                                  "Helvetica-Bold", TAM_18) * 2
     # Pintamos de Rojo
     pdf.setFillColorRGB(1, 0, 0)
