@@ -47,7 +47,7 @@ def actualizar_progreso(progress_var, progress_label, current, total):
     progress_label.config(text=f"Procesado: {current}/{total} documentos ({percent:.2f}%).")  # Actualiza el texto de la etiqueta
 
 
-def seleccionar_raiz():
+def seleccionar_raiz(root):
     """
     Maneja la selección de una carpeta conteniendo múltiples archivos XML. Procesa todos los archivos XML encontrados en la carpeta seleccionada.
     """
@@ -92,5 +92,6 @@ def seleccionar_raiz():
             # CAMBIAR SI QUEREMOS HACERLO PARA UNIFACTOR por guardar_documentos
             guardar_documentos_emitidos(documentos_procesados, folder_path + '/')
             # guardar_documentos(documentos_procesados, folder_path + '/')
+
     else:
         messagebox.showinfo("Cancelado", "No se seleccionó ninguna carpeta.")

@@ -1,8 +1,8 @@
 import datetime
 import threading
 import tkinter as tk
-from tkinter import messagebox, scrolledtext
-from librerias.auxiliares import centrar_ventana, mostrar_mensaje
+from tkinter import scrolledtext, messagebox
+from librerias.auxiliares import centrar_ventana, cerrar_ventana_secundaria, cerrar_aplicacion, abrir_ventana_secundaria
 from sri_xml_bot.generar_reporte import seleccionar_raiz
 from sri_xml_bot.imprimir_pdf import iniciar_impresion, seleccionar_carpeta_impresion
 from sri_xml_bot.ordenar_xmls import cargar_rucs_desde_archivo, seleccionar_carpeta_ordenar
@@ -13,21 +13,15 @@ from sri_xml_bot.robot_logica import pedir_opcion_centrada, pedir_fecha, configu
 from sri_xml_bot.xml_a_pdf import mostrar_progreso, procesar_xml_pdf, seleccionar_carpeta_topdf
 
 
-# Función para cerrar la aplicación
-def cerrar_aplicacion(root):
-    respuesta = messagebox.askyesno("Confirmar", "¿Estás seguro de que deseas salir?")
-    if respuesta:
-        root.destroy()
-
-
 # Funciones para cada opción
 def descargar_documentos(root):
     opciones_ruc = cargar_rucs_credenciales_desde_archivo()
 
-    opcion = pedir_opcion_centrada("RUC", root, "Por favor, elige el RUC que deseas procesar:", opciones_ruc)
+    opcion, nueva_ventana = pedir_opcion_centrada("RUC", root, "Por favor, elige el RUC que deseas procesar:", opciones_ruc)
 
+    # Si no se seleccionó ninguna opción, cerrar la ventana secundaria
     if not opcion:
-        mostrar_mensaje("Proceso Cancelado", "No se seleccionó ninguna opción. El proceso ha sido cancelado.")
+        cerrar_ventana_secundaria(nueva_ventana, root)
         return
 
     usuario, contrasena = opciones_ruc[opcion]
@@ -40,12 +34,12 @@ def descargar_documentos(root):
         "Comprobante de Retención": "Comprobante de Retención",
     }
 
-    tipo_documento = pedir_opcion_centrada("Tipo de Documento", root,
+    tipo_documento, nueva_ventana = pedir_opcion_centrada("Tipo de Documento", root,
                                            "Por favor, elige el tipo de Documento que deseas descargar:",
                                            tipos_documento)
 
     if not tipo_documento:
-        mostrar_mensaje("Proceso Cancelado", "No se seleccionó ninguna opción. El proceso ha sido cancelado.")
+        cerrar_ventana_secundaria(nueva_ventana, root)
         return
 
     anio_actual = str(datetime.datetime.now().year)
@@ -53,15 +47,17 @@ def descargar_documentos(root):
     mes_opciones = {str(i): str(i) for i in range(1, 13)}
     dia_opciones = {str(i): str(i) for i in range(1, 32)}
 
-    anio, mes, dia, tipo_descarga = pedir_fecha("Fecha", root, "Introduce la fecha correspondiente:", anios,
+    anio, mes, dia, tipo_descarga, nueva_ventana = pedir_fecha("Fecha", root, "Introduce la fecha correspondiente:", anios,
                                                 mes_opciones,
                                                 dia_opciones)
 
     if not anio or not mes or not dia or not tipo_descarga:
-        mostrar_mensaje("Proceso Cancelado", "No se seleccionó ninguna opción. El proceso ha sido cancelado.")
+        cerrar_ventana_secundaria(nueva_ventana, root)
         return
 
-    root.deiconify()  # Mostrar la ventana de nuevo si es necesario
+    # Mostrar la ventana principal de nuevo y continuar el proceso de descarga
+    cerrar_ventana_secundaria(nueva_ventana, root)
+
     driver = configurar_webdriver()
     iniciar_sesion(driver, usuario, contrasena)
     seleccionar_opciones_de_consulta(driver, anio, mes, dia, tipo_documento)
@@ -75,68 +71,68 @@ def descargar_documentos(root):
 
 
 def ordenar_documentos(root):
-    nueva_ventana = tk.Toplevel(root)
-    nueva_ventana.title("Ordenar Documentos")
-    centrar_ventana(nueva_ventana)
+    """
+    Abre una ventana secundaria para ordenar documentos, permitiendo al usuario seleccionar
+    el tipo de documento, formato de nomenclatura y otros parámetros.
+    """
+    # Abre la ventana secundaria usando la función auxiliar para abrir ventanas
+    nueva_ventana = abrir_ventana_secundaria("Ordenar Documentos", root, cerrar_ventana_secundaria)
 
+    # Crear y empaquetar los widgets en la ventana secundaria
     etiqueta_tipo_documento = tk.Label(nueva_ventana, text='Tipo de documento:')
     tipo_documento = tk.StringVar(value='recibidos')
-    radio_documento_recibidos = tk.Radiobutton(nueva_ventana, text='Recibidos', variable=tipo_documento,
-                                               value='recibidos')
+
+    # Radio buttons para seleccionar el tipo de documento
+    radio_documento_recibidos = tk.Radiobutton(nueva_ventana, text='Recibidos', variable=tipo_documento, value='recibidos')
     radio_documento_emitidos = tk.Radiobutton(nueva_ventana, text='Emitidos', variable=tipo_documento, value='emitidos')
 
     etiqueta_nomenclatura = tk.Label(nueva_ventana, text='Selecciona el formato de nombre de archivo:')
     opcion_nomenclatura = tk.StringVar(value='ruc_secuencial')
-    radio_nomenclatura1 = tk.Radiobutton(nueva_ventana, text='Clave de acceso', variable=opcion_nomenclatura,
-                                         value='clave_de_acceso')
-    radio_nomenclatura2 = tk.Radiobutton(nueva_ventana, text='RUC emisor + Secuencial', variable=opcion_nomenclatura,
-                                         value='ruc_secuencial')
 
+    # Radio buttons para seleccionar el formato de nomenclatura
+    radio_nomenclatura1 = tk.Radiobutton(nueva_ventana, text='Clave de acceso', variable=opcion_nomenclatura, value='clave_de_acceso')
+    radio_nomenclatura2 = tk.Radiobutton(nueva_ventana, text='RUC emisor + Secuencial', variable=opcion_nomenclatura, value='ruc_secuencial')
+
+    # Cargar las opciones de RUC y Mes desde el archivo
     rucs_opciones, meses_opciones = cargar_rucs_desde_archivo()
-    # Variable para almacenar la selección del RUC
-    opcion_ruc = tk.StringVar(value=list(rucs_opciones.keys())[0])
-    # Variable para almacenar la selección del mes
-    opcion_mes = tk.StringVar(value=list(meses_opciones.keys())[0])
 
-    # Crear menús de opción para RUC y mes
+    # Variables para almacenar la selección del RUC y Mes
+    opcion_ruc = tk.StringVar(value=list(rucs_opciones.keys())[0])  # Valor por defecto
+    opcion_mes = tk.StringVar(value=list(meses_opciones.keys())[0])  # Valor por defecto
+
+    # Crear menús de selección para RUC y Mes
     etiqueta_ruc = tk.Label(nueva_ventana, text='Selecciona el RUC:')
     menu_ruc = tk.OptionMenu(nueva_ventana, opcion_ruc, *rucs_opciones.keys())
+
     etiqueta_mes = tk.Label(nueva_ventana, text='Selecciona el mes:')
     menu_mes = tk.OptionMenu(nueva_ventana, opcion_mes, *meses_opciones.keys())
 
-    # Botón para seleccionar la carpeta
+    # Botón para ejecutar la selección de carpeta y aplicar las opciones seleccionadas
     boton_seleccionar = tk.Button(nueva_ventana, text='Seleccionar Carpeta',
-                                  command=lambda: seleccionar_carpeta_ordenar(opcion_nomenclatura.get(), rucs_opciones,
-                                                                              meses_opciones, opcion_ruc, opcion_mes,
-                                                                              tipo_documento.get()))
+                                  command=lambda: seleccionar_carpeta_ordenar(
+                                      opcion_nomenclatura.get(), rucs_opciones, meses_opciones,
+                                      opcion_ruc, opcion_mes, tipo_documento.get()
+                                  ))
 
-    # Empaquetar los elementos en la ventana
-    etiqueta_tipo_documento.pack()
+    # Empaquetar los elementos en la ventana (ordenados)
+    etiqueta_tipo_documento.pack(pady=10)
     radio_documento_recibidos.pack()
     radio_documento_emitidos.pack()
-    etiqueta_nomenclatura.pack()
+
+    etiqueta_nomenclatura.pack(pady=10)
     radio_nomenclatura1.pack()
     radio_nomenclatura2.pack()
-    etiqueta_ruc.pack()
+
+    etiqueta_ruc.pack(pady=10)
     menu_ruc.pack()
-    etiqueta_mes.pack()
+
+    etiqueta_mes.pack(pady=10)
     menu_mes.pack()
-    boton_seleccionar.pack(pady=10)
 
-
-def generar_reporte(root):
-    nueva_ventana = tk.Toplevel(root)
-    nueva_ventana.title("Seleccionar Carpeta")
-    centrar_ventana(nueva_ventana)
-    label_temp = tk.Label(nueva_ventana, text='Seleccionar Carpeta Raiz para Ordenar Documentos.')
-    label_temp.pack(pady=20)
-    btn_select_folder = tk.Button(nueva_ventana, text="Seleccionar Carpeta", command=seleccionar_raiz)
-    btn_select_folder.pack(pady=20)
+    boton_seleccionar.pack(pady=20)
 
 
 def generar_pdf(root):
-    root.withdraw()  # Ocultar la ventana mientras se selecciona la carpeta
-
     # Seleccionar carpeta para procesar
     folder_path = seleccionar_carpeta_topdf()
     if not folder_path:
@@ -151,7 +147,7 @@ def generar_pdf(root):
 
     def finalizar_proceso():
         # Esta función se llama cuando se completa el hilo de procesamiento
-        progress_window.destroy()  # Cierra la ventana de progreso
+        messagebox.showinfo("Procesamiento Terminado", "Se han terminado de procesar todos los PDFs.")
 
     def procesar():
         procesar_xml_pdf(progress_window, progress_label, progress_bar, folder_path)
@@ -160,9 +156,6 @@ def generar_pdf(root):
     # Iniciar el procesamiento de XML a PDF en un hilo separado
     main_thread = threading.Thread(target=procesar)
     main_thread.start()
-
-    # Mantener la ventana de progreso abierta hasta que termine el proceso
-    progress_window.mainloop()
 
 
 def imprimir_pdf(root):
@@ -206,9 +199,7 @@ def renombrar_documentos(root):
     # Botón para actualizar nombres de archivos XML, colocado al final
     boton_actualizar_nombres.pack(pady=10)
     # Asignación del comando al botón con los parámetros adecuados
-    boton_actualizar_nombres['command'] = lambda: actualizar_nombres_xml(opcion_nomenclatura.get(), root)
-    # Ejecutar el bucle principal de la aplicación
-    nueva_ventana.mainloop()
+    boton_actualizar_nombres['command'] = lambda: actualizar_nombres_xml(opcion_nomenclatura.get(), nueva_ventana)
 
 
 def main():
@@ -221,7 +212,7 @@ def main():
     opciones_principales = {
         "Descargar Documentos": descargar_documentos,
         "Ordenar Documentos": ordenar_documentos,
-        "Generar Reporte": generar_reporte,
+        "Generar Reporte": seleccionar_raiz,
         "Generar PDF's": generar_pdf,
         "Imprimir PDF's": imprimir_pdf,
         "Renombrar Documentos": renombrar_documentos

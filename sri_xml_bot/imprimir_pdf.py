@@ -1,4 +1,5 @@
 import os
+import time
 import tkinter as tk
 from tkinter import filedialog, messagebox
 import win32print
