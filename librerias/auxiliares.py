@@ -15,7 +15,7 @@ def centrar_ventana(ventana):
     """
     ventana.update_idletasks()  # Asegura que se actualicen las dimensiones antes de calcular el centrado.
     ancho = 400  # Ancho fijo de la ventana.
-    alto = 700  # Alto fijo de la ventana.
+    alto = 900  # Alto fijo de la ventana.
 
     # Calcula la posición X e Y para centrar la ventana
     x = (ventana.winfo_screenwidth() // 2) - (ancho // 2)
