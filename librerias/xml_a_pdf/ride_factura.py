@@ -361,12 +361,9 @@ def totales_fac(pdf, ult_x, ult_y, datos):
     p8 = ParagraphStyle('parrafos', fontSize=TAM_8, fontName="Helvetica")
     p8_right = ParagraphStyle('parrafos', fontSize=TAM_8, fontName="Helvetica", alignment=TA_RIGHT)
 
-    # Crear un diccionario filtrado con solo los valores diferentes de 0
-    datos_filtrados = {k: v for k, v in datos.items() if v != 0.0}
-
     # Convertir valores numéricos a cadenas de texto
     data = []
-    for key, value in datos_filtrados.items():
+    for key, value in datos.items():
         data.append([Paragraph(key.replace('_', ' ').upper(), p8), Paragraph('{:.2f}'.format(value), p8_right)])
 
     tabla_totales = Table(data, colWidths=(tam_col_izq * mm, tam_col_der * mm))
@@ -431,7 +428,7 @@ def calcular_totales_fac(datos_factura):
     if importe_total == 0.00:
         importe_total = subtotal_sin_impuestos + iva_5 + iva_15 + irbpnr + ice + propina - descuento
 
-    return {
+    datos = {
         'SUBTOTAL SIN IMPUESTOS': subtotal_sin_impuestos,
         'SUBTOTAL 0%': subtotal_0,
         'SUBTOTAL 5%': subtotal_5,
@@ -450,6 +447,9 @@ def calcular_totales_fac(datos_factura):
         'PROPINA': propina,
         'TOTAL': importe_total
     }
+    # Filtrar los valores que son diferentes de 0, pero manteniendo algunos campos aunque sean 0
+    datos_filtrados = {k: v for k, v in datos.items() if v != 0.0 or k in ['SUBTOTAL 15%', 'IVA 15%', 'TOTAL']}
+    return datos_filtrados
 
 
 def tabla_formas_pago_fac(pdf, ult_x, ult_y, formas_pago):
