@@ -5,6 +5,7 @@ from tkinter import scrolledtext, messagebox
 from librerias.auxiliares import centrar_ventana, cerrar_ventana_secundaria, cerrar_aplicacion, abrir_ventana_secundaria
 from sri_xml_bot.generar_reporte import seleccionar_raiz
 from sri_xml_bot.imprimir_pdf import iniciar_impresion, seleccionar_carpeta_impresion
+from sri_xml_bot.licencia import verificar_licencia
 from sri_xml_bot.ordenar_xmls import cargar_rucs_desde_archivo, seleccionar_carpeta_ordenar
 from sri_xml_bot.renombrar_xmls import actualizar_nombres_xml
 from sri_xml_bot.robot_logica import pedir_opcion_centrada, pedir_fecha, configurar_webdriver, \

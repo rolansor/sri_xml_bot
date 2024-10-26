@@ -55,3 +55,4 @@ exe = EXE(
 
 #correr el script
 #pyinstaller main.spec
+#https://googlechromelabs.github.io/chrome-for-testing/#stable
