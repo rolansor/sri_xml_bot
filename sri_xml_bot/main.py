@@ -2,21 +2,24 @@ import datetime
 import threading
 import tkinter as tk
 from tkinter import scrolledtext, messagebox
-from librerias.auxiliares import centrar_ventana, cerrar_ventana_secundaria, cerrar_aplicacion, abrir_ventana_secundaria
+from librerias.auxiliares import centrar_ventana, cerrar_ventana_secundaria, cerrar_aplicacion, \
+    abrir_ventana_secundaria, cargar_rucs
 from sri_xml_bot.generar_reporte import seleccionar_raiz
 from sri_xml_bot.imprimir_pdf import iniciar_impresion, seleccionar_carpeta_impresion
 from sri_xml_bot.licencia import verificar_licencia
-from sri_xml_bot.ordenar_xmls import cargar_rucs_desde_archivo, seleccionar_carpeta_ordenar
+from sri_xml_bot.ordenar_xmls import seleccionar_carpeta_ordenar
 from sri_xml_bot.renombrar_xmls import actualizar_nombres_xml
 from sri_xml_bot.robot_logica import pedir_opcion_centrada, pedir_fecha, configurar_webdriver, \
     iniciar_sesion, seleccionar_opciones_de_consulta, click_consulta, actualizar_excel, descargar_comprobantes, \
-    navegar_a_la_pagina_siguiente, cargar_rucs_credenciales_desde_archivo, comparar_registros
+    navegar_a_la_pagina_siguiente, comparar_registros
 from sri_xml_bot.xml_a_pdf import mostrar_progreso, procesar_xml_pdf, seleccionar_carpeta_topdf
 
 
 # Funciones para cada opción
-def descargar_documentos(root):
-    opciones_ruc = cargar_rucs_credenciales_desde_archivo()
+def descargar_documentos(root, rucs):
+
+    # Convertir rucs en opciones para mostrar solo el nombre y el RUC en el menú
+    opciones_ruc = {index: f"{data['nombre']} ({data['ruc']})" for index, data in rucs.items()}
 
     opcion, nueva_ventana = pedir_opcion_centrada("RUC", root, "Por favor, elige el RUC que deseas procesar:", opciones_ruc)
 
@@ -25,7 +28,9 @@ def descargar_documentos(root):
         cerrar_ventana_secundaria(nueva_ventana, root)
         return
 
-    usuario, contrasena = opciones_ruc[opcion]
+    # Obtener datos del RUC seleccionado
+    usuario = rucs[int(opcion)]['ruc']
+    contrasena = rucs[int(opcion)]['contrasena']
 
     tipos_documento = {
         "Factura": "Factura",
@@ -71,7 +76,7 @@ def descargar_documentos(root):
             break
 
 
-def ordenar_documentos(root):
+def ordenar_documentos(root, rucs):
     """
     Abre una ventana secundaria para ordenar documentos, permitiendo al usuario seleccionar
     el tipo de documento, formato de nomenclatura y otros parámetros.
@@ -94,16 +99,23 @@ def ordenar_documentos(root):
     radio_nomenclatura1 = tk.Radiobutton(nueva_ventana, text='Clave de acceso', variable=opcion_nomenclatura, value='clave_de_acceso')
     radio_nomenclatura2 = tk.Radiobutton(nueva_ventana, text='RUC emisor + Secuencial', variable=opcion_nomenclatura, value='ruc_secuencial')
 
-    # Cargar las opciones de RUC y Mes desde el archivo
-    rucs_opciones, meses_opciones = cargar_rucs_desde_archivo()
+    # Opciones para los meses
+    meses_opciones = {
+        "Todos": "00", "Enero": "01", "Febrero": "02", "Marzo": "03", "Abril": "04", "Mayo": "05",
+        "Junio": "06", "Julio": "07", "Agosto": "08", "Septiembre": "09", "Octubre": "10",
+        "Noviembre": "11", "Diciembre": "12"
+    }
+
+    # Crear opciones para mostrar solo el nombre y RUC
+    opciones_ruc = {f"{data['nombre']}": data['ruc'] for index, data in rucs.items()}
 
     # Variables para almacenar la selección del RUC y Mes
-    opcion_ruc = tk.StringVar(value=list(rucs_opciones.keys())[0])  # Valor por defecto
-    opcion_mes = tk.StringVar(value=list(meses_opciones.keys())[0])  # Valor por defecto
+    opcion_ruc = tk.StringVar(value=list(opciones_ruc.keys())[0])
+    opcion_mes = tk.StringVar(value=list(meses_opciones.keys())[0])
 
     # Crear menús de selección para RUC y Mes
     etiqueta_ruc = tk.Label(nueva_ventana, text='Selecciona el RUC:')
-    menu_ruc = tk.OptionMenu(nueva_ventana, opcion_ruc, *rucs_opciones.keys())
+    menu_ruc = tk.OptionMenu(nueva_ventana, opcion_ruc, *opciones_ruc.keys())
 
     etiqueta_mes = tk.Label(nueva_ventana, text='Selecciona el mes:')
     menu_mes = tk.OptionMenu(nueva_ventana, opcion_mes, *meses_opciones.keys())
@@ -111,7 +123,7 @@ def ordenar_documentos(root):
     # Botón para ejecutar la selección de carpeta y aplicar las opciones seleccionadas
     boton_seleccionar = tk.Button(nueva_ventana, text='Seleccionar Carpeta',
                                   command=lambda: seleccionar_carpeta_ordenar(
-                                      opcion_nomenclatura.get(), rucs_opciones, meses_opciones,
+                                      opcion_nomenclatura.get(), opciones_ruc, meses_opciones,
                                       opcion_ruc, opcion_mes, tipo_documento.get()
                                   ))
 
@@ -208,33 +220,41 @@ def main():
     root = tk.Tk()
     root.title("Opciones Principales")
     centrar_ventana(root)
-
-    # Opciones principales
-    opciones_principales = {
-        "Descargar Documentos": descargar_documentos,
-        "Ordenar Documentos": ordenar_documentos,
-        "Generar Reporte": seleccionar_raiz,
-        "Generar PDF's": generar_pdf,
-        "Imprimir PDF's": imprimir_pdf,
-        "Renombrar Documentos": renombrar_documentos
-    }
+    rucs = cargar_rucs()  # Cargar los RUCs una vez al inicio
 
     # Crear un frame para centrar el contenido
     frame_principal = tk.Frame(root)
     frame_principal.place(relx=0.5, rely=0.5, anchor='center')
 
-    # Calcular el ancho del botón más grande
-    boton_max_ancho = max([len(texto) for texto in opciones_principales.keys()])
+    # Ancho base para los botones
+    boton_ancho = 25
 
-    # Crear los botones para cada opción con sus respectivas funciones en el frame centrado
-    for texto, comando in opciones_principales.items():
-        boton = tk.Button(frame_principal, text=texto, width=boton_max_ancho + 2,
-                          command=lambda cmd=comando: cmd(root), bg="blue", fg="white")
-        boton.pack(pady=10)
+    # Botón para "Descargar Documentos" que pasa rucs
+    boton_descargar = tk.Button(frame_principal, text="Descargar Documentos", width=boton_ancho, command=lambda: descargar_documentos(root, rucs), bg="blue", fg="white")
+    boton_descargar.pack(pady=10)
 
-    # Crear el botón de cerrar en rojo en el frame centrado
-    boton_cerrar = tk.Button(frame_principal, text="Cerrar", command=lambda: cerrar_aplicacion(root),
-                             bg="red", fg="white", width=boton_max_ancho + 2)
+    # Botón para "Ordenar Documentos" que también pasa rucs
+    boton_ordenar = tk.Button(frame_principal, text="Ordenar Documentos", width=boton_ancho, command=lambda: ordenar_documentos(root, rucs), bg="blue", fg="white")
+    boton_ordenar.pack(pady=10)
+
+    # Botón para "Generar Reporte" que no requiere rucs
+    boton_generar_reporte = tk.Button(frame_principal, text="Generar Reporte", width=boton_ancho, command=lambda: seleccionar_raiz(root), bg="blue", fg="white")
+    boton_generar_reporte.pack(pady=10)
+
+    # Botón para "Generar PDF's" que no requiere rucs
+    boton_generar_pdfs = tk.Button(frame_principal, text="Generar PDF's", width=boton_ancho, command=lambda: generar_pdf(root), bg="blue", fg="white")
+    boton_generar_pdfs.pack(pady=10)
+
+    # Botón para "Imprimir PDF's" que no requiere rucs
+    boton_imprimir_pdfs = tk.Button(frame_principal, text="Imprimir PDF's", width=boton_ancho, command=lambda: imprimir_pdf(root), bg="blue", fg="white")
+    boton_imprimir_pdfs.pack(pady=10)
+
+    # Botón para "Renombrar Documentos" que no requiere rucs
+    boton_renombrar = tk.Button(frame_principal, text="Renombrar Documentos", width=boton_ancho, command=lambda: renombrar_documentos(root), bg="blue", fg="white")
+    boton_renombrar.pack(pady=10)
+
+    # Botón de cerrar en rojo
+    boton_cerrar = tk.Button(frame_principal, text="Cerrar", width=boton_ancho, command=lambda: cerrar_aplicacion(root), bg="red", fg="white")
     boton_cerrar.pack(pady=10)
 
     # Configurar para que la aplicación se cierre si se presiona la X

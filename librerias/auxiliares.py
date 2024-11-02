@@ -1,7 +1,7 @@
 import os
 import sys
 import tkinter as tk
-from tkinter import messagebox
+from tkinter import messagebox, filedialog
 
 
 # Función para centrar la ventana en la pantalla
@@ -85,7 +85,7 @@ def cerrar_aplicacion(root):
 # Función para obtener la ruta de un recurso, manejando el entorno de PyInstaller
 def ruta_relativa_recurso(relativa):
     """
-    Retorna la ruta correcta de un recurso, considerando si la aplicación está empaquetada con PyInstaller.
+    Retorna la ruta correcta de un recurso en el mismo directorio desde el que se ejecuta el .exe.
 
     Args:
         relativa: La ruta relativa del recurso que se quiere acceder.
@@ -93,9 +93,53 @@ def ruta_relativa_recurso(relativa):
     Returns:
         str: La ruta absoluta del recurso.
     """
-    if hasattr(sys, '_MEIPASS'):
-        # Si el programa está empaquetado con PyInstaller, devuelve la ruta del recurso empaquetado
-        return os.path.join(sys._MEIPASS, relativa)
+    # Obtener el directorio de ejecución
+    base_dir = os.path.dirname(sys.executable) if getattr(sys, 'frozen', False) else os.path.dirname(__file__)
 
-    # Si no está empaquetado, retorna la ruta del recurso relativo al archivo actual
-    return os.path.join(os.path.dirname(__file__), relativa)
+    # Construir y retornar la ruta completa
+    return os.path.join(base_dir, relativa)
+
+
+def cargar_rucs():
+    rucs = {}
+
+    # Ruta del archivo junto al ejecutable
+    ruta_archivo = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../sri_xml_bot/archivos', 'rucs.txt')
+
+    # Si no existe el archivo en la ubicación esperada, abre diálogo para seleccionar archivo
+    if not os.path.exists(ruta_archivo):
+        messagebox.showwarning("Archivo no encontrado",
+                               "No se encontró el archivo rucs.txt. Seleccione el archivo manualmente.")
+        ruta_archivo = filedialog.askopenfilename(
+            title="Seleccione el archivo credenciales_rucs.txt",
+            filetypes=[("Archivos de texto", "*.txt")],
+            initialdir=os.path.dirname(os.path.abspath(__file__))
+        )
+        # Si el usuario no selecciona ningún archivo, salimos de la función
+        if not ruta_archivo:
+            print("No se seleccionó ningún archivo.")
+            return rucs
+
+    try:
+        with open(ruta_archivo, 'r') as archivo:
+            index = 1  # Índice inicial
+            for linea in archivo:
+                # Eliminar espacios en blanco y saltos de línea
+                linea = linea.strip()
+                # Ignorar líneas vacías
+                if not linea:
+                    continue
+                # Dividir la línea en partes separadas por comas
+                partes = linea.split(',')
+                if len(partes) == 3:
+                    nombre, ruc, clave = partes
+                    rucs[index] = {'ruc': ruc, 'nombre': nombre, 'contrasena': clave}
+                    index += 1  # Incrementar índice para la siguiente entrada
+                else:
+                    print(f"Línea malformada: {linea}")
+    except FileNotFoundError:
+        print(f"El archivo {ruta_archivo} no se encontró.")
+    except Exception as e:
+        print(f"Error inesperado: {e}")
+
+    return rucs

@@ -1,47 +1,9 @@
 import os
 import shutil
 from tkinter import filedialog, messagebox
-from librerias.auxiliares import ruta_relativa_recurso
 from librerias.leer_xmls import procesar_archivo_xml, extraer_tipo, extraer_ruc_receptor, extraer_ruc_emisor, \
     extraer_clave_autorizacion, extraer_secuencial, extraer_fecha
 from librerias.manejo_archivos import encontrar_y_eliminar_duplicados
-
-
-def cargar_rucs_desde_archivo():
-    rucs = {}
-    meses_opciones = {"Todos": "00", "Enero": "01", "Febrero": "02", "Marzo": "03", "Abril": "04", "Mayo": "05",
-                      "Junio": "06", "Julio": "07", "Agosto": "08", "Septiembre": "09", "Octubre": "10",
-                      "Noviembre": "11", "Diciembre": "12"}
-
-    # Ruta principal
-    ruta_archivo = ruta_relativa_recurso('archivos_necesarios/rucs.txt')
-
-    # Verificación de existencia del archivo
-    if not os.path.exists(ruta_archivo):
-        directorio_actual = os.path.dirname(os.path.abspath(__file__))
-        ruta_archivo = os.path.join(directorio_actual, '../archivos_necesarios/rucs.txt')
-
-    try:
-        with open(ruta_archivo, 'r') as archivo:
-            for linea in archivo:
-                # Eliminar espacios en blanco y saltos de línea
-                linea = linea.strip()
-                # Ignorar líneas vacías
-                if not linea:
-                    continue
-                # Dividir la línea en partes separadas por comas
-                partes = linea.split(',')
-                if len(partes) == 3:
-                    nombre, ruc, nombre_usuario = partes
-                    rucs[nombre] = (ruc, nombre_usuario)
-                else:
-                    print(f"Línea malformada: {linea}")
-    except FileNotFoundError:
-        print(f"El archivo {ruta_archivo} no se encontró.")
-    except Exception as e:
-        print(f"Error inesperado: {e}")
-
-    return rucs, meses_opciones
 
 
 def organizar_archivos_xml(directorio, opcion_nomenclatura, ruc_procesado, mes_seleccionado, tipo_documento):
@@ -87,10 +49,17 @@ def organizar_archivos_xml(directorio, opcion_nomenclatura, ruc_procesado, mes_s
 
 def seleccionar_carpeta_ordenar(opcion_nomenclatura, rucs_opciones, meses_opciones, ruc_seleccionado, mes_seleccionado,
                                 tipo_documento):
+    # Mostrar el cuadro de diálogo para seleccionar el directorio
     directorio = filedialog.askdirectory()
     if directorio:
-        mensajes = encontrar_y_eliminar_duplicados(directorio)
-        ruc_valor, _ = rucs_opciones[ruc_seleccionado.get()]
+        # Acceder al RUC correspondiente usando el nombre seleccionado
+        ruc_valor = rucs_opciones[ruc_seleccionado.get()]
         mes_valor = meses_opciones[mes_seleccionado.get()]
+
+        # Realizar las operaciones necesarias con el directorio y los valores seleccionados
+        mensajes = encontrar_y_eliminar_duplicados(directorio)
         mensajes += organizar_archivos_xml(directorio, opcion_nomenclatura, ruc_valor, mes_valor, tipo_documento)
-        messagebox.showinfo("Resultado",  "\n".join(mensajes))
+
+        # Mostrar el resultado
+        messagebox.showinfo("Resultado", "\n".join(mensajes))
+

@@ -18,8 +18,8 @@ from selenium.common.exceptions import (TimeoutException, NoSuchWindowException,
 from datetime import datetime
 from librerias.auxiliares import centrar_ventana, ruta_relativa_recurso
 
-
-logging.basicConfig(filename='sri_robot.log', level=logging.INFO, format='%(asctime)s:%(levelname)s:%(message)s')
+log_file_path = ruta_relativa_recurso('../sri_xml_bot/archivos/sri_robot.log')
+logging.basicConfig(filename=log_file_path, level=logging.INFO, format='%(asctime)s:%(levelname)s:%(message)s')
 driver = None
 
 
@@ -94,44 +94,17 @@ def pedir_opcion_centrada(titulo, root, mensaje, opciones):
     opcion_dialog.attributes("-topmost", True)
     centrar_ventana(opcion_dialog)
     tk.Label(opcion_dialog, text=mensaje).pack(pady=10)
-    for texto, valor in opciones.items():
-        tk.Button(opcion_dialog, text=texto, command=lambda v=texto: seleccionar_opcion(v)).pack(pady=5)
+
+    # Mostrar solo el nombre y el RUC
+    for index, texto in opciones.items():
+        tk.Button(opcion_dialog, text=texto, command=lambda v=index: seleccionar_opcion(v)).pack(pady=5)
+
     opcion_dialog.protocol("WM_DELETE_WINDOW", cerrar_programa)
     opcion_dialog.deiconify()
     opcion_dialog.mainloop()
+
+    # Retorna el índice seleccionado y el dialogo (ventana)
     return opcion.get(), opcion_dialog
-
-
-def cargar_rucs_credenciales_desde_archivo():
-    rucs = {}
-    ruta_archivo = ruta_relativa_recurso('archivos_necesarios/credenciales_rucs.txt')
-
-    # Verificación de existencia del archivo
-    if not os.path.exists(ruta_archivo):
-        directorio_actual = os.path.dirname(os.path.abspath(__file__))
-        ruta_archivo = os.path.join(directorio_actual, '../archivos_necesarios/credenciales_rucs.txt')
-
-    try:
-        with open(ruta_archivo, 'r') as archivo:
-            for linea in archivo:
-                # Eliminar espacios en blanco y saltos de línea
-                linea = linea.strip()
-                # Ignorar líneas vacías
-                if not linea:
-                    continue
-                # Dividir la línea en partes separadas por comas
-                partes = linea.split(',')
-                if len(partes) == 3:
-                    nombre, ruc, clave = partes
-                    rucs[f"{nombre} ({ruc})"] = (ruc, clave)
-                else:
-                    print(f"Línea malformada: {linea}")
-    except FileNotFoundError:
-        print(f"El archivo {ruta_archivo} no se encontró.")
-    except Exception as e:
-        print(f"Error inesperado: {e}")
-
-    return rucs
 
 
 def separar_tipo_y_serie(comprobante):
