@@ -1,9 +1,8 @@
-import sys
 import os
 import tkinter as tk
 from tkinter import filedialog
 from tkinter import ttk
-from librerias.auxiliares import centrar_ventana
+from librerias.auxiliares import centrar_ventana, ruta_relativa_recurso
 from librerias.leer_xmls import procesar_archivo_xml
 from librerias.xml_a_pdf.ride_factura import imprimir_factura_pdf
 from librerias.xml_a_pdf.ride_notacredito import imprimir_nc_pdf
@@ -66,25 +65,10 @@ def seleccionar_funcion_impresion(tipo):
     }[tipo]
 
 
-def obtener_ruta_logo():
-    """
-    Devuelve la ruta del archivo del logo. Maneja correctamente la ruta tanto en modo desarrollo
-    como en el ejecutable generado por PyInstaller.
-    """
-    if hasattr(sys, '_MEIPASS'):
-        # Si está corriendo dentro de un ejecutable PyInstaller
-        return os.path.join(sys._MEIPASS, 'archivos_necesarios/nologo.png')
-    return os.path.join(os.path.dirname(__file__), 'archivos_necesarios/nologo.png')
-
-
 def procesar_xml_pdf(progress_window, progress_label, progress_bar, folder_path):
     contador_xml = 0
     contador_pdf = 0
-    ruta_logo = obtener_ruta_logo()
-    # Verificación de existencia del archivo
-    if not os.path.exists(ruta_logo):
-        directorio_actual = os.path.dirname(os.path.abspath(__file__))
-        ruta_logo = os.path.join(directorio_actual, '../archivos_necesarios/nologo.png')
+    ruta_logo = ruta_relativa_recurso('../sri_xml_bot/archivos/logo.png', filetypes=[("Imágenes PNG", "*.png")])
 
     # Contar el número total de archivos XML para la barra de progreso
     total_xml = sum(len(files) for _, _, files in os.walk(folder_path) if any(f.endswith('.xml') for f in files))

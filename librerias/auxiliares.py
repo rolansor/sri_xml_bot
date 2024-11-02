@@ -83,28 +83,46 @@ def cerrar_aplicacion(root):
 
 
 # Función para obtener la ruta de un recurso, manejando el entorno de PyInstaller
-def ruta_relativa_recurso(relativa):
+def ruta_relativa_recurso(relativa, filetypes=[("Archivos de texto", "*.txt")]):
     """
     Retorna la ruta correcta de un recurso en el mismo directorio desde el que se ejecuta el .exe.
+    Si no se encuentra, abre un diálogo para que el usuario seleccione el archivo manualmente.
 
     Args:
         relativa: La ruta relativa del recurso que se quiere acceder.
+        filetypes: Lista de tuplas para filtrar el tipo de archivo en el cuadro de diálogo.
 
     Returns:
-        str: La ruta absoluta del recurso.
+        str or None: La ruta absoluta del recurso o None si no se selecciona ningún archivo.
     """
     # Obtener el directorio de ejecución
     base_dir = os.path.dirname(sys.executable) if getattr(sys, 'frozen', False) else os.path.dirname(__file__)
+    ruta_archivo = os.path.join(base_dir, relativa)
 
-    # Construir y retornar la ruta completa
-    return os.path.join(base_dir, relativa)
+    # Verificar si el archivo existe en la ubicación esperada
+    if not os.path.exists(ruta_archivo):
+        # Mostrar advertencia y abrir cuadro de diálogo para selección manual
+        file_name = os.path.basename(ruta_archivo)
+        messagebox.showwarning("Archivo no encontrado",
+                               f"No se encontró el archivo {file_name}. Seleccione el archivo manualmente.")
+        ruta_archivo = filedialog.askopenfilename(
+            title=f"Seleccione el archivo {file_name}",
+            filetypes=filetypes,
+            initialdir=base_dir
+        )
+        # Si el usuario no selecciona ningún archivo, retornar None
+        if not ruta_archivo:
+            print("No se seleccionó ningún archivo.")
+            return None
+
+    return ruta_archivo
 
 
 def cargar_rucs():
     rucs = {}
 
     # Ruta del archivo junto al ejecutable
-    ruta_archivo = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../sri_xml_bot/archivos', 'rucs.txt')
+    ruta_archivo = ruta_relativa_recurso('../sri_xml_bot/archivos/rucs.txt', filetypes=[("Archivos de texto", "*.txt")])
 
     # Si no existe el archivo en la ubicación esperada, abre diálogo para seleccionar archivo
     if not os.path.exists(ruta_archivo):

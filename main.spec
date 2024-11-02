@@ -13,12 +13,7 @@ a = Analysis(
     ['sri_xml_bot\\main.py'],
     pathex=[],
     binaries=[],
-    datas=[
-        ('archivos_necesarios/rucs.txt', 'archivos_necesarios'),
-        ('archivos_necesarios/credenciales_rucs.txt', 'archivos_necesarios'),
-        ('archivos_necesarios/chromedriver.exe', 'archivos_necesarios'),
-        ('archivos_necesarios/nologo.png', 'archivos_necesarios'),
-    ],
+    datas=[],
     hiddenimports=hiddenimports,
     hookspath=[],
     hooksconfig={},
