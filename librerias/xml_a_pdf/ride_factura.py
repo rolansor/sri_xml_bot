@@ -254,12 +254,26 @@ def contenido_fac(pdf, ult_x, ult_y, detalles):
                  Paragraph('Precio Uni.', p8_center),
                  Paragraph('Desc.', p8_center),
                  Paragraph('Precio Tot.', p8_center)])
-
+    '''
+    #CAMBIOS ROLFER
+    data.append([Paragraph('Cod. Principal', p8_center),
+                 Paragraph('Cod. Auxiliar', p8_center),
+                 Paragraph('CR', p8_center),
+                 Paragraph('Descripción', p8_center),
+                 Paragraph('#', p8_center),
+                 Paragraph('Precio Uni.', p8_center),
+                 Paragraph('Desc.', p8_center),
+                 Paragraph('Precio Tot.', p8_center)])
+    '''
     for detalle in detalles:
         # Extracción de los campos requeridos del detalle
         codigo_principal = detalle.get('codigoPrincipal', '')
         codigo_auxiliar = detalle.get('codigoAuxiliar', '')  # Usa get para manejar la ausencia del campo
         descripcion = detalle['descripcion']
+        '''
+        #CAMBIOS ROLFER
+        descripcion = detalle['descripcion'] + (' -**- ' + detalle.get('marcaProducto', '') if detalle.get('marcaProducto') else '')
+        '''
         # Formatear los valores numéricos
         cantidad = int(float(detalle['cantidad']))  # Convertir a entero
         precio_unitario = '{:.3f}'.format(float(detalle['precioUnitario']))
@@ -275,11 +289,31 @@ def contenido_fac(pdf, ult_x, ult_y, detalles):
             Paragraph(descuento, p8_right),
             Paragraph(precio_total_sin_impuesto, p8_right)
         ])
+        '''
+        #CAMBIOS ROLFER
+        data.append([
+            Paragraph(codigo_principal, p8_center),
+            Paragraph(codigo_auxiliar, p8_center),
+            Paragraph('', p8_center),
+            Paragraph(descripcion, p8_center),
+            Paragraph(str(cantidad), p8_center),  # Convertir cantidad a cadena
+            Paragraph(precio_unitario, p8_right),
+            Paragraph(descuento, p8_right),
+            Paragraph(precio_total_sin_impuesto, p8_right)
+        ])
+        '''
     col_width = (ancho_bloque / float(24))
     tabla_contenido = Table(data,
                             colWidths=[col_width * 3 * mm, col_width * 3 * mm, col_width * 10 * mm,
                                        col_width * 2 * mm,
                                        col_width * 2 * mm, col_width * 2 * mm, col_width * 2 * mm])
+    '''
+    #CAMBIOS ROLFER
+    tabla_contenido = Table(data,
+                            colWidths=[col_width * 3 * mm, col_width * 3 * mm, col_width * 2 * mm, col_width * 8 * mm,
+                                       col_width * 2 * mm,
+                                       col_width * 2 * mm, col_width * 2 * mm, col_width * 2 * mm])
+    '''
     tabla_contenido.setStyle(TableStyle([('GRID', (0, 0), (-1, -1), 1, colors.black)]))
     tabla_contenido.wrapOn(pdf, 500, 500)
     w, h = tabla_contenido.wrap(0, 0)
@@ -489,6 +523,14 @@ def obtener_formas_pago_fac(datos_factura):
         for pago in pagos:
             forma_pago_nombre = nombres_formapago.get(pago['formaPago'], 'Desconocido')
             formas_pago.append(f'{forma_pago_nombre}: {pago["total"]}')
+    '''
+    #CAMBIOS ROLFER
+    formas_pago.append(f'# FACTURA: ')
+    formas_pago.append(f'# RETENCIÓN: ')
+    formas_pago.append(f'FORMA PAGO/#: ')
+    formas_pago.append(f'REVISADO/FECHA: ')
+    formas_pago.append(f'ETIQUETADO/FECHA: ')
+    '''
     return formas_pago
 
 

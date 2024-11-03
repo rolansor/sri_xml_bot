@@ -1,7 +1,6 @@
 import os
 import sys
-import tkinter as tk
-from tkinter import messagebox, filedialog
+from tkinter import messagebox, filedialog, Tk, Toplevel
 
 
 # Función para centrar la ventana en la pantalla
@@ -42,7 +41,7 @@ def abrir_ventana_secundaria(titulo, root, comando_cerrar=None):
     root.withdraw()  # Ocultar la ventana principal mientras la secundaria está abierta.
 
     # Crear la ventana secundaria
-    nueva_ventana = tk.Toplevel(root)
+    nueva_ventana = Toplevel(root)
     nueva_ventana.title(titulo)  # Establecer el título de la ventana.
     centrar_ventana(nueva_ventana)
     nueva_ventana.grab_set()  # Bloquear interacción con otras ventanas.
@@ -95,6 +94,7 @@ def ruta_relativa_recurso(relativa, filetypes=[("Archivos de texto", "*.txt")]):
     Returns:
         str or None: La ruta absoluta del recurso o None si no se selecciona ningún archivo.
     """
+
     # Obtener el directorio de ejecución
     base_dir = os.path.dirname(sys.executable) if getattr(sys, 'frozen', False) else os.path.dirname(__file__)
     ruta_archivo = os.path.join(base_dir, relativa)
@@ -103,6 +103,9 @@ def ruta_relativa_recurso(relativa, filetypes=[("Archivos de texto", "*.txt")]):
     if not os.path.exists(ruta_archivo):
         # Mostrar advertencia y abrir cuadro de diálogo para selección manual
         file_name = os.path.basename(ruta_archivo)
+        # Crear la ventana principal de Tk
+        temporal = Tk()
+        temporal.withdraw()  # O
         messagebox.showwarning("Archivo no encontrado",
                                f"No se encontró el archivo {file_name}. Seleccione el archivo manualmente.")
         ruta_archivo = filedialog.askopenfilename(
@@ -113,8 +116,9 @@ def ruta_relativa_recurso(relativa, filetypes=[("Archivos de texto", "*.txt")]):
         # Si el usuario no selecciona ningún archivo, retornar None
         if not ruta_archivo:
             print("No se seleccionó ningún archivo.")
-            return None
-
+            temporal.destroy()
+            sys.exit(1)
+        temporal.destroy()
     return ruta_archivo
 
 
@@ -122,21 +126,7 @@ def cargar_rucs():
     rucs = {}
 
     # Ruta del archivo junto al ejecutable
-    ruta_archivo = ruta_relativa_recurso('../sri_xml_bot/archivos/rucs.txt', filetypes=[("Archivos de texto", "*.txt")])
-
-    # Si no existe el archivo en la ubicación esperada, abre diálogo para seleccionar archivo
-    if not os.path.exists(ruta_archivo):
-        messagebox.showwarning("Archivo no encontrado",
-                               "No se encontró el archivo rucs.txt. Seleccione el archivo manualmente.")
-        ruta_archivo = filedialog.askopenfilename(
-            title="Seleccione el archivo credenciales_rucs.txt",
-            filetypes=[("Archivos de texto", "*.txt")],
-            initialdir=os.path.dirname(os.path.abspath(__file__))
-        )
-        # Si el usuario no selecciona ningún archivo, salimos de la función
-        if not ruta_archivo:
-            print("No se seleccionó ningún archivo.")
-            return rucs
+    ruta_archivo = ruta_relativa_recurso('archivos/rucs.txt', filetypes=[("Archivos de texto", "*.txt")])
 
     try:
         with open(ruta_archivo, 'r') as archivo:

@@ -18,7 +18,7 @@ from selenium.common.exceptions import (TimeoutException, NoSuchWindowException,
 from datetime import datetime
 from librerias.auxiliares import centrar_ventana, ruta_relativa_recurso
 
-log_file_path = ruta_relativa_recurso('../sri_xml_bot/archivos/sri_robot.log', filetypes=[("Archivos de log", "*.log")])
+log_file_path = ruta_relativa_recurso('archivos/sri_robot.log', filetypes=[("Archivos de log", "*.log")])
 logging.basicConfig(filename=log_file_path, level=logging.INFO, format='%(asctime)s:%(levelname)s:%(message)s')
 driver = None
 
@@ -189,7 +189,7 @@ def man_exc_varias(func):
             exit(1)
         except SessionNotCreatedException:
             logging.error("La versión de ChromeDriver no es compatible con la versión de Chrome instalada.")
-            messagebox.showerror("Error", "ChromeDriver desactualizado o incompatible con la versión de Chrome instalada.")
+            messagebox.showerror("Error", "Descarga la ultima y colocala en la carpeta de archivos: https://googlechromelabs.github.io/chrome-for-testing/#stable")
             liberar_recursos()
             exit(1)
         except Exception as e:
@@ -211,12 +211,8 @@ def configurar_webdriver():
         "profile.default_content_setting_values.automatic_downloads": 1  # Permite múltiples descargas
     }
     chrome_options.add_experimental_option("prefs", prefs)
-    ruta_chromedriver = ruta_relativa_recurso('../sri_xml_bot/archivos/chromedriver.exe', filetypes=[("Archivos ejecutables", "*.exe")])
+    ruta_chromedriver = ruta_relativa_recurso('archivos/chromedriver.exe', filetypes=[("Archivos ejecutables", "*.exe")])
 
-    # Verificación de existencia del archivo
-    if not os.path.exists(ruta_chromedriver):
-        directorio_actual = os.path.dirname(os.path.abspath(__file__))
-        ruta_chromedriver = os.path.join(directorio_actual, '../archivos_necesarios/chromedriver.exe')
     service = Service(executable_path=ruta_chromedriver)
     # Redirigir la salida estándar y de error para ocultar la ventana cmd
     service.creationflags = subprocess.CREATE_NO_WINDOW

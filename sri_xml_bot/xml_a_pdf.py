@@ -68,7 +68,7 @@ def seleccionar_funcion_impresion(tipo):
 def procesar_xml_pdf(progress_window, progress_label, progress_bar, folder_path):
     contador_xml = 0
     contador_pdf = 0
-    ruta_logo = ruta_relativa_recurso('../sri_xml_bot/archivos/logo.png', filetypes=[("Imágenes PNG", "*.png")])
+    ruta_logo = ruta_relativa_recurso('archivos/logo.png', filetypes=[("Imágenes PNG", "*.png")])
 
     # Contar el número total de archivos XML para la barra de progreso
     total_xml = sum(len(files) for _, _, files in os.walk(folder_path) if any(f.endswith('.xml') for f in files))
@@ -86,6 +86,22 @@ def procesar_xml_pdf(progress_window, progress_label, progress_bar, folder_path)
                     diccionario_documento = procesar_archivo_xml(file_path)
                     clave_acceso = diccionario_documento['infoTributaria']['claveAcceso']
                     nombre_archivo_pdf = f"{clave_acceso}.pdf"
+
+                    '''
+                    MODIFICACION GABY
+                    diccionario_documento = procesar_archivo_xml(file_path)
+                    # Obtiene la clave de acceso y otros datos
+                    razon_social = diccionario_documento['infoTributaria']['razonSocial']
+                    estab = diccionario_documento['infoTributaria']['estab']
+                    ptoEmi = diccionario_documento['infoTributaria']['ptoEmi']
+                    secuencial = diccionario_documento['infoTributaria']['secuencial']
+
+                    # Limita la razón social a 15 caracteres
+                    razon_social_recortada = razon_social[:30]
+
+                    # Formatea el nombre del archivo como 'RazonSocial - Estab-PtoEmi-Secuencial.pdf'
+                    nombre_archivo_pdf = f"{razon_social_recortada} - {estab}-{ptoEmi}-{secuencial}.pdf"
+                    '''
 
                     # Construye la nueva ruta para el archivo PDF
                     # Reemplaza '\xml\' en la ruta con '\pdf\' para mantener la estructura deseada
