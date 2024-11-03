@@ -17,6 +17,5 @@ __pycache__/
 
 # Archivos de log
 *.log
-/librerias/archivos/chromedriver.exe
-/librerias/archivos/rucs.txt
-/librerias/archivos/rucs_completos.txt
+/sri_xml_bot/librerias/archivos/chromedriver.exe
+/sri_xml_bot/librerias/archivos/rucs.txt
