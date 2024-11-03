@@ -1,6 +1,8 @@
 import os
 import sys
 from tkinter import Tk, messagebox, filedialog
+import re
+import pandas as pd
 
 
 def centrar_ventana(ventana, ancho=800, alto=500):
@@ -74,3 +76,11 @@ def ruta_relativa_recurso(relativa, filetypes=[("Archivos de texto", "*.txt")]):
             break
 
     return ruta_archivo
+
+
+def separar_tipo_y_serie(comprobante):
+    """
+    Separa el tipo y la serie del comprobante.
+    """
+    match = re.match(r"(.+?)\s+(\d{3}-\d{3}-\d{9})", comprobante)
+    return (match.group(1).strip(), match.group(2).strip()) if match else (None, None)

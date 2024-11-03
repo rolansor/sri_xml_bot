@@ -134,19 +134,18 @@ class Application:
         year_menu.pack()
 
         # Mes
-        mes_actual = str(datetime.now().month).zfill(2)
+        mes_actual = str(datetime.now().month)
         tk.Label(ventana_opciones, text="Mes:").pack()
         month_var = StringVar(value=mes_actual)
-        month_menu = OptionMenu(ventana_opciones, month_var, *[str(i).zfill(2) for i in range(1, 13)])
+        month_menu = OptionMenu(ventana_opciones, month_var, *[str(i) for i in range(1, 13)])
         month_menu.pack()
 
         # Día
         tk.Label(ventana_opciones, text="Día:").pack()
-        day_var = StringVar(value="00")
-        day_menu = OptionMenu(ventana_opciones, day_var, "00", *[str(i).zfill(2) for i in range(1, 32)])
+        day_var = StringVar(value="Todos")
+        day_menu = OptionMenu(ventana_opciones, day_var, "Todos", *[str(i) for i in range(1, 32)])
         day_menu.pack()
 
-        # Tipo de Descarga
         # Tipo de Descarga
         tipo_descarga_opciones = {
             "XML": "1",
@@ -177,14 +176,12 @@ class Application:
         aceptar_btn = Button(
             ventana_opciones, text="Aceptar",
             command=lambda: self.procesar_seleccion(
-                year_var, month_var, day_var, tipo_descarga_var, documento_var, tipo_descarga_opciones, tipos_documento
-            ),
-            bg="#007BFF", fg="white", font=("Arial", 12, "bold"), padx=10, pady=5
-        )
+                year_var, month_var, day_var, tipo_descarga_var, documento_var, tipo_descarga_opciones, tipos_documento,
+                ruc, clave),bg="#007BFF", fg="white", font=("Arial", 12, "bold"), padx=10, pady=5)
         aceptar_btn.pack(pady=20)
 
     def procesar_seleccion(self, year_var, month_var, day_var, tipo_descarga_var, documento_var, tipo_descarga_opciones,
-                           tipos_documento):
+                           tipos_documento, ruc, clave):
         # Obtener el valor seleccionado en el Tipo de Descarga
         tipo_descarga = tipo_descarga_opciones[tipo_descarga_var.get()]
 
@@ -197,7 +194,7 @@ class Application:
         day = day_var.get()
 
         # Llamar a la función de descarga con los parámetros seleccionados
-        descargar_documentos(year, month, day, tipo_descarga, tipo_documento)
+        descargar_documentos(year, month, day, tipo_descarga, tipo_documento, ruc, clave)
 
     def ordenar_documentos(self):
         """
