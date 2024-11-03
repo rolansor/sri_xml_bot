@@ -1,7 +1,7 @@
 import logging
 
 
-def generar_reporte():
+def generar_pdfs():
     """
     Lógica para descargar documentos.
     """
