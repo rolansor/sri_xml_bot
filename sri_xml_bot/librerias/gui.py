@@ -84,7 +84,7 @@ class Application:
                     datos.append((nombre, ruc, clave))
             logging.info("Datos cargados correctamente desde el archivo.")
         except Exception as e:
-            messagebox.showerror("Error", f"No se pudo leer el archivo: {e}")
+            messagebox.showerror("Error", f"No se pudo leer el archivo: {e}", parent=self.root)
             logging.exception("Error al leer el archivo.")
             return
 
@@ -94,10 +94,13 @@ class Application:
         centrar_ventana(self.ventana_seleccion, ancho=400, alto=250)
         self.ventana_seleccion.resizable(False, False)
 
+        # Evitar interacción con la ventana principal hasta cerrar esta
+        self.ventana_seleccion.grab_set()
+        self.ventana_seleccion.transient(self.root)  # Asegura que se mantenga sobre la ventana principal
+
         # Listbox para mostrar nombre y RUC
         listbox = tk.Listbox(self.ventana_seleccion, width=50, height=10)
         listbox.pack(pady=20)
-
         # Llenar el Listbox con los nombres y RUCs
         for nombre, ruc, _ in datos:
             listbox.insert(tk.END, f"{nombre} - {ruc}")
@@ -111,7 +114,7 @@ class Application:
 
     def mostrar_opciones(self, datos, seleccion):
         if not seleccion:
-            messagebox.showwarning("Selección inválida", "Por favor, seleccione un elemento de la lista.")
+            messagebox.showwarning("Selección inválida", "Por favor, seleccione un elemento de la lista.", parent=self.ventana_seleccion)
             return
 
         indice = seleccion[0]
@@ -121,6 +124,8 @@ class Application:
         ventana_opciones.title(f"Opciones de Descarga para {nombre}")
         centrar_ventana(ventana_opciones, ancho=400, alto=400)
         ventana_opciones.resizable(False, False)
+        ventana_opciones.grab_set()  # Bloquear interacción con la ventana de selección hasta que se cierre
+        ventana_opciones.transient(self.ventana_seleccion)
 
         # Etiquetas y listas desplegables para selección de fecha
         tk.Label(ventana_opciones, text="Introduce la fecha correspondiente:").pack(pady=5)
@@ -147,11 +152,7 @@ class Application:
         day_menu.pack()
 
         # Tipo de Descarga
-        tipo_descarga_opciones = {
-            "XML": "1",
-            "PDF": "2",
-            "Ambos": "0"
-        }
+        tipo_descarga_opciones = {"XML": "1", "PDF": "2", "Ambos": "0"}
         tk.Label(ventana_opciones, text="Tipo de descarga:").pack()
         tipo_descarga_var = StringVar(value="XML")  # Valor visible por defecto
         tipo_descarga_menu = OptionMenu(ventana_opciones, tipo_descarga_var, *tipo_descarga_opciones.keys())
@@ -177,7 +178,7 @@ class Application:
             ventana_opciones, text="Aceptar",
             command=lambda: self.procesar_seleccion(
                 year_var, month_var, day_var, tipo_descarga_var, documento_var, tipo_descarga_opciones, tipos_documento,
-                ruc, clave),bg="#007BFF", fg="white", font=("Arial", 12, "bold"), padx=10, pady=5)
+                ruc, clave), bg="#007BFF", fg="white", font=("Arial", 12, "bold"), padx=10, pady=5)
         aceptar_btn.pack(pady=20)
 
     def procesar_seleccion(self, year_var, month_var, day_var, tipo_descarga_var, documento_var, tipo_descarga_opciones,

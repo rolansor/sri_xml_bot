@@ -11,14 +11,15 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait, Select
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException, SessionNotCreatedException, NoSuchWindowException
+from selenium.common.exceptions import TimeoutException, SessionNotCreatedException, NoSuchWindowException, \
+    StaleElementReferenceException
 from sri_xml_bot.librerias.utils import ruta_relativa_recurso, separar_tipo_y_serie
 
 # WebDriver global para controlarlo en distintas funciones
 driver = None
+delay_web = 1
 
-
-def descargar_documentos(anio, mes, dia, tipo_descarga, tipo_documento, ruc, clave, ventana_opciones=None):
+def descargar_documentos(anio, mes, dia, tipo_descarga, tipo_documento, ruc, clave):
     """
     Lógica para descargar documentos basada en los parámetros seleccionados.
 
@@ -51,7 +52,7 @@ def descargar_documentos(anio, mes, dia, tipo_descarga, tipo_documento, ruc, cla
             actualizar_excel(ruc, filas_procesadas)
             if not navegar_a_la_pagina_siguiente():
                 break
-        messagebox.showinfo("Descarga completada", "La descarga de documentos se completó exitosamente.")
+        messagebox.showinfo("Descarga completada", "Revisa la carpeta de descargas y ordena los documentos.")
 
     except NoSuchWindowException:
         logging.error("No se encontró la ventana del navegador: ChromeDriver cerrado inesperadamente.")
@@ -62,11 +63,6 @@ def descargar_documentos(anio, mes, dia, tipo_descarga, tipo_documento, ruc, cla
         logging.exception("Error durante la descarga de documentos.")
         messagebox.showerror("Error en la descarga", f"Se produjo un error al descargar los documentos: {e}")
         liberar_recursos()
-
-    finally:
-        # Cerrar solo la ventana de opciones si fue proporcionada
-        if ventana_opciones and isinstance(ventana_opciones, Toplevel):
-            ventana_opciones.destroy()
 
 
 # ===================================
@@ -97,11 +93,11 @@ def configurar_webdriver():
         logging.error("Error: La versión de ChromeDriver no es compatible con la versión de Chrome instalada.")
         messagebox.showerror("Error",
                              "Descarga la última versión de ChromeDriver y colócala en la carpeta de archivos.")
-        exit(1)
+        liberar_recursos()
     except Exception as e:
         logging.error(f"Error al configurar el WebDriver: {e}")
         messagebox.showerror("Error", f"Error al configurar el WebDriver: {e}")
-        exit(1)
+        liberar_recursos()
 
 
 # ===================================
@@ -122,7 +118,7 @@ def iniciar_sesion(usuario, password):
     except TimeoutException:
         logging.error("Timeout al intentar iniciar sesión.")
         messagebox.showerror("Error", "No se pudo iniciar sesión. Verifica tu conexión o tus credenciales.")
-        exit(1)
+        liberar_recursos()
 
 
 def seleccionar_opciones_de_consulta(anio, mes, dia, tipo_documento):
@@ -143,7 +139,7 @@ def seleccionar_opciones_de_consulta(anio, mes, dia, tipo_documento):
         logging.info("Opciones de consulta seleccionadas.")
     except TimeoutException:
         logging.error("Timeout al seleccionar opciones de consulta.")
-        exit(1)
+        liberar_recursos()
 
 
 def click_consulta():
@@ -158,7 +154,7 @@ def click_consulta():
         logging.info("Consulta completada, esperando resultados.")
     except TimeoutException:
         logging.error("Timeout al realizar la consulta.")
-        exit(1)
+        liberar_recursos()
 
 
 def navegar_a_la_pagina_siguiente():
@@ -167,6 +163,8 @@ def navegar_a_la_pagina_siguiente():
     Retorna True si el clic en el botón Siguiente fue posible, False si el botón estaba deshabilitado.
     """
     global driver
+    # Delay para asegurarse que se ejecuten ciertas acciones.
+    time.sleep(delay_web)
     try:
         # Extraer el texto que indica la página actual y el total de páginas
         paginacion_texto = WebDriverWait(driver, 40).until(EC.presence_of_element_located((By.CSS_SELECTOR, ".ui-paginator-current"))).text
@@ -179,8 +177,8 @@ def navegar_a_la_pagina_siguiente():
 
             # Verificar si estamos en la última página
             if pagina_actual >= total_paginas:
-                messagebox.showinfo("Proceso Completado", "Proceso completado. Revisa los resultados en la carpeta de descargas.")
                 liberar_recursos()
+                return False
 
         # Intentar hacer clic en el botón "Siguiente"
         next_button = WebDriverWait(driver, 40).until(
@@ -198,6 +196,8 @@ def navegar_a_la_pagina_siguiente():
 # ===================================
 def descargar_comprobantes(tipo_descarga, filas_a_procesar):
     global driver
+    # Delay para asegurarse que se ejecuten ciertas acciones.
+    time.sleep(delay_web)
     filas_actualizadas = []
     max_documentos = 75  # Máximo de documentos a procesar
     documentos_procesados = 0
@@ -249,7 +249,6 @@ def descargar_comprobantes(tipo_descarga, filas_a_procesar):
             documentos_procesados += 1
         else:
             logging.error(f"No se pudo procesar el documento: #{nro} después de 3 intentos.")
-
     return filas_actualizadas
 
 
@@ -258,12 +257,15 @@ def obtener_filas_a_procesar_web():
     Obtiene las filas a procesar desde la tabla de resultados del portal SRI.
     """
     global driver
+    # Delay para asegurarse que se ejecuten ciertas acciones.
+    time.sleep(delay_web)
     filas_a_procesar = []
     try:
-        tabla = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.ID, "frmPrincipal:tablaCompRecibidos_data")))
-        for fila in tabla.find_elements(By.TAG_NAME, "tr"):
-            celdas = fila.find_elements(By.TAG_NAME, "td")
+        tabla = WebDriverWait(driver, 40).until(EC.presence_of_element_located((By.ID, "frmPrincipal:tablaCompRecibidos_data")))
+        # Esperar hasta que las filas <tr> estén presentes en el tbody
+        filas = WebDriverWait(tabla, 20).until(EC.presence_of_all_elements_located((By.TAG_NAME, "tr")))
+        for fila in filas:
+            celdas = WebDriverWait(fila, 20).until(EC.presence_of_all_elements_located((By.TAG_NAME, "td")))
             if len(celdas) < 6:
                 continue
             try:
@@ -273,12 +275,15 @@ def obtener_filas_a_procesar_web():
                 fecha = celdas[5].text.strip().split("/")
                 anio = int(fecha[2])
                 mes = int(fecha[1])
-                filas_a_procesar.append((anio, mes, nro, ruc, tipo_documento, serie_comprobante))
+                fila_datos = (anio, mes, nro, ruc, tipo_documento, serie_comprobante)
+                filas_a_procesar.append(fila_datos)
             except (ValueError, IndexError) as e:
                 messagebox.showerror("Error al procesar fila", f"Error en fila: {e}")
         logging.info(f"Se encontraron {len(filas_a_procesar)} filas para procesar.")
     except TimeoutException:
         logging.error("No se pudo cargar la tabla de resultados.")
+    except StaleElementReferenceException:
+        logging.warning("Elemento obsoleto encontrado en la fila, omitiendo esta fila.")
     return filas_a_procesar
 
 
