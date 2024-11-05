@@ -196,7 +196,6 @@ def man_exc_acceso(func):
                         time.sleep(1)  # Esperar un segundo antes de intentar nuevamente
                 if intentos >= max_intentos:
                     liberar_recursos()
-                    exit(1)
     return wrapper
 
 
@@ -208,22 +207,18 @@ def man_exc_varias(func):
             logging.error("No se encontró la ventana del navegador: ChromeDriver cerrado inesperadamente.")
             messagebox.showerror("Error", "El navegador ChromeDriver se cerró inesperadamente.")
             liberar_recursos()
-            exit(1)
         except FileNotFoundError as e:
             logging.error(f"No se encontró el archivo: {e}")
             messagebox.showerror("Error", f"No se encontró el archivo: {e}")
             liberar_recursos()
-            exit(1)
         except SessionNotCreatedException:
             logging.error("La versión de ChromeDriver no es compatible con la versión de Chrome instalada.")
             messagebox.showerror("Error", "ChromeDriver desactualizado o incompatible con la versión de Chrome instalada.")
             liberar_recursos()
-            exit(1)
         except Exception as e:
             logging.error(f"Excepción no manejada: {e}")
             messagebox.showerror("Error", f"Excepción no manejada: {e}")
             liberar_recursos()
-            exit(1)
     return wrapper
 
 
@@ -337,7 +332,6 @@ def navegar_a_la_pagina_siguiente(driver):
             if pagina_actual >= total_paginas:
                 messagebox.showinfo("Proceso Completado", "Proceso completado. Revisa los resultados en la carpeta de descargas.")
                 liberar_recursos()
-                exit(1)
 
         # Intentar hacer clic en el botón "Siguiente"
         next_button = WebDriverWait(driver, 20).until(
