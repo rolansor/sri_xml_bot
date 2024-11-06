@@ -52,23 +52,53 @@ class Application:
         """
         menubar = tk.Menu(self.root)
 
-        # Menú principal
-        menu_principal = tk.Menu(menubar, tearoff=0)
-        menu_principal.add_command(label="Descargar Documentos", command=self.descargar_documentos)
-        menu_principal.add_command(label="Ordenar Documentos", command=self.ordenar_documentos)
-        menu_principal.add_command(label="Generar Reporte", command=self.generar_reporte)
-        menu_principal.add_command(label="Generar PDF's", command=self.generar_pdfs)
-        menu_principal.add_command(label="Imprimir PDF's", command=self.imprimir_pdfs)
-        menubar.add_cascade(label="Opciones", menu=menu_principal)
+        # Submenú de "Recibidos"
+        menu_recibidos = tk.Menu(menubar, tearoff=0)
+        menu_recibidos.add_command(label="Facturas", command=lambda: self.descargar_recibidos(1))
+        menu_recibidos.add_command(label="Notas de Crédito", command=lambda: self.descargar_recibidos(3))
+        menu_recibidos.add_command(label="Comprobantes de Retención", command=lambda: self.descargar_recibidos(6))
+        menu_recibidos.add_command(label="Notas de Débito", command=lambda: self.descargar_recibidos(4))
+        menu_recibidos.add_command(label="Liquidación de Compras", command=lambda: self.descargar_recibidos(2))
+        menu_recibidos.add_command(label="Todos", command=lambda: self.descargar_recibidos(0))
+        menubar.add_cascade(label="Recibidos", menu=menu_recibidos)
 
-        # Menú Acerca de
+        # Submenú de "Emitidos"
+        menu_emitidos = tk.Menu(menubar, tearoff=0)
+        menu_emitidos.add_command(label="Facturas", command=lambda: self.descargar_emitidos(1))
+        menu_emitidos.add_command(label="Notas de Crédito", command=lambda: self.descargar_emitidos(3))
+        menu_emitidos.add_command(label="Comprobantes de Retención", command=lambda: self.descargar_emitidos(6))
+        menu_emitidos.add_command(label="Notas de Débito", command=lambda: self.descargar_emitidos(4))
+        menu_emitidos.add_command(label="Liquidación de Compras", command=lambda: self.descargar_emitidos(2))
+        menu_emitidos.add_command(label="Todos", command=lambda: self.descargar_emitidos(0))
+        menubar.add_cascade(label="Emitidos", menu=menu_emitidos)
+
+        # Submenú de "Clasificar"
+        menu_clasificar = tk.Menu(menubar, tearoff=0)
+        menu_clasificar.add_command(label="Configurar Estructura", command=self.mostrar_acerca_de)
+        menu_clasificar.add_command(label="Organizar Descargas", command=self.mostrar_acerca_de)
+        menu_clasificar.add_command(label="Reorganizar Documentos", command=self.mostrar_acerca_de)
+        menu_clasificar.add_command(label="Renombrar Documentos", command=self.mostrar_acerca_de)
+        menubar.add_cascade(label="Clasificar", menu=menu_clasificar)
+
+        # Submenú de "Reportes"
+        menu_reportes = tk.Menu(menubar, tearoff=0)
+        menu_reportes.add_command(label="Generar XLS", command=self.mostrar_acerca_de)
+        menubar.add_cascade(label="Reportes", menu=menu_reportes)
+
+        # Submenú de "PDFs"
+        menu_pdfs = tk.Menu(menubar, tearoff=0)
+        menu_pdfs.add_command(label="Generar PDFs", command=self.generar_pdfs)
+        menu_pdfs.add_command(label="Configurar PDFs", command=self.generar_pdfs)
+        menubar.add_cascade(label="PDFs", menu=menu_pdfs)
+
+        # Menú "Acerca de"
         menu_acerca_de = tk.Menu(menubar, tearoff=0)
         menu_acerca_de.add_command(label="Detalles del Desarrollo", command=self.mostrar_acerca_de)
         menubar.add_cascade(label="Acerca de", menu=menu_acerca_de)
 
         self.root.config(menu=menubar)
 
-    def descargar_documentos(self):
+    def descargar_recibidos(self, tipo_documento):
         """
         Lee el archivo de datos y muestra una ventana secundaria para seleccionar un registro.
         """
@@ -108,11 +138,11 @@ class Application:
         # Botón para seleccionar el elemento
         seleccionar_btn = Button(
             self.ventana_seleccion, text="Seleccionar",
-            command=lambda: self.mostrar_opciones(datos, listbox.curselection())
+            command=lambda: self.mostrar_opciones(datos, tipo_documento, listbox.curselection())
         )
         seleccionar_btn.pack(pady=10)
 
-    def mostrar_opciones(self, datos, seleccion):
+    def mostrar_opciones(self, datos, tipo_documento, seleccion):
         if not seleccion:
             messagebox.showwarning("Selección inválida", "Por favor, seleccione un elemento de la lista.", parent=self.ventana_seleccion)
             return
@@ -158,44 +188,32 @@ class Application:
         tipo_descarga_menu = OptionMenu(ventana_opciones, tipo_descarga_var, *tipo_descarga_opciones.keys())
         tipo_descarga_menu.pack()
 
-        # Sección de tipo de documentos con checkboxes
-        tk.Label(ventana_opciones, text="Elige el tipo de Documento:").pack(pady=10)
-
-        tipos_documento = {
-            "Factura": "1",
-            "Liquidación de compra de bienes y prestación de servicios": "2",
-            "Notas de Crédito": "3",
-            "Notas de Débito": "4",
-            "Comprobante de Retención": "6",
-            "Todos los documentos": "0",
-        }
-        documento_var = StringVar(value="Factura")
-        documento_menu = OptionMenu(ventana_opciones, documento_var, *tipos_documento.keys())
-        documento_menu.pack()
-
         # Botón de aceptar con estilo
         aceptar_btn = Button(
             ventana_opciones, text="Aceptar",
-            command=lambda: self.procesar_seleccion(
-                year_var, month_var, day_var, tipo_descarga_var, documento_var, tipo_descarga_opciones, tipos_documento,
-                ruc, clave), bg="#007BFF", fg="white", font=("Arial", 12, "bold"), padx=10, pady=5)
+            command=lambda: descargar_documentos(
+                year_var.get(),
+                month_var.get(),
+                day_var.get(),
+                tipo_descarga_opciones[tipo_descarga_var.get()],
+                tipo_documento,
+                ruc,
+                clave
+            ),
+            bg="#007BFF", fg="white", font=("Arial", 12, "bold"), padx=10, pady=5
+        )
         aceptar_btn.pack(pady=20)
 
-    def procesar_seleccion(self, year_var, month_var, day_var, tipo_descarga_var, documento_var, tipo_descarga_opciones,
-                           tipos_documento, ruc, clave):
-        # Obtener el valor seleccionado en el Tipo de Descarga
-        tipo_descarga = tipo_descarga_opciones[tipo_descarga_var.get()]
-
-        # Obtener el valor seleccionado en Tipo de Documento
-        tipo_documento = tipos_documento[documento_var.get()]
-
-        # Obtener los valores de año, mes y día
-        year = year_var.get()
-        month = month_var.get()
-        day = day_var.get()
-
-        # Llamar a la función de descarga con los parámetros seleccionados
-        descargar_documentos(year, month, day, tipo_descarga, tipo_documento, ruc, clave)
+    def descargar_emitidos(self, tipo_documento):
+        """
+        Maneja la opción de ordenar documentos.
+        """
+        try:
+            messagebox.showinfo("Éxito", "Documentos ordenados correctamente.")
+            logging.info("Documentos ordenados exitosamente.")
+        except Exception as e:
+            messagebox.showerror("Error", f"No se pudo ordenar los documentos: {e}")
+            logging.exception("Error al ordenar documentos.")
 
     def ordenar_documentos(self):
         """
