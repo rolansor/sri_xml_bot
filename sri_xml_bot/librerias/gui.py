@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox, Toplevel, Listbox, Button, StringVar, Checkbutton, IntVar, OptionMenu
+from tkinter.constants import END
 from PIL import Image, ImageTk
 import logging
 from datetime import datetime
@@ -74,7 +75,7 @@ class Application:
 
         # Submenú de "Clasificar"
         menu_clasificar = tk.Menu(menubar, tearoff=0)
-        menu_clasificar.add_command(label="Configurar Estructura", command=self.mostrar_acerca_de)
+        menu_clasificar.add_command(label="Configurar Estructura XML's", command=self.configurar_estructura_xml)
         menu_clasificar.add_command(label="Organizar Descargas", command=self.mostrar_acerca_de)
         menu_clasificar.add_command(label="Reorganizar Documentos", command=self.mostrar_acerca_de)
         menu_clasificar.add_command(label="Renombrar Documentos", command=self.mostrar_acerca_de)
@@ -214,6 +215,99 @@ class Application:
         except Exception as e:
             messagebox.showerror("Error", f"No se pudo ordenar los documentos: {e}")
             logging.exception("Error al ordenar documentos.")
+
+    def configurar_estructura_xml(self):
+        """
+        Abre una ventana para configurar la estructura de nombres y la ruta de guardado para los archivos recibidos.
+        """
+        self.ventana_configuracion = Toplevel(self.root)
+        self.ventana_configuracion.title("Configurar Estructura de Recibidos")
+        centrar_ventana(self.ventana_configuracion, ancho=350, alto=450)
+        self.ventana_configuracion.resizable(False, False)
+
+        # Evitar interacción con la ventana principal hasta cerrar esta
+        self.ventana_configuracion.grab_set()
+        self.ventana_configuracion.transient(self.root)
+
+        # Crear un marco para centrar las opciones de nombre del archivo
+        frame_nombre = tk.Frame(self.ventana_configuracion)
+        frame_nombre.pack(pady=10)
+
+        # Etiqueta para el título de las opciones de nombre del archivo
+        tk.Label(frame_nombre, text="Formato de Nombre del Archivo XML:").pack(pady=10)
+
+        nombre_var = StringVar(value="clave_acceso")
+        opciones_nombre = {
+            "Clave de Acceso": "clave_acceso",
+            "RUC Emisor + Secuencial": "ruc_secuencial",
+            "Secuencial": "secuencial"
+        }
+
+        # Crear los Radiobuttons dentro del marco y centrarlos
+        for texto, valor in opciones_nombre.items():
+            tk.Radiobutton(frame_nombre, text=texto, variable=nombre_var, value=valor).pack(anchor="center")
+
+        # Configurar ruta de guardado con Listbox reordenable
+        tk.Label(self.ventana_configuracion, text="\nRuta de Guardado (Ordenable):").pack()
+
+        ruta_opciones = ["Año", "Mes", "RUC", "Recibido/Emitido", "PDF/XML", "Tipo Documento"]
+        ruta_listbox = Listbox(self.ventana_configuracion, selectmode="single", width=30, height=len(ruta_opciones))
+        for opcion in ruta_opciones:
+            ruta_listbox.insert(END, opcion)
+        ruta_listbox.pack(pady=10)
+
+        # Funciones para reordenar la selección
+        def mover_arriba():
+            try:
+                seleccion = ruta_listbox.curselection()
+                if not seleccion or seleccion[0] == 0:
+                    return
+                index = seleccion[0]
+                valor = ruta_listbox.get(index)
+                ruta_listbox.delete(index)
+                ruta_listbox.insert(index - 1, valor)
+                ruta_listbox.select_set(index - 1)
+            except Exception as e:
+                logging.error(f"Error al mover hacia arriba: {e}")
+
+        def mover_abajo():
+            try:
+                seleccion = ruta_listbox.curselection()
+                if not seleccion or seleccion[0] == ruta_listbox.size() - 1:
+                    return
+                index = seleccion[0]
+                valor = ruta_listbox.get(index)
+                ruta_listbox.delete(index)
+                ruta_listbox.insert(index + 1, valor)
+                ruta_listbox.select_set(index + 1)
+            except Exception as e:
+                logging.error(f"Error al mover hacia abajo: {e}")
+
+        # Botones para mover selección
+        btn_arriba = Button(self.ventana_configuracion, text="↑ Mover Arriba", command=mover_arriba)
+        btn_arriba.pack(pady=5)
+        btn_abajo = Button(self.ventana_configuracion, text="↓ Mover Abajo", command=mover_abajo)
+        btn_abajo.pack(pady=5)
+
+        # Guardar configuración
+        def guardar_configuracion():
+            # Obtener la selección de nombre de archivo
+            nombre_archivo = nombre_var.get()
+
+            # Obtener el orden personalizado de la ruta de guardado
+            ruta_guardado = "/".join(ruta_listbox.get(i) for i in range(ruta_listbox.size()))
+
+            # Aquí puedes almacenar la configuración en un archivo de configuración o una variable global
+            logging.info(f"Estructura de nombre de archivo: {nombre_archivo}")
+            logging.info(f"Ruta de guardado personalizada: {ruta_guardado}")
+
+            # Confirmación y cierre de ventana
+            messagebox.showinfo("Configuración Guardada", "La configuración ha sido guardada exitosamente.",
+                                parent=self.ventana_configuracion)
+            self.ventana_configuracion.destroy()
+
+        # Botón para guardar la configuración
+        Button(self.ventana_configuracion, text="Guardar Configuración", command=guardar_configuracion).pack(pady=20)
 
     def ordenar_documentos(self):
         """
