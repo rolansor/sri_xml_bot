@@ -42,7 +42,7 @@ def organizar_archivos_xml(directorio, estructura_ruta, estructura_nombre, ruc_p
 
     Args:
         directorio (str): Directorio donde se encuentran los archivos XML.
-        estructura_ruta (list): Lista que define la estructura de carpetas.
+        estructura_ruta (str): Lista que define la estructura de carpetas.
         estructura_nombre (str): Formato del nombre del archivo XML.
         ruc_procesado (str): RUC para filtrar los documentos.
         RecEmi (str): ('recibidos' o 'emitidos').
@@ -51,6 +51,7 @@ def organizar_archivos_xml(directorio, estructura_ruta, estructura_nombre, ruc_p
         list: Lista de mensajes informando del resultado del proceso.
     """
     mensajes = []
+    partes_ruta = estructura_ruta.split("/")
 
     for archivo in os.listdir(directorio):
         if archivo.endswith('.xml'):
@@ -77,7 +78,7 @@ def organizar_archivos_xml(directorio, estructura_ruta, estructura_nombre, ruc_p
 
                 # Construir la ruta de guardado en base a la estructura proporcionada
                 ruta_guardado = directorio
-                for parte in estructura_ruta:
+                for parte in partes_ruta:
                     if parte == "Año":
                         ruta_guardado = os.path.join(ruta_guardado, anio)
                     elif parte == "Mes":

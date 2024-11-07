@@ -61,28 +61,29 @@ class Application:
 
         # Submenú de "Recibidos"
         menu_recibidos = tk.Menu(menubar, tearoff=0)
-        menu_recibidos.add_command(label="Facturas", command=lambda: self.descargar_recibidos(1))
-        menu_recibidos.add_command(label="Notas de Crédito", command=lambda: self.descargar_recibidos(3))
-        menu_recibidos.add_command(label="Comprobantes de Retención", command=lambda: self.descargar_recibidos(6))
-        menu_recibidos.add_command(label="Notas de Débito", command=lambda: self.descargar_recibidos(4))
-        menu_recibidos.add_command(label="Liquidación de Compras", command=lambda: self.descargar_recibidos(2))
-        menu_recibidos.add_command(label="Todos", command=lambda: self.descargar_recibidos(0))
+        menu_recibidos.add_command(label="Facturas", command=lambda: self.descargar_recibidos("1"))
+        menu_recibidos.add_command(label="Notas de Crédito", command=lambda: self.descargar_recibidos("3"))
+        menu_recibidos.add_command(label="Comprobantes de Retención", command=lambda: self.descargar_recibidos("6"))
+        menu_recibidos.add_command(label="Notas de Débito", command=lambda: self.descargar_recibidos("4"))
+        menu_recibidos.add_command(label="Liquidación de Compras", command=lambda: self.descargar_recibidos("2"))
+        menu_recibidos.add_command(label="Todos", command=lambda: self.descargar_recibidos("0"))
         menubar.add_cascade(label="Recibidos", menu=menu_recibidos)
 
         # Submenú de "Emitidos"
         menu_emitidos = tk.Menu(menubar, tearoff=0)
-        menu_emitidos.add_command(label="Facturas", command=lambda: self.descargar_emitidos(1))
-        menu_emitidos.add_command(label="Notas de Crédito", command=lambda: self.descargar_emitidos(3))
-        menu_emitidos.add_command(label="Comprobantes de Retención", command=lambda: self.descargar_emitidos(6))
-        menu_emitidos.add_command(label="Notas de Débito", command=lambda: self.descargar_emitidos(4))
-        menu_emitidos.add_command(label="Liquidación de Compras", command=lambda: self.descargar_emitidos(2))
-        menu_emitidos.add_command(label="Todos", command=lambda: self.descargar_emitidos(0))
+        menu_emitidos.add_command(label="Facturas", command=lambda: self.descargar_emitidos("1"))
+        menu_emitidos.add_command(label="Notas de Crédito", command=lambda: self.descargar_emitidos("3"))
+        menu_emitidos.add_command(label="Comprobantes de Retención", command=lambda: self.descargar_emitidos("6"))
+        menu_emitidos.add_command(label="Notas de Débito", command=lambda: self.descargar_emitidos("4"))
+        menu_emitidos.add_command(label="Liquidación de Compras", command=lambda: self.descargar_emitidos("2"))
+        menu_emitidos.add_command(label="Todos", command=lambda: self.descargar_emitidos("0"))
         menubar.add_cascade(label="Emitidos", menu=menu_emitidos)
 
         # Submenú de "Clasificar"
         menu_clasificar = tk.Menu(menubar, tearoff=0)
         menu_clasificar.add_command(label="Configurar Estructura XML's", command=self.configurar_estructura_xml)
-        menu_clasificar.add_command(label="Organizar Descargas", command=self.mostrar_acerca_de)
+        menu_clasificar.add_command(label="Ordenar Documentos Recibidos", command=self.ordenar_documentos_recibidos)
+        menu_clasificar.add_command(label="Ordenar Documentos Emitidos", command=self.ordenar_documentos_recibidos)
         menu_clasificar.add_command(label="Reorganizar Documentos", command=self.mostrar_acerca_de)
         menu_clasificar.add_command(label="Renombrar Documentos", command=self.mostrar_acerca_de)
         menubar.add_cascade(label="Clasificar", menu=menu_clasificar)
@@ -317,11 +318,13 @@ class Application:
         # Botón para guardar la configuración
         Button(self.ventana_configuracion, text="Guardar Configuración", command=guardar_configuracion).pack(pady=20)
 
-    def ordenar_documentos(self):
+    def ordenar_documentos_recibidos(self):
         """
         Maneja la opción de ordenar documentos.
         """
         try:
+            self.configuraciones["nombre_archivo"], self.configuraciones["ruta_guardado"], self.configuraciones[
+                "ruc_actual"] = cargar_configuracion_ini()
             # Accede a las configuraciones desde el diccionario self.configuraciones
             nombre_archivo = self.configuraciones["nombre_archivo"]
             ruta_guardado = self.configuraciones["ruta_guardado"]

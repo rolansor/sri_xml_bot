@@ -98,7 +98,7 @@ def guardar_configuracion_ini(nombre_archivo, ruta_guardado):
         ruta_guardado (str): Ruta de guardado personalizada.
     """
     # Definir el nombre del archivo de configuración
-    archivo_ini = 'configuraciones.ini'
+    archivo_ini = 'archivos/configuraciones.ini'
 
     # Obtener la ruta de la ubicación del archivo
     base_dir = os.path.dirname(sys.executable) if getattr(sys, 'frozen', False) else os.path.dirname(__file__)
@@ -118,9 +118,8 @@ def guardar_configuracion_ini(nombre_archivo, ruta_guardado):
 
         # Si el usuario cancela, salir del programa
         if not respuesta:
-            messagebox.showinfo("Operación cancelada", "No se seleccionó ningún archivo. Cerrando aplicación.")
+            messagebox.showinfo("Operación cancelada", "No se seleccionó ningún archivo.")
             temporal.destroy()
-            sys.exit(1)
 
         # Permitir al usuario seleccionar un archivo de configuración
         ruta_config = filedialog.asksaveasfilename(
@@ -139,16 +138,25 @@ def guardar_configuracion_ini(nombre_archivo, ruta_guardado):
 
     # Guardar la configuración en el archivo .ini
     config = configparser.ConfigParser()
-    config['Configuracion'] = {
-        'nombre_archivo': nombre_archivo,
-        'ruta_guardado': ruta_guardado
-    }
+    config.read(ruta_config)
 
-    with open(ruta_config, 'w') as configfile:
-        config.write(configfile)
+    # Actualizar solo las configuraciones necesarias
+    if 'Configuracion' not in config:
+        config['Configuracion'] = {}
 
-    messagebox.showinfo("Configuración Guardada", "La configuración ha sido guardada exitosamente.")
+    config['Configuracion']['nombre_archivo'] = nombre_archivo
+    config['Configuracion']['ruta_guardado'] = ruta_guardado
 
+    # Guardar la configuración actualizada en el archivo .ini
+    try:
+        with open(ruta_config, 'w') as configfile:
+            config.write(configfile)
+
+        messagebox.showinfo("Configuración Guardada", "La configuración ha sido guardada exitosamente.")
+        logging.info("Configuración guardada exitosamente en configuraciones.ini.")
+
+    except Exception as e:
+        logging.error(f"Error al guardar la configuración: {e}")
 
 def cargar_configuracion_ini():
     """
@@ -164,7 +172,7 @@ def cargar_configuracion_ini():
     ruc_actual = "9999999999999"
 
     # Ruta del archivo de configuración
-    archivo_ini = 'configuraciones.ini'
+    archivo_ini = 'archivos/configuraciones.ini'
     base_dir = os.path.dirname(sys.executable) if getattr(sys, 'frozen', False) else os.path.dirname(__file__)
     ruta_config = os.path.join(base_dir, archivo_ini)
 

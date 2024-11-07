@@ -44,15 +44,18 @@ def descargar_documentos(anio, mes, dia, tipo_descarga, tipo_documento, ruc, cla
 
         iniciar_sesion(ruc, clave)
         seleccionar_opciones_de_consulta(anio, mes, dia, tipo_documento)
-        click_consulta()
+        hay_respuesta = click_consulta()
 
-        while True:
-            registros_a_descargar = comparar_registros(ruc, anio, mes)
-            filas_procesadas = descargar_comprobantes(tipo_descarga, registros_a_descargar)
-            actualizar_excel(ruc, filas_procesadas)
-            if not navegar_a_la_pagina_siguiente():
-                break
-        messagebox.showinfo("Descarga completada", "Revisa la carpeta de descargas y ordena los documentos.")
+        if hay_respuesta:
+            while True:
+                registros_a_descargar = comparar_registros(ruc, anio, mes)
+                filas_procesadas = descargar_comprobantes(tipo_descarga, registros_a_descargar)
+                actualizar_excel(ruc, filas_procesadas)
+                if not navegar_a_la_pagina_siguiente():
+                    break
+            messagebox.showinfo("Descarga completada", "Revisa la carpeta de descargas y ordena los documentos.")
+        else:
+            messagebox.showinfo("Proceso completado", "Seguramente no hay registros para descargar o fallaste contestando el recaptcha.")
 
     except NoSuchWindowException:
         logging.error("No se encontró la ventana del navegador: ChromeDriver cerrado inesperadamente.")
@@ -150,11 +153,24 @@ def click_consulta():
     try:
         driver.find_element(By.ID, 'btnRecaptcha').click()
         logging.info("Botón de consulta presionado, esperando reCAPTCHA.")
-        WebDriverWait(driver, 240).until(EC.presence_of_element_located((By.CSS_SELECTOR, ".ui-paginator-rpp-options")))
-        logging.info("Consulta completada, esperando resultados.")
+        mensaje_no_datos = WebDriverWait(driver, 20).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "#formMessages\\:messages .ui-messages-warn-summary")))
+
+        if mensaje_no_datos and "No existen datos para los parámetros ingresados" in mensaje_no_datos.text:
+            logging.info("No existen datos para los parámetros ingresados. Retornando lista vacía.")
+            liberar_recursos()
+            return False
+        else:
+            WebDriverWait(driver, 240).until(
+                EC.presence_of_element_located((By.ID, "frmPrincipal:tablaCompRecibidos_data")))
+            # Verificar si existe el mensaje de "No existen datos para los parámetros ingresados"
+            logging.info("Consulta completada, esperando resultados.")
+            return True
+
     except TimeoutException:
         logging.error("Timeout al realizar la consulta.")
         liberar_recursos()
+        return False
 
 
 def navegar_a_la_pagina_siguiente():
