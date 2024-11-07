@@ -15,7 +15,4 @@ __pycache__/
 # Archivos de configuración de PyCharm
 .idea/
 
-# Archivos de log
-*.log
-/sri_xml_bot/librerias/archivos/chromedriver.exe
-/sri_xml_bot/librerias/archivos/rucs.txt
+/sri_xml_bot/librerias/archivos/

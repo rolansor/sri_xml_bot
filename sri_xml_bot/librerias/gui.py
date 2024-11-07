@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import messagebox, Toplevel, Listbox, Button, StringVar, Checkbutton, IntVar, OptionMenu
+from tkinter import messagebox, Toplevel, Listbox, Button, StringVar, OptionMenu
 from tkinter.constants import END
 from PIL import Image, ImageTk
 import logging
@@ -8,7 +8,8 @@ from sri_xml_bot.descargar_documentos import descargar_documentos
 from sri_xml_bot.generar_pdfs import generar_pdfs
 from sri_xml_bot.generar_reporte import generar_reporte
 from sri_xml_bot.imprimir_pdfs import imprimir_pdfs
-from sri_xml_bot.librerias.utils import centrar_ventana, ruta_relativa_recurso
+from sri_xml_bot.librerias.utils import centrar_ventana, ruta_relativa_recurso, guardar_configuracion_ini, \
+    cargar_configuracion_ini
 from sri_xml_bot.ordenar_documentos import ordenar_documentos
 
 
@@ -21,6 +22,11 @@ class Application:
         self.root.title("Sistema de Gestión de Documentos")
         centrar_ventana(self.root, ancho=800, alto=500)
         self.root.resizable(False, False)
+
+        # Inicializar las configuraciones globales aquí
+        self.configuraciones = {"nombre_archivo": "", "ruta_guardado": "", "ruc_actual": ""}
+        self.configuraciones["nombre_archivo"], self.configuraciones["ruta_guardado"], self.configuraciones[
+            "ruc_actual"] = cargar_configuracion_ini()
 
         # Configurar el fondo de la ventana
         self.configurar_fondo()
@@ -251,6 +257,16 @@ class Application:
         tk.Label(self.ventana_configuracion, text="\nRuta de Guardado (Ordenable):").pack()
 
         ruta_opciones = ["Año", "Mes", "RUC", "Recibido/Emitido", "PDF/XML", "Tipo Documento"]
+
+        abreviaciones_ruta = {
+            "Año": "Año",
+            "Mes": "Mes",
+            "RUC": "RUC",
+            "Recibido/Emitido": "RecEmi",
+            "PDF/XML": "XML",
+            "Tipo Documento": "TipoDocumento"
+        }
+
         ruta_listbox = Listbox(self.ventana_configuracion, selectmode="single", width=30, height=len(ruta_opciones))
         for opcion in ruta_opciones:
             ruta_listbox.insert(END, opcion)
@@ -293,18 +309,10 @@ class Application:
         def guardar_configuracion():
             # Obtener la selección de nombre de archivo
             nombre_archivo = nombre_var.get()
-
             # Obtener el orden personalizado de la ruta de guardado
-            ruta_guardado = "/".join(ruta_listbox.get(i) for i in range(ruta_listbox.size()))
-
-            # Aquí puedes almacenar la configuración en un archivo de configuración o una variable global
-            logging.info(f"Estructura de nombre de archivo: {nombre_archivo}")
-            logging.info(f"Ruta de guardado personalizada: {ruta_guardado}")
-
-            # Confirmación y cierre de ventana
-            messagebox.showinfo("Configuración Guardada", "La configuración ha sido guardada exitosamente.",
-                                parent=self.ventana_configuracion)
-            self.ventana_configuracion.destroy()
+            ruta_guardado = "/".join(abreviaciones_ruta[ruta_listbox.get(i)] for i in range(ruta_listbox.size()))
+            # Guardar configuración en el archivo .ini
+            guardar_configuracion_ini(nombre_archivo, ruta_guardado)
 
         # Botón para guardar la configuración
         Button(self.ventana_configuracion, text="Guardar Configuración", command=guardar_configuracion).pack(pady=20)
@@ -314,12 +322,14 @@ class Application:
         Maneja la opción de ordenar documentos.
         """
         try:
-            ordenar_documentos()
-            messagebox.showinfo("Éxito", "Documentos ordenados correctamente.")
+            # Accede a las configuraciones desde el diccionario self.configuraciones
+            nombre_archivo = self.configuraciones["nombre_archivo"]
+            ruta_guardado = self.configuraciones["ruta_guardado"]
+            ruc_actual = self.configuraciones["ruc_actual"]
+            ordenar_documentos(nombre_archivo, ruta_guardado, ruc_actual, "recibidos")
             logging.info("Documentos ordenados exitosamente.")
         except Exception as e:
-            messagebox.showerror("Error", f"No se pudo ordenar los documentos: {e}")
-            logging.exception("Error al ordenar documentos.")
+            logging.exception(f"Error al ordenar documentos: {e}")
 
     def generar_reporte(self):
         """
