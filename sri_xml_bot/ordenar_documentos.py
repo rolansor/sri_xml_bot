@@ -1,13 +1,12 @@
 import logging
 import os
 import shutil
-from tkinter import filedialog
 from sri_xml_bot.librerias.utils import encontrar_y_eliminar_duplicados
 from sri_xml_bot.librerias.utils_xml import procesar_archivo_xml, extraer_tipo, extraer_ruc_receptor, \
     extraer_ruc_emisor, extraer_clave_autorizacion, extraer_secuencial, extraer_fecha
 
 
-def ordenar_documentos(estructura_nombre, estructura_ruta, ruc_actual, tipo_documento):
+def ordenar_documentos(estructura_nombre, estructura_ruta, ruc_actual, tipo_documento, directorio):
     """
     Lógica para ordenar documentos en una carpeta especificada por el usuario.
 
@@ -16,24 +15,28 @@ def ordenar_documentos(estructura_nombre, estructura_ruta, ruc_actual, tipo_docu
         estructura_ruta (str): Ruta de guardado personalizada.
         ruc_actual (str): RUC actual seleccionado.
     """
+    mensaje_error = []
+    resultado_eliminados = []
+    resultado_organizacion = []
     try:
         # Aquí iría el código para descargar los documentos.
-        logging.debug("Iniciando descarga de documentos.")
-        directorio = filedialog.askdirectory(title="Seleccione la carpeta de documentos a ordenar")
-        if directorio:
-            try:
-                archivos_eliminados = encontrar_y_eliminar_duplicados(directorio)
-                archivos_organizados = organizar_archivos_xml(directorio, estructura_ruta, estructura_nombre, ruc_actual, tipo_documento)
-            except Exception as e:
-                logging.exception(f"Error al ordenar documentos en el directorio {directorio}: {e}")
-        else:
-            logging.info("No se seleccionó ningún directorio para ordenar los documentos.")
+        logging.info("Iniciando descarga de documentos.")
+        # Eliminar duplicados y agregar mensajes al resultado
+        resultado_eliminados = encontrar_y_eliminar_duplicados(directorio)
+        # Organizar archivos y agregar mensajes al resultado
+        resultado_organizacion = organizar_archivos_xml(directorio, estructura_ruta, estructura_nombre, ruc_actual,
+                                                        tipo_documento)
+        logging.info("Descarga de documentos completada.")
 
-
-        logging.debug("Descarga de documentos completada.")
     except Exception as e:
-        logging.exception("Error durante la descarga de documentos.")
-        raise e
+        mensaje_error = [f"Error durante la ordenación de documentos: {e}"]
+        logging.error(f"Error durante la ordenación de documentos: {e}")
+
+    return {
+        "resultado_organizacion": resultado_organizacion,
+        "resultado_eliminados": resultado_eliminados,
+        "mensaje_error": mensaje_error
+    }
 
 
 def organizar_archivos_xml(directorio, estructura_ruta, estructura_nombre, ruc_procesado, RecEmi):
@@ -52,67 +55,74 @@ def organizar_archivos_xml(directorio, estructura_ruta, estructura_nombre, ruc_p
     """
     mensajes = []
     partes_ruta = estructura_ruta.split("/")
+    archivos = [archivo for archivo in os.listdir(directorio) if archivo.endswith('.xml')]
 
-    for archivo in os.listdir(directorio):
-        if archivo.endswith('.xml'):
-            ruta_archivo = os.path.join(directorio, archivo)
-            documento = procesar_archivo_xml(ruta_archivo)
+    # Contadores para archivos organizados y eliminados
+    contador_organizados = 0
+    contador_errores = 0
 
-            if documento is not None:
-                # Extraer la información clave del documento
-                tipo_documento = extraer_tipo(documento)
-                ruc_receptor = extraer_ruc_receptor(documento, tipo_documento)
-                ruc_emisor = extraer_ruc_emisor(documento)
-                clave_acceso = extraer_clave_autorizacion(documento)
-                secuencial = extraer_secuencial(documento)
-                anio, mes, _ = extraer_fecha(documento, tipo_documento)
+    for archivo in archivos:
+        ruta_archivo = os.path.join(directorio, archivo)
+        documento = procesar_archivo_xml(ruta_archivo)
 
-                # Determinar el RUC que corresponde al tipo de documento
-                if RecEmi == 'recibidos' and ruc_procesado == ruc_receptor:
-                    ruc_valido = ruc_receptor
-                elif RecEmi == 'emitidos' and ruc_procesado == ruc_emisor:
-                    ruc_valido = ruc_emisor
-                else:
-                    # Si el RUC no coincide con el tipo de documento, continuar con el siguiente archivo
-                    continue
+        if documento is not None:
+            # Extraer la información clave del documento
+            tipo_documento = extraer_tipo(documento)
+            ruc_receptor = extraer_ruc_receptor(documento, tipo_documento)
+            ruc_emisor = extraer_ruc_emisor(documento)
+            clave_acceso = extraer_clave_autorizacion(documento)
+            secuencial = extraer_secuencial(documento)
+            anio, mes, _ = extraer_fecha(documento, tipo_documento)
 
-                # Construir la ruta de guardado en base a la estructura proporcionada
-                ruta_guardado = directorio
-                for parte in partes_ruta:
-                    if parte == "Año":
-                        ruta_guardado = os.path.join(ruta_guardado, anio)
-                    elif parte == "Mes":
-                        ruta_guardado = os.path.join(ruta_guardado, mes)
-                    elif parte == "RUC":
-                        ruta_guardado = os.path.join(ruta_guardado, ruc_valido)
-                    elif parte == "RecEmi":
-                        ruta_guardado = os.path.join(ruta_guardado, RecEmi)
-                    elif parte == "TipoDocumento":
-                        ruta_guardado = os.path.join(ruta_guardado, tipo_documento)
-                    elif parte == "XML":
-                        ruta_guardado = os.path.join(ruta_guardado, "xml")
-
-                # Crear la estructura de carpetas si no existe
-                os.makedirs(ruta_guardado, exist_ok=True)
-
-                # Crear el nombre del archivo según la estructura especificada
-                if estructura_nombre == 'clave_acceso':
-                    nombre_archivo = clave_acceso + '.xml'
-                elif estructura_nombre == 'ruc_secuencial':
-                    nombre_archivo = (ruc_emisor if RecEmi == 'recibidos' else ruc_receptor) + '_' + secuencial + '.xml'
-                elif estructura_nombre == 'secuencial':
-                    nombre_archivo = secuencial + '.xml'
-                else:
-                    nombre_archivo = clave_acceso + '.xml'  # Por defecto, usar clave de acceso
-
-                # Mover el archivo al destino final
-                destino_archivo = os.path.join(ruta_guardado, nombre_archivo)
-                shutil.move(ruta_archivo, destino_archivo)
-                mensajes.append(f"Archivo '{archivo}' movido a '{destino_archivo}'.")
-
+            # Determinar el RUC que corresponde al tipo de documento
+            if RecEmi == 'recibidos' and ruc_procesado == ruc_receptor:
+                ruc_valido = ruc_receptor
+            elif RecEmi == 'emitidos' and ruc_procesado == ruc_emisor:
+                ruc_valido = ruc_emisor
             else:
-                # Si el archivo XML no pudo ser procesado
-                mensajes.append(f"Error al procesar el archivo {archivo}. Información insuficiente.")
+                # Si el RUC no coincide con el tipo de documento, continuar con el siguiente archivo
+                continue
 
-    mensajes.append("Todos los archivos leídos correctamente han sido organizados.")
+            # Construir la ruta de guardado en base a la estructura proporcionada
+            ruta_guardado = directorio
+            for parte in partes_ruta:
+                if parte == "Año":
+                    ruta_guardado = os.path.join(ruta_guardado, anio)
+                elif parte == "Mes":
+                    ruta_guardado = os.path.join(ruta_guardado, mes)
+                elif parte == "RUC":
+                    ruta_guardado = os.path.join(ruta_guardado, ruc_valido)
+                elif parte == "RecEmi":
+                    ruta_guardado = os.path.join(ruta_guardado, RecEmi)
+                elif parte == "TipoDocumento":
+                    ruta_guardado = os.path.join(ruta_guardado, tipo_documento)
+                elif parte == "XML":
+                    ruta_guardado = os.path.join(ruta_guardado, "xml")
+
+            # Crear la estructura de carpetas si no existe
+            os.makedirs(ruta_guardado, exist_ok=True)
+
+            # Crear el nombre del archivo según la estructura especificada
+            if estructura_nombre == 'clave_acceso':
+                nombre_archivo = clave_acceso + '.xml'
+            elif estructura_nombre == 'ruc_secuencial':
+                nombre_archivo = (ruc_emisor if RecEmi == 'recibidos' else ruc_receptor) + '_' + secuencial + '.xml'
+            elif estructura_nombre == 'secuencial':
+                nombre_archivo = secuencial + '.xml'
+            else:
+                nombre_archivo = clave_acceso + '.xml'  # Por defecto, usar clave de acceso
+
+            # Mover el archivo al destino final
+            destino_archivo = os.path.join(ruta_guardado, nombre_archivo)
+            shutil.move(ruta_archivo, destino_archivo)
+            contador_organizados += 1
+        else:
+            # Si el archivo XML no pudo ser procesado
+            contador_errores += 1
+
+    mensajes.append(f"Se han organizado {contador_organizados} archivos correctamente.")
+    if contador_errores > 0:
+        mensajes.append(f"Hubo {contador_errores} archivos que no se pudieron procesar debido a errores.")
+
     return mensajes
+

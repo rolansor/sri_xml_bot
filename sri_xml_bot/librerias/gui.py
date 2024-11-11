@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import messagebox, Toplevel, Listbox, Button, StringVar, OptionMenu
+from tkinter import messagebox, Toplevel, Listbox, Button, StringVar, OptionMenu, filedialog, Label
 from tkinter.constants import END
 from PIL import Image, ImageTk
 import logging
@@ -19,14 +19,10 @@ class Application:
         Inicializa la aplicación y configura la ventana principal.
         """
         self.root = tk.Tk()
-        self.root.title("Sistema de Gestión de Documentos")
-        centrar_ventana(self.root, ancho=800, alto=500)
-        self.root.resizable(False, False)
+        centrar_ventana("Sistema de Gestión de Documentos", self.root, ancho=800, alto=500)
 
-        # Inicializar las configuraciones globales aquí
-        self.configuraciones = {"nombre_archivo": "", "ruta_guardado": "", "ruc_actual": ""}
-        self.configuraciones["nombre_archivo"], self.configuraciones["ruta_guardado"], self.configuraciones[
-            "ruc_actual"] = cargar_configuracion_ini()
+        # Cargar todas las configuraciones al inicio
+        self.configuraciones = cargar_configuracion_ini()
 
         # Configurar el fondo de la ventana
         self.configurar_fondo()
@@ -39,7 +35,7 @@ class Application:
         Configura una imagen de fondo centrada en la ventana principal.
         """
         # Ruta del logo
-        logo_path = ruta_relativa_recurso("archivos/logo.png")
+        logo_path = ruta_relativa_recurso(self.configuraciones.get('ruta_logos'))
 
         # Cargar la imagen
         imagen = Image.open(logo_path)
@@ -52,6 +48,17 @@ class Application:
 
         # Colocar la imagen en el centro del canvas
         self.canvas.create_image(400, 250, image=self.imagen_fondo)  # Centrada en (400, 250)
+
+        # Obtener el RUC seleccionado de las configuraciones
+        ruc_seleccionado = self.configuraciones.get('ruc_actual')
+
+        # Mostrar el RUC seleccionado en la parte inferior del Canvas
+        self.canvas.create_text(
+            400, 450,  # Coordenadas en el centro abajo de la imagen
+            text=f"RUC SELECCIONADO: {ruc_seleccionado}",
+            font=("Arial", 12, "bold"),
+            fill="black"  # Color del texto
+        )
 
     def crear_menu(self):
         """
@@ -81,11 +88,9 @@ class Application:
 
         # Submenú de "Clasificar"
         menu_clasificar = tk.Menu(menubar, tearoff=0)
-        menu_clasificar.add_command(label="Configurar Estructura XML's", command=self.configurar_estructura_xml)
         menu_clasificar.add_command(label="Ordenar Documentos Recibidos", command=self.ordenar_documentos_recibidos)
         menu_clasificar.add_command(label="Ordenar Documentos Emitidos", command=self.ordenar_documentos_recibidos)
         menu_clasificar.add_command(label="Reorganizar Documentos", command=self.mostrar_acerca_de)
-        menu_clasificar.add_command(label="Renombrar Documentos", command=self.mostrar_acerca_de)
         menubar.add_cascade(label="Clasificar", menu=menu_clasificar)
 
         # Submenú de "Reportes"
@@ -99,6 +104,18 @@ class Application:
         menu_pdfs.add_command(label="Configurar PDFs", command=self.generar_pdfs)
         menubar.add_cascade(label="PDFs", menu=menu_pdfs)
 
+        # Menú "Configuraciones"
+        menu_configuracion = tk.Menu(menubar, tearoff=0)
+        menu_configuracion.add_command(label="Estructura de Rutas", command=self.configurar_ruta_guardado)
+        menu_configuracion.add_command(label="Formato Nombre Archivo", command=self.configurar_nombre_guardado)
+        menu_configuracion.add_command(label="Ruta Rucs", command=self.mostrar_acerca_de)
+        menu_configuracion.add_command(label="RUC ACTUAL", command=self.mostrar_acerca_de)
+        menu_configuracion.add_command(label="Ruta WebDriver", command=self.mostrar_acerca_de)
+        menu_configuracion.add_command(label="Ruta Log", command=self.mostrar_acerca_de)
+        menu_configuracion.add_command(label="Ruta Logo por defecto", command=self.mostrar_acerca_de)
+        menubar.add_cascade(label="Configuraciones", menu=menu_configuracion)
+
+
         # Menú "Acerca de"
         menu_acerca_de = tk.Menu(menubar, tearoff=0)
         menu_acerca_de.add_command(label="Detalles del Desarrollo", command=self.mostrar_acerca_de)
@@ -111,7 +128,7 @@ class Application:
         Lee el archivo de datos y muestra una ventana secundaria para seleccionar un registro.
         """
         # Ruta al archivo de datos
-        archivo_path = ruta_relativa_recurso("archivos/rucs.txt", filetypes=[("Archivos de texto", "*.txt")])
+        archivo_path = ruta_relativa_recurso(self.configuraciones.get('ruta_rucs'), filetypes=[("Archivos de texto", "*.txt")])
 
         # Leer el archivo y cargar los datos en una lista de tuplas
         datos = []
@@ -159,9 +176,7 @@ class Application:
         nombre, ruc, clave = datos[indice]
 
         ventana_opciones = Toplevel(self.ventana_seleccion)
-        ventana_opciones.title(f"Opciones de Descarga para {nombre}")
-        centrar_ventana(ventana_opciones, ancho=400, alto=400)
-        ventana_opciones.resizable(False, False)
+        centrar_ventana(f"Opciones de Descarga para {nombre}", ventana_opciones, ancho=400, alto=400)
         ventana_opciones.grab_set()  # Bloquear interacción con la ventana de selección hasta que se cierre
         ventana_opciones.transient(self.ventana_seleccion)
 
@@ -199,7 +214,7 @@ class Application:
         # Botón de aceptar con estilo
         aceptar_btn = Button(
             ventana_opciones, text="Aceptar",
-            command=lambda: descargar_documentos(
+            command=lambda: descargar_documentos(self.configuraciones.get('ruta_chromedriver'),
                 year_var.get(),
                 month_var.get(),
                 day_var.get(),
@@ -223,21 +238,19 @@ class Application:
             messagebox.showerror("Error", f"No se pudo ordenar los documentos: {e}")
             logging.exception("Error al ordenar documentos.")
 
-    def configurar_estructura_xml(self):
+    def configurar_nombre_guardado(self):
         """
         Abre una ventana para configurar la estructura de nombres y la ruta de guardado para los archivos recibidos.
         """
-        self.ventana_configuracion = Toplevel(self.root)
-        self.ventana_configuracion.title("Configurar Estructura de Recibidos")
-        centrar_ventana(self.ventana_configuracion, ancho=350, alto=450)
-        self.ventana_configuracion.resizable(False, False)
+        self.venta_configuracion_nombre = Toplevel(self.root)
+        centrar_ventana("Configurar nombres XMLs", self.venta_configuracion_nombre, ancho=350, alto=450)
 
         # Evitar interacción con la ventana principal hasta cerrar esta
-        self.ventana_configuracion.grab_set()
-        self.ventana_configuracion.transient(self.root)
+        self.venta_configuracion_nombre.grab_set()
+        self.venta_configuracion_nombre.transient(self.root)
 
         # Crear un marco para centrar las opciones de nombre del archivo
-        frame_nombre = tk.Frame(self.ventana_configuracion)
+        frame_nombre = tk.Frame(self.venta_configuracion_nombre)
         frame_nombre.pack(pady=10)
 
         # Etiqueta para el título de las opciones de nombre del archivo
@@ -245,17 +258,45 @@ class Application:
 
         nombre_var = StringVar(value="clave_acceso")
         opciones_nombre = {
-            "Clave de Acceso": "clave_acceso",
             "RUC Emisor + Secuencial": "ruc_secuencial",
-            "Secuencial": "secuencial"
+            "Clave de Acceso": "clave_acceso",
+            "Fecha + Secuencial": "fecha_secuencial"
         }
 
         # Crear los Radiobuttons dentro del marco y centrarlos
         for texto, valor in opciones_nombre.items():
             tk.Radiobutton(frame_nombre, text=texto, variable=nombre_var, value=valor).pack(anchor="center")
 
+
+        # Guardar configuración
+        def guardar_configuracion():
+            # Obtener la selección de nombre de archivo
+            nombre_archivo = nombre_var.get()
+            # Cambiar solo la configuración 'nombre_archivo'
+            guardar_configuracion_ini('nombre_archivo', nombre_archivo)
+            # Cierra luego de guardar
+            self.venta_configuracion_nombre.destroy()
+
+        # Botón para guardar la configuración
+        Button(self.venta_configuracion_nombre, text="Guardar Opción Nombre", command=guardar_configuracion).pack(pady=20)
+
+    def configurar_ruta_guardado(self):
+        """
+        Abre una ventana para configurar la ruta de guardado para los archivos recibidos.
+        """
+        self.ventana_configuracion_ruta = Toplevel(self.root)
+        centrar_ventana("Configurar Ruta de Archivos XMLs", self.ventana_configuracion_ruta, ancho=350, alto=450)
+
+        # Evitar interacción con la ventana principal hasta cerrar esta
+        self.ventana_configuracion_ruta.grab_set()
+        self.ventana_configuracion_ruta.transient(self.root)
+
+        # Crear un marco para centrar las opciones de nombre del archivo
+        frame_nombre = tk.Frame(self.ventana_configuracion_ruta)
+        frame_nombre.pack(pady=10)
+
         # Configurar ruta de guardado con Listbox reordenable
-        tk.Label(self.ventana_configuracion, text="\nRuta de Guardado (Ordenable):").pack()
+        tk.Label(self.ventana_configuracion_ruta, text="\nRuta de Guardado (Ordenable):").pack()
 
         ruta_opciones = ["Año", "Mes", "RUC", "Recibido/Emitido", "PDF/XML", "Tipo Documento"]
 
@@ -268,7 +309,7 @@ class Application:
             "Tipo Documento": "TipoDocumento"
         }
 
-        ruta_listbox = Listbox(self.ventana_configuracion, selectmode="single", width=30, height=len(ruta_opciones))
+        ruta_listbox = Listbox(self.ventana_configuracion_ruta, selectmode="single", width=30, height=len(ruta_opciones))
         for opcion in ruta_opciones:
             ruta_listbox.insert(END, opcion)
         ruta_listbox.pack(pady=10)
@@ -301,38 +342,54 @@ class Application:
                 logging.error(f"Error al mover hacia abajo: {e}")
 
         # Botones para mover selección
-        btn_arriba = Button(self.ventana_configuracion, text="↑ Mover Arriba", command=mover_arriba)
+        btn_arriba = Button(self.ventana_configuracion_ruta, text="↑ Mover Arriba", command=mover_arriba)
         btn_arriba.pack(pady=5)
-        btn_abajo = Button(self.ventana_configuracion, text="↓ Mover Abajo", command=mover_abajo)
+        btn_abajo = Button(self.ventana_configuracion_ruta, text="↓ Mover Abajo", command=mover_abajo)
         btn_abajo.pack(pady=5)
 
         # Guardar configuración
         def guardar_configuracion():
-            # Obtener la selección de nombre de archivo
-            nombre_archivo = nombre_var.get()
             # Obtener el orden personalizado de la ruta de guardado
             ruta_guardado = "/".join(abreviaciones_ruta[ruta_listbox.get(i)] for i in range(ruta_listbox.size()))
-            # Guardar configuración en el archivo .ini
-            guardar_configuracion_ini(nombre_archivo, ruta_guardado)
+            # Cambiar solo la configuración 'ruta_guardado'
+            guardar_configuracion_ini('ruta_guardado', ruta_guardado)
+            # Cierra luego de guardar
+            self.ventana_configuracion_ruta.destroy()
 
         # Botón para guardar la configuración
-        Button(self.ventana_configuracion, text="Guardar Configuración", command=guardar_configuracion).pack(pady=20)
+        Button(self.ventana_configuracion_ruta, text="Guardar Opción Ruta", command=guardar_configuracion).pack(pady=20)
 
     def ordenar_documentos_recibidos(self):
         """
-        Maneja la opción de ordenar documentos.
+        Muestra un mensaje de progreso mientras se ordenan los documentos y retroalimenta el progreso.
         """
         try:
-            self.configuraciones["nombre_archivo"], self.configuraciones["ruta_guardado"], self.configuraciones[
-                "ruc_actual"] = cargar_configuracion_ini()
-            # Accede a las configuraciones desde el diccionario self.configuraciones
-            nombre_archivo = self.configuraciones["nombre_archivo"]
-            ruta_guardado = self.configuraciones["ruta_guardado"]
-            ruc_actual = self.configuraciones["ruc_actual"]
-            ordenar_documentos(nombre_archivo, ruta_guardado, ruc_actual, "recibidos")
-            logging.info("Documentos ordenados exitosamente.")
+            # Pedir directorio y organizar archivos
+            directorio = filedialog.askdirectory(title="Seleccione la Carpeta de Documentos a Ordenar")
+            if directorio:
+                # Obtener configuraciones necesarias
+                nombre_archivo = self.configuraciones.get("nombre_archivo")
+                ruta_guardado = self.configuraciones.get("ruta_guardado")
+                ruc_actual = self.configuraciones.get("ruc_actual")
+                try:
+                    # Ordenar documentos y obtener mensajes de progreso
+                    resultado = ordenar_documentos(nombre_archivo, ruta_guardado, ruc_actual, "recibidos", directorio)
+                    # Formatear los mensajes de éxito y errores
+                    organizados = "\n".join(resultado["resultado_organizacion"])
+                    eliminados = "\n".join(resultado["resultado_eliminados"])
+                    errores = "\n".join(resultado["mensaje_error"]) if resultado["mensaje_error"] else "No hay errores."
+
+                    # Mostrar mensaje de finalización en un messagebox
+                    messagebox.showinfo(
+                        "Proceso Completado",
+                        f"Archivos organizados:\n{organizados}\n\nArchivos eliminados:\n{eliminados}\n\nMensajes de Error:\n{errores}")
+
+                except Exception as e:
+                    logging.exception(f"Error durante el ordenamiento de documentos: {e}")
+            else:
+                messagebox.showinfo("Información", f"No se selecciono ninguna carpeta.")
         except Exception as e:
-            logging.exception(f"Error al ordenar documentos: {e}")
+            logging.exception(f"Error al iniciar la ventana de progreso: {e}")
 
     def generar_reporte(self):
         """
@@ -375,14 +432,14 @@ class Application:
         Muestra una ventana con detalles sobre el desarrollo de la aplicación.
         """
         detalles = (
-            "Sistema de Gestión de Documentos\n"
+            "Sistema de Gestión de Documentos de SRI\n"
             "Versión: 1.0\n"
-            "Desarrollado por: Tu Nombre\n"
-            "Fecha de Desarrollo: Abril 2024\n"
+            "Desarrollado por: BenderClon\n"
+            "Fecha de Desarrollo: Noviembre 2024\n"
             "Tecnologías Utilizadas:\n"
-            "- Python 3.7\n"
-            "- Tkinter\n"
-            "- Otras Librerías según corresponda"
+            "- CHATGPT\n"
+            "- 6 Michis conmigo\n"
+            "- Un incredulo idiota."
         )
         messagebox.showinfo("Acerca de", detalles)
         logging.info("Información 'Acerca de' mostrada.")

@@ -7,7 +7,7 @@ import logging
 import hashlib
 
 
-def centrar_ventana(ventana, ancho=800, alto=500):
+def centrar_ventana(titulo, ventana, ancho=800, alto=500):
     """
     Centra una ventana en la pantalla con un tamaño fijo.
 
@@ -15,6 +15,7 @@ def centrar_ventana(ventana, ancho=800, alto=500):
     :param ancho: Ancho de la ventana.
     :param alto: Alto de la ventana.
     """
+    ventana.title(titulo)
     pantalla_ancho = ventana.winfo_screenwidth()
     pantalla_alto = ventana.winfo_screenheight()
 
@@ -22,6 +23,7 @@ def centrar_ventana(ventana, ancho=800, alto=500):
     y = (pantalla_alto // 2) - (alto // 2)
 
     ventana.geometry(f"{ancho}x{alto}+{x}+{y}")
+    ventana.resizable(False, False)
 
 
 # Función para obtener la ruta de un recurso, manejando el entorno de PyInstaller
@@ -89,18 +91,54 @@ def separar_tipo_y_serie(comprobante):
     return (match.group(1).strip(), match.group(2).strip()) if match else (None, None)
 
 
-def guardar_configuracion_ini(nombre_archivo, ruta_guardado):
+def cargar_configuracion_ini():
     """
-    Guarda la configuración en un archivo .ini. Si el archivo no existe, permite al usuario seleccionarlo o crearlo.
+    Carga todas las configuraciones desde un archivo .ini y las devuelve en un diccionario.
+    """
+    # Configuración por defecto
+    configuraciones = {
+        "nombre_archivo": "ruc_secuencial",
+        "ruta_guardado": "Año/Mes/RUC/RecEmi/XML/TipoDocumento",
+        "ruc_actual": "9999999999999",
+        "ruta_chromedriver": "archivos/chromedriver.exe",
+        "ruta_logos": "archivos/logo.png",
+        "ruta_rucs": "archivos/rucs.txt",
+        "ruta_logs": "archivos/app.log",
+    }
+
+    # Ruta del archivo de configuración
+    archivo_ini = 'archivos/configuraciones.ini'
+    base_dir = os.path.dirname(sys.executable) if getattr(sys, 'frozen', False) else os.path.dirname(__file__)
+    ruta_config = os.path.join(base_dir, archivo_ini)
+
+    # Leer el archivo de configuración si existe
+    if os.path.exists(ruta_config):
+        config = configparser.ConfigParser()
+        try:
+            config.read(ruta_config)
+            if 'Configuracion' in config:
+                for key in configuraciones.keys():
+                    configuraciones[key] = config.get("Configuracion", key, fallback=configuraciones[key])
+            else:
+                logging.warning("La sección 'Configuracion' no se encontró en el archivo. Usando valores predeterminados.")
+        except configparser.Error as e:
+            logging.error(f"Error al leer el archivo de configuración: {e}. Usando valores predeterminados.")
+    else:
+        logging.warning(f"Archivo de configuración '{archivo_ini}' no encontrado. Usando valores predeterminados.")
+
+    return configuraciones
+
+
+def guardar_configuracion_ini(config_key, config_value):
+    """
+    Guarda solo una configuración en el archivo .ini.
 
     Args:
-        nombre_archivo (str): Nombre del archivo seleccionado para el XML.
-        ruta_guardado (str): Ruta de guardado personalizada.
+        config_key (str): Clave de la configuración a actualizar.
+        config_value (str): Nuevo valor de la configuración.
     """
     # Definir el nombre del archivo de configuración
     archivo_ini = 'archivos/configuraciones.ini'
-
-    # Obtener la ruta de la ubicación del archivo
     base_dir = os.path.dirname(sys.executable) if getattr(sys, 'frozen', False) else os.path.dirname(__file__)
     ruta_config = os.path.join(base_dir, archivo_ini)
 
@@ -136,64 +174,24 @@ def guardar_configuracion_ini(nombre_archivo, ruta_guardado):
             temporal.destroy()
             break
 
-    # Guardar la configuración en el archivo .ini
+    # Cargar el archivo existente o crear uno nuevo si no existe
     config = configparser.ConfigParser()
-    config.read(ruta_config)
+    if os.path.exists(ruta_config):
+        config.read(ruta_config)
 
-    # Actualizar solo las configuraciones necesarias
     if 'Configuracion' not in config:
         config['Configuracion'] = {}
 
-    config['Configuracion']['nombre_archivo'] = nombre_archivo
-    config['Configuracion']['ruta_guardado'] = ruta_guardado
+    # Actualizar solo la configuración especificada
+    config['Configuracion'][config_key] = config_value
 
-    # Guardar la configuración actualizada en el archivo .ini
+    # Guardar el archivo de configuración actualizado
     try:
         with open(ruta_config, 'w') as configfile:
             config.write(configfile)
-
-        messagebox.showinfo("Configuración Guardada", "La configuración ha sido guardada exitosamente.")
-        logging.info("Configuración guardada exitosamente en configuraciones.ini.")
-
+        logging.info(f"Configuración '{config_key}' guardada exitosamente.")
     except Exception as e:
-        logging.error(f"Error al guardar la configuración: {e}")
-
-def cargar_configuracion_ini():
-    """
-    Carga la configuración desde un archivo .ini y establece valores en variables globales.
-    Si el archivo no existe, se registran valores predeterminados.
-
-    Returns:
-        tuple: Contiene (nombre_archivo, ruta_guardado, ruc_actual) cargados o predeterminados.
-    """
-    # Valores predeterminados
-    nombre_archivo = "clave_acceso"
-    ruta_guardado = "Año/Mes/RUC/RecEmi/XML/TipoDocumento"
-    ruc_actual = "9999999999999"
-
-    # Ruta del archivo de configuración
-    archivo_ini = 'archivos/configuraciones.ini'
-    base_dir = os.path.dirname(sys.executable) if getattr(sys, 'frozen', False) else os.path.dirname(__file__)
-    ruta_config = os.path.join(base_dir, archivo_ini)
-
-    # Verificar si el archivo de configuración existe y cargar su contenido
-    if os.path.exists(ruta_config):
-        config = configparser.ConfigParser()
-        try:
-            config.read(ruta_config)
-            if 'Configuracion' in config:
-                nombre_archivo = config.get("Configuracion", "nombre_archivo", fallback=nombre_archivo)
-                ruta_guardado = config.get("Configuracion", "ruta_guardado", fallback=ruta_guardado)
-                ruc_actual = config.get("Configuracion", "ruc_actual", fallback=ruc_actual)
-            else:
-                logging.warning(
-                    "La sección 'Configuracion' no se encontró en el archivo. Usando valores predeterminados.")
-        except configparser.Error as e:
-            logging.error(f"Error al leer el archivo de configuración: {e}. Usando valores predeterminados.")
-    else:
-        logging.warning(f"Archivo de configuración '{archivo_ini}' no encontrado. Usando valores predeterminados.")
-
-    return nombre_archivo, ruta_guardado, ruc_actual
+        logging.error(f"Error al guardar la configuración '{config_key}': {e}")
 
 
 def calcular_hash(archivo):
@@ -219,14 +217,14 @@ def encontrar_y_eliminar_duplicados(directorio):
         directorio (str): Ruta del directorio donde se buscarán y eliminarán los duplicados.
 
     Returns:
-        list: Lista de mensajes de log sobre la operación realizada, incluyendo el número de duplicados eliminados.
+        list: Lista de mensajes sobre la operación realizada, incluyendo el número de duplicados eliminados y archivos únicos restantes.
     """
     # Diccionario para almacenar el hash de cada archivo y su nombre
     hashes = {}
-    # Lista para almacenar el nombre de los archivos duplicados encontrados
-    duplicados = []
-    # Lista de mensajes de log para informar sobre la operación
-    mensajes = []
+    # Contador de archivos duplicados eliminados
+    contador_duplicados = 0
+    # Contador de archivos únicos
+    contador_unicos = 0
 
     # Iterar sobre todos los archivos en el directorio
     for archivo in os.listdir(directorio):
@@ -239,19 +237,18 @@ def encontrar_y_eliminar_duplicados(directorio):
 
             # Verificar si el hash ya existe, lo que indica un duplicado
             if hash_archivo in hashes:
-                duplicados.append(ruta_completa)  # Añadir la ruta completa del duplicado
+                try:
+                    os.remove(ruta_completa)
+                    contador_duplicados += 1
+                except OSError as e:
+                    logging.error(f"Error al eliminar {archivo}: {e}")
             else:
                 hashes[hash_archivo] = ruta_completa  # Almacenar el hash y su ruta completa
+                contador_unicos += 1
 
-    # Eliminar los archivos duplicados encontrados
-    for archivo in duplicados:
-        try:
-            os.remove(archivo)
-            mensajes.append(f'Eliminado archivo duplicado: {archivo}')
-        except OSError as e:
-            mensajes.append(f'Error al eliminar {archivo}: {e}')
-
-    # Añadir mensaje final sobre la operación
-    mensajes.append(f'Se han eliminado {len(duplicados)} archivos duplicados en total.')
+    # Crear los mensajes finales en una lista
+    mensajes = [f"Se han eliminado {contador_duplicados} archivos duplicados.",
+        f"Quedan {contador_unicos} archivos únicos en el directorio."]
 
     return mensajes
+

@@ -10,7 +10,7 @@ def configurar_logging():
     ruta_archivo_log = ruta_relativa_recurso("archivos/app.log", [("Archivos de log", "*.log")])
     logging.basicConfig(
         filename=ruta_archivo_log,
-        level=logging.ERROR,
+        level=logging.INFO,
         format='%(asctime)s - %(levelname)s - %(message)s'
     )
     logging.info('Logging configurado correctamente.')

@@ -12,14 +12,14 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait, Select
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, SessionNotCreatedException, NoSuchWindowException, \
-    StaleElementReferenceException
+    StaleElementReferenceException, NoSuchElementException
 from sri_xml_bot.librerias.utils import ruta_relativa_recurso, separar_tipo_y_serie
 
 # WebDriver global para controlarlo en distintas funciones
 driver = None
 delay_web = 1
 
-def descargar_documentos(anio, mes, dia, tipo_descarga, tipo_documento, ruc, clave):
+def descargar_documentos(ruta_chromedriver, anio, mes, dia, tipo_descarga, tipo_documento, ruc, clave):
     """
     Lógica para descargar documentos basada en los parámetros seleccionados.
 
@@ -40,7 +40,7 @@ def descargar_documentos(anio, mes, dia, tipo_descarga, tipo_documento, ruc, cla
                      f"Tipo de descarga: {tipo_descarga}, Tipo de documento: {tipo_documento}")
 
         if not driver:
-            configurar_webdriver()
+            configurar_webdriver(ruta_chromedriver)
 
         iniciar_sesion(ruc, clave)
         seleccionar_opciones_de_consulta(anio, mes, dia, tipo_documento)
@@ -72,7 +72,7 @@ def descargar_documentos(anio, mes, dia, tipo_descarga, tipo_documento, ruc, cla
 # Configuración del WebDriver
 # ===================================
 
-def configurar_webdriver():
+def configurar_webdriver(ruta):
     """
     Configura el WebDriver de Chrome con las preferencias necesarias para descargar documentos.
     """
@@ -84,8 +84,7 @@ def configurar_webdriver():
             "profile.default_content_setting_values.automatic_downloads": 1
         }
         chrome_options.add_experimental_option("prefs", prefs)
-        ruta_chromedriver = ruta_relativa_recurso('archivos/chromedriver.exe',
-                                                  filetypes=[("Archivos ejecutables", "*.exe")])
+        ruta_chromedriver = ruta_relativa_recurso(ruta, filetypes=[("Archivos ejecutables", "*.exe")])
 
         service = Service(executable_path=ruta_chromedriver)
         service.creationflags = subprocess.CREATE_NO_WINDOW  # Oculta la ventana cmd
@@ -151,24 +150,35 @@ def click_consulta():
     """
     global driver
     try:
+        # Intentar hacer clic en el botón de consulta
         driver.find_element(By.ID, 'btnRecaptcha').click()
-        logging.info("Botón de consulta presionado, esperando reCAPTCHA.")
-        mensaje_no_datos = WebDriverWait(driver, 20).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, "#formMessages\\:messages .ui-messages-warn-summary")))
+        logging.info("Botón de consulta presionado, verificando resultados.")
 
-        if mensaje_no_datos and "No existen datos para los parámetros ingresados" in mensaje_no_datos.text:
-            logging.info("No existen datos para los parámetros ingresados. Retornando lista vacía.")
+        # Intentar encontrar el mensaje inmediatamente sin espera
+        try:
+            mensaje_no_datos = driver.find_element(By.CSS_SELECTOR, "#formMessages\\:messages .ui-messages-warn-summary")
+            if "No existen datos para los parámetros ingresados" in mensaje_no_datos.text:
+                logging.info("No existen datos para los parámetros ingresados. Retornando lista vacía.")
+                liberar_recursos()
+                return False
+        except (NoSuchElementException, StaleElementReferenceException):
+            # Si el mensaje no se encuentra inmediatamente, pasar a buscar la tabla de resultados
+            logging.info("Mensaje de 'No existen datos' no encontrado inmediatamente, buscando tabla de resultados.")
+
+        # Esperar la aparición de la tabla de resultados
+        try:
+            WebDriverWait(driver, 240).until(
+                EC.presence_of_element_located((By.ID, "frmPrincipal:tablaCompRecibidos_data"))
+            )
+            logging.info("Consulta completada, tabla de resultados encontrada.")
+            return True
+        except TimeoutException:
+            logging.error("No se encontró la tabla de resultados después de esperar.")
             liberar_recursos()
             return False
-        else:
-            WebDriverWait(driver, 240).until(
-                EC.presence_of_element_located((By.ID, "frmPrincipal:tablaCompRecibidos_data")))
-            # Verificar si existe el mensaje de "No existen datos para los parámetros ingresados"
-            logging.info("Consulta completada, esperando resultados.")
-            return True
 
     except TimeoutException:
-        logging.error("Timeout al realizar la consulta.")
+        logging.error("No se encontró el botón de consulta. Saliendo.")
         liberar_recursos()
         return False
 
