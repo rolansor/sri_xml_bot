@@ -169,7 +169,7 @@ def calcular_lineas_texto(texto, caracteres_por_linea):
     return math.ceil(len(texto) / caracteres_por_linea)
 
 
-def procesar_detalles(pdf, ult_x, ult_y, detalles):
+def procesar_detalles(pdf, ult_x, ult_y, detalles, identificacion):
     # Calcula el máximo tamaño que puede tener la tabla de detalles en la página actual,
     # teniendo en cuenta el espacio superior reservado (ESPACIADO_BLOQUES_RIDE).
     max_pos_tam_tabla = ult_y - ESPACIADO_BLOQUES_RIDE * 2
@@ -206,7 +206,7 @@ def procesar_detalles(pdf, ult_x, ult_y, detalles):
             # Si hay detalles acumulados hasta ahora, los procesa antes de continuar.
             if detalles_procesados:
                 # Dibuja los detalles acumulados en la tabla y calcula la nueva posición de 'ult_y'.
-                ult_y = contenido_fac(pdf, ult_x, ult_y, detalles_procesados)
+                ult_y = contenido_fac(pdf, ult_x, ult_y, detalles_procesados, identificacion)
                 # Crea una nueva página en el PDF.
                 pdf.showPage()
                 # Establece el límite de tamaño para la tabla en la nueva página.
@@ -221,7 +221,7 @@ def procesar_detalles(pdf, ult_x, ult_y, detalles):
                 # Si no hay detalles procesados y el detalle actual no cabe, fuerza a una nueva página.
                 pdf.showPage()
                 # Procesa el detalle actual directamente en la nueva página.
-                ult_y = contenido_fac(pdf, ult_x, ALTO_A4 - ESPACIADO_BLOQUES_RIDE, [detalle])
+                ult_y = contenido_fac(pdf, ult_x, ALTO_A4 - ESPACIADO_BLOQUES_RIDE, [detalle], identificacion)
                 # Restablece la altura acumulada para continuar con los siguientes detalles.
                 altura_acumulada = 2 * tamanio_linea
                 continue  # Continúa con el próximo detalle.
@@ -232,59 +232,106 @@ def procesar_detalles(pdf, ult_x, ult_y, detalles):
 
     # Después de procesar todos los detalles, si quedan detalles por procesar, los dibuja.
     if detalles_procesados:
-        ult_y = contenido_fac(pdf, ult_x, ult_y, detalles_procesados)
+        ult_y = contenido_fac(pdf, ult_x, ult_y, detalles_procesados, identificacion)
 
     # Devuelve la última posición 'y' después de procesar los detalles, para continuar dibujando desde ahí.
     return ult_y
 
 
-def contenido_fac(pdf, ult_x, ult_y, detalles):
+def contenido_fac(pdf, ult_x, ult_y, detalles, identificacion):
     x = ult_x + ESPACIADO_BLOQUES_RIDE
-    # Nos separamos del borde superior
     y = ult_y - ESPACIADO_BLOQUES_RIDE
 
     ancho_bloque = ANCHO_A4 - ESPACIADO_BLOQUES_RIDE * 2
     p8_center = ParagraphStyle('parrafos', fontSize=8, fontName="Helvetica", alignment=TA_CENTER)
     p8_right = ParagraphStyle('parrafos', fontSize=8, fontName="Helvetica", alignment=TA_RIGHT)
+
     data = []
-    data.append([Paragraph('Cod. Principal', p8_center),
-                 Paragraph('Cod. Auxiliar', p8_center),
-                 Paragraph('CR', p8_center),
-                 Paragraph('Descripción', p8_center),
-                 Paragraph('#', p8_center),
-                 Paragraph('Precio Uni.', p8_center),
-                 Paragraph('Desc.', p8_center),
-                 Paragraph('Precio Tot.', p8_center)])
+    mostrar_cr = identificacion in ['0910441310', '0910441310001', '0930808662', '0930808662001']
+    col_width = (ancho_bloque / float(24))
+
+    # Definir encabezados según la condición
+    if mostrar_cr:
+        header = [
+            Paragraph('Cod. Principal', p8_center),
+            Paragraph('Cod. Auxiliar', p8_center),
+            Paragraph('CR', p8_center),
+            Paragraph('Descripción', p8_center),
+            Paragraph('#', p8_center),
+            Paragraph('Precio Uni.', p8_center),
+            Paragraph('Desc.', p8_center),
+            Paragraph('Precio Tot.', p8_center)
+        ]
+        widths = [
+            col_width * 3 * mm,
+            col_width * 3 * mm,
+            col_width * 2 * mm,
+            col_width * 8 * mm,
+            col_width * 2 * mm,
+            col_width * 2 * mm,
+            col_width * 2 * mm,
+            col_width * 2 * mm
+        ]
+    else:
+        # Sin CR
+        header = [
+            Paragraph('Cod. Principal', p8_center),
+            Paragraph('Cod. Auxiliar', p8_center),
+            Paragraph('Descripción', p8_center),
+            Paragraph('#', p8_center),
+            Paragraph('Precio Uni.', p8_center),
+            Paragraph('Desc.', p8_center),
+            Paragraph('Precio Tot.', p8_center)
+        ]
+        widths = [
+            col_width * 3 * mm,
+            col_width * 3 * mm,
+            col_width * 10 * mm,
+            col_width * 2 * mm,
+            col_width * 2 * mm,
+            col_width * 2 * mm,
+            col_width * 2 * mm
+        ]
+
+    data.append(header)
 
     for detalle in detalles:
-        # Extracción de los campos requeridos del detalle
         codigo_principal = detalle.get('codigoPrincipal', '')
-        codigo_auxiliar = detalle.get('codigoAuxiliar', '')  # Usa get para manejar la ausencia del campo
+        codigo_auxiliar = detalle.get('codigoAuxiliar', '')
         descripcion = detalle['descripcion'] + (' -**- ' + detalle.get('marcaProducto', '') if detalle.get('marcaProducto') else '')
 
-        # Formatear los valores numéricos
-        cantidad = int(float(detalle['cantidad']))  # Convertir a entero
+        cantidad = int(float(detalle['cantidad']))
         precio_unitario = '{:.3f}'.format(float(detalle['precioUnitario']))
         descuento = '{:.3f}'.format(float(detalle.get('descuento', '0.00')))
         precio_total_sin_impuesto = '{:.3f}'.format(float(detalle['precioTotalSinImpuesto']))
-        # Agregar los valores formateados a la lista 'data'
-        data.append([
-            Paragraph(codigo_principal, p8_center),
-            Paragraph(codigo_auxiliar, p8_center),
-            Paragraph('', p8_center),
-            Paragraph(descripcion, p8_center),
-            Paragraph(str(cantidad), p8_center),  # Convertir cantidad a cadena
-            Paragraph(precio_unitario, p8_right),
-            Paragraph(descuento, p8_right),
-            Paragraph(precio_total_sin_impuesto, p8_right)
-        ])
-    col_width = (ancho_bloque / float(24))
-    tabla_contenido = Table(data,
-                            colWidths=[col_width * 3 * mm, col_width * 3 * mm, col_width * 2 * mm, col_width * 8 * mm,
-                                       col_width * 2 * mm,
-                                       col_width * 2 * mm, col_width * 2 * mm, col_width * 2 * mm])
+
+        if mostrar_cr:
+            row = [
+                Paragraph(codigo_principal, p8_center),
+                Paragraph(codigo_auxiliar, p8_center),
+                Paragraph('', p8_center),  # CR vacío
+                Paragraph(descripcion, p8_center),
+                Paragraph(str(cantidad), p8_center),
+                Paragraph(precio_unitario, p8_right),
+                Paragraph(descuento, p8_right),
+                Paragraph(precio_total_sin_impuesto, p8_right)
+            ]
+        else:
+            # Sin columna CR
+            row = [
+                Paragraph(codigo_principal, p8_center),
+                Paragraph(codigo_auxiliar, p8_center),
+                Paragraph(descripcion, p8_center),
+                Paragraph(str(cantidad), p8_center),
+                Paragraph(precio_unitario, p8_right),
+                Paragraph(descuento, p8_right),
+                Paragraph(precio_total_sin_impuesto, p8_right)
+            ]
+
+        data.append(row)
+
+    tabla_contenido = Table(data, colWidths=widths)
     tabla_contenido.setStyle(TableStyle([('GRID', (0, 0), (-1, -1), 1, colors.black)]))
-    tabla_contenido.wrapOn(pdf, 500, 500)
     w, h = tabla_contenido.wrap(0, 0)
     alto_tabla = h / mm
     tabla_contenido.drawOn(pdf, x * mm, (y - alto_tabla) * mm)
@@ -486,17 +533,24 @@ def tabla_formas_pago_fac(pdf, ult_x, ult_y, formas_pago):
 
 def obtener_formas_pago_fac(datos_factura):
     formas_pago = []
+    mostrar_adi = datos_factura.get('infoFactura', {}).get('identificacionComprador', '9999999999999') in [
+        '0910441310',
+        '0910441310001',
+        '0930808662',
+        '0930808662001'
+    ]
     # Verificar si 'pagos' existe y no está vacío en datos_factura
     pagos = datos_factura.get('infoFactura', {}).get('pagos', [])
     if pagos:
         for pago in pagos:
             forma_pago_nombre = nombres_formapago.get(pago['formaPago'], 'Desconocido')
             formas_pago.append(f'{forma_pago_nombre}: {pago["total"]}')
-    formas_pago.append(f'# FACTURA: ')
-    formas_pago.append(f'# RETENCIÓN: ')
-    formas_pago.append(f'FORMA PAGO/#: ')
-    formas_pago.append(f'REVISADO/FECHA: ')
-    formas_pago.append(f'ETIQUETADO/FECHA: ')
+    if mostrar_adi:
+        formas_pago.append(f'# FACTURA: ')
+        formas_pago.append(f'# RETENCIÓN: ')
+        formas_pago.append(f'FORMA PAGO/#: ')
+        formas_pago.append(f'REVISADO/FECHA: ')
+        formas_pago.append(f'ETIQUETADO/FECHA: ')
     return formas_pago
 
 
@@ -510,7 +564,7 @@ def imprimir_factura_pdf(documento, ruta_archivo, ruta_logo):
     ult_x, ult_y = datos_emisor_fac(p, 0, ALTO_A4, documento, ruta_logo)
     detalle_fac(p, ult_x, ALTO_A4, documento)
     ult_x, ult_y = datos_cliente_fac(p, 0, ult_y, documento)
-    ult_y = procesar_detalles(p, ult_x, ult_y, documento['detalles'])
+    ult_y = procesar_detalles(p, ult_x, ult_y, documento['detalles'], documento.get('infoFactura', {}).get('identificacionComprador', '9999999999999'))
     datos_forma_pago = obtener_formas_pago_fac(documento)
     ult_x, ult_y, temp_y = tabla_formas_pago_fac(p, 0, ult_y, datos_forma_pago)
     totales_fac(p, 0, temp_y, calcular_totales_fac(documento))
