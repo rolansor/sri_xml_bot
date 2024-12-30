@@ -99,6 +99,7 @@ def procesar_xml_pdf(progress_window, progress_label, progress_bar, folder_path)
 
                 file_path = os.path.join(root_dir, file_name)
                 try:
+                    '''MODIFICACION ROLFER'''
                     diccionario_documento = procesar_archivo_xml(file_path)
                     clave_acceso = diccionario_documento['infoTributaria']['claveAcceso']
                     nombre_archivo_pdf = f"{clave_acceso}.pdf"
