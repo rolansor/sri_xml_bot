@@ -4,7 +4,7 @@ import tkinter as tk
 from tkinter import filedialog
 from tkinter import ttk
 from librerias.auxiliares import centrar_ventana
-from librerias.leer_xmls import procesar_archivo_xml
+from librerias.leer_xmls import procesar_archivo_xml, extraer_ruc_emisor, extraer_secuencial
 from librerias.xml_a_pdf.ride_factura import imprimir_factura_pdf
 from librerias.xml_a_pdf.ride_notacredito import imprimir_nc_pdf
 from librerias.xml_a_pdf.ride_retencion import imprimir_retencion_pdf
@@ -99,26 +99,11 @@ def procesar_xml_pdf(progress_window, progress_label, progress_bar, folder_path)
 
                 file_path = os.path.join(root_dir, file_name)
                 try:
-                    '''MODIFICACION ROLFER'''
-                    diccionario_documento = procesar_archivo_xml(file_path)
-                    clave_acceso = diccionario_documento['infoTributaria']['claveAcceso']
-                    nombre_archivo_pdf = f"{clave_acceso}.pdf"
-                    '''
-                    MODIFICACION GABY
                     diccionario_documento = procesar_archivo_xml(file_path)
                     # Obtiene la clave de acceso y otros datos
-                    razon_social = diccionario_documento['infoTributaria']['razonSocial']
-                    estab = diccionario_documento['infoTributaria']['estab']
-                    ptoEmi = diccionario_documento['infoTributaria']['ptoEmi']
-                    secuencial = diccionario_documento['infoTributaria']['secuencial']
-
-                    # Limita la razón social a 15 caracteres
-                    razon_social_recortada = razon_social[:30]
-
-                    # Formatea el nombre del archivo como 'RazonSocial - Estab-PtoEmi-Secuencial.pdf'
-                    nombre_archivo_pdf = f"{razon_social_recortada} - {estab}-{ptoEmi}-{secuencial}.pdf"
-                    '''
-
+                    ruc_emisor = extraer_ruc_emisor(diccionario_documento)
+                    secuencial = extraer_secuencial(diccionario_documento)
+                    nombre_archivo_pdf = f"{ruc_emisor}_{secuencial}.pdf"
                     # Construye la nueva ruta para el archivo PDF
                     # Reemplaza '\xml\' en la ruta con '\pdf\' para mantener la estructura deseada
                     ruta_carpeta_pdf = root_dir.replace('\\xml', '\\pdf')

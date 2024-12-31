@@ -13,18 +13,61 @@ from sri_xml_bot.robot_logica import pedir_opcion_centrada, pedir_fecha, configu
 from sri_xml_bot.xml_a_pdf import mostrar_progreso, procesar_xml_pdf, seleccionar_carpeta_topdf
 
 
+def pedir_credenciales(root):
+    """
+    Abre una ventana secundaria que pide manualmente el RUC y la contraseña.
+    Devuelve el (ruc, contrasena). Si se cierra la ventana o se deja vacío,
+    devolverá cadenas vacías.
+    """
+    nueva_ventana = tk.Toplevel(root)
+    nueva_ventana.title("Ingresar Credenciales")
+    centrar_ventana(nueva_ventana)
+
+    # Variables donde se guardarán los valores ingresados
+    ruc_var = tk.StringVar()
+    contra_var = tk.StringVar()
+
+    # Etiquetas y entradas
+    label_ruc = tk.Label(nueva_ventana, text="RUC:")
+    entry_ruc = tk.Entry(nueva_ventana, textvariable=ruc_var, width=30)
+
+    label_contra = tk.Label(nueva_ventana, text="Contraseña:")
+    entry_contra = tk.Entry(nueva_ventana, textvariable=contra_var, width=30)
+
+    label_ruc.pack(pady=5)
+    entry_ruc.pack(pady=5)
+    label_contra.pack(pady=5)
+    entry_contra.pack(pady=5)
+
+    # Variable para capturar si se hizo clic en "Continuar"
+    # (Si no se desea usar una segunda variable, se puede cerrar la ventana igual).
+    credenciales = {"ruc": "", "contra": ""}
+
+    def continuar():
+        # Validamos que el usuario haya ingresado algo
+        if not ruc_var.get().strip() or not contra_var.get().strip():
+            messagebox.showerror("Error", "Debe ingresar tanto el RUC como la contraseña.")
+            return
+        credenciales["ruc"] = ruc_var.get().strip()
+        credenciales["contra"] = contra_var.get().strip()
+        nueva_ventana.destroy()  # Cierra la ventana una vez completado
+
+    boton_continuar = tk.Button(nueva_ventana, text="Continuar", command=continuar)
+    boton_continuar.pack(pady=10)
+
+    # Hacemos que la ejecución de esta función se pause
+    # hasta que la ventana secundaria se cierre.
+    nueva_ventana.grab_set()
+    nueva_ventana.wait_window()
+
+    return credenciales["ruc"], credenciales["contra"]
+
+
 # Funciones para cada opción
 def descargar_documentos(root):
-    opciones_ruc = cargar_rucs_credenciales_desde_archivo()
-
-    opcion, nueva_ventana = pedir_opcion_centrada("RUC", root, "Por favor, elige el RUC que deseas procesar:", opciones_ruc)
-
-    # Si no se seleccionó ninguna opción, cerrar la ventana secundaria
-    if not opcion:
-        cerrar_ventana_secundaria(nueva_ventana, root)
+    usuario, contrasena = pedir_credenciales(root)
+    if not usuario or not contrasena:
         return
-
-    usuario, contrasena = opciones_ruc[opcion]
 
     tipos_documento = {
         "Factura": "Factura",

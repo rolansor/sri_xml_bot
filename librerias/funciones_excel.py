@@ -244,12 +244,11 @@ def guardar_documentos_emitidos(diccionario_documento, file_path):
                     valor = formatear_fecha(valor)
 
                 ws.cell(row=row_index, column=col_num, value=valor)
-            id_receptor = aplanado["ruc_receptor"]
 
         sheet_index += 1  # Incrementa el contador después de procesar una hoja
         adjust_column_width(ws)
     fecha_creacion = datetime.now().strftime("%d-%m-%Y")
-    file_name = f"{id_receptor}_reporte_contabilidad_{fecha_creacion}.xlsx"
+    file_name = f"reporte_contabilidad_{fecha_creacion}.xlsx"
     # Guardar el archivo
     wb.save(file_path + file_name)
     print(f"Datos guardados en el archivo {file_name}")
