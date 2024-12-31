@@ -3,8 +3,12 @@ from tkinter import messagebox, Toplevel, Listbox, Button, StringVar, OptionMenu
 from tkinter.constants import END
 from PIL import Image, ImageTk
 import logging
-from datetime import datetime
+from datetime import datetime, timedelta
+
+from tkcalendar import DateEntry
+
 from sri_xml_bot.descargar_documentos import descargar_documentos
+from sri_xml_bot.descargar_emitidos import descargar_emitidos
 from sri_xml_bot.generar_pdfs import generar_pdfs
 from sri_xml_bot.generar_reporte import generar_reporte
 from sri_xml_bot.imprimir_pdfs import imprimir_pdfs
@@ -145,10 +149,7 @@ class Application:
 
         # Abrir una ventana secundaria para mostrar la lista de opciones
         self.ventana_seleccion = Toplevel(self.root)
-        self.ventana_seleccion.title("Seleccionar Cliente")
-        centrar_ventana(self.ventana_seleccion, ancho=400, alto=250)
-        self.ventana_seleccion.resizable(False, False)
-
+        centrar_ventana("Seleccionar Cliente", self.ventana_seleccion, ancho=400, alto=250)
         # Evitar interacción con la ventana principal hasta cerrar esta
         self.ventana_seleccion.grab_set()
         self.ventana_seleccion.transient(self.root)  # Asegura que se mantenga sobre la ventana principal
@@ -227,16 +228,107 @@ class Application:
         )
         aceptar_btn.pack(pady=20)
 
-    def descargar_emitidos(self, tipo_documento):
+    def descargar_emitidos(self, tipo_comprobante):
         """
-        Maneja la opción de ordenar documentos.
+        Lee el archivo de datos y muestra una ventana para seleccionar un cliente para la descarga de documentos emitidos.
         """
+        archivo_path = ruta_relativa_recurso(self.configuraciones.get('ruta_rucs'), filetypes=[("Archivos de texto", "*.txt")])
+        datos = []
         try:
-            messagebox.showinfo("Éxito", "Documentos ordenados correctamente.")
-            logging.info("Documentos ordenados exitosamente.")
+            with open(archivo_path, 'r') as file:
+                for linea in file:
+                    nombre, ruc, clave = linea.strip().split(',')
+                    datos.append((nombre, ruc, clave))
+            logging.info("Datos de clientes cargados correctamente desde el archivo.")
         except Exception as e:
-            messagebox.showerror("Error", f"No se pudo ordenar los documentos: {e}")
-            logging.exception("Error al ordenar documentos.")
+            messagebox.showerror("Error", f"No se pudo leer el archivo: {e}", parent=self.root)
+            logging.exception("Error al leer el archivo de clientes.")
+            return
+
+        # Crear ventana de selección de cliente
+        self.ventana_seleccion = Toplevel(self.root)
+        centrar_ventana("Seleccionar Cliente", self.ventana_seleccion, ancho=400, alto=250)
+        self.ventana_seleccion.grab_set()
+        self.ventana_seleccion.transient(self.root)
+
+        # Listbox para mostrar nombre y RUC de clientes
+        listbox = tk.Listbox(self.ventana_seleccion, width=50, height=10)
+        listbox.pack(pady=20)
+        for nombre, ruc, _ in datos:
+            listbox.insert(tk.END, f"{nombre} - {ruc}")
+
+        # Botón para seleccionar el cliente
+        seleccionar_btn = Button(
+            self.ventana_seleccion, text="Seleccionar",
+            command=lambda: self.mostrar_opciones_emitidos(datos, tipo_comprobante, listbox.curselection())
+        )
+        seleccionar_btn.pack(pady=10)
+
+    def mostrar_opciones_emitidos(self, datos, tipo_comprobante, seleccion):
+        """
+        Muestra opciones para documentos emitidos tras seleccionar un cliente.
+        """
+        if not seleccion:
+            messagebox.showwarning("Selección inválida", "Por favor, seleccione un cliente de la lista.",
+                                   parent=self.ventana_seleccion)
+            return
+
+        indice = seleccion[0]
+        nombre, ruc, clave = datos[indice]
+
+        ventana_opciones = Toplevel(self.ventana_seleccion)
+        centrar_ventana(f"Opciones de Descarga para {nombre}", ventana_opciones, ancho=400, alto=400)
+        ventana_opciones.grab_set()
+        ventana_opciones.transient(self.ventana_seleccion)
+
+        # Dentro de tu función o clase, reemplaza el campo de fecha así:
+        tk.Label(ventana_opciones, text="Introduce la fecha de emisión:").pack(pady=5)
+
+        # Crear el widget DateEntry en lugar del campo Entry
+        dia_anterior = datetime.now() - timedelta(days=1)
+        fecha_var = StringVar(value=dia_anterior.strftime("%d/%m/%Y"))
+        fecha_entry = DateEntry(ventana_opciones, textvariable=fecha_var, date_pattern='dd/MM/yyyy', maxdate=dia_anterior)
+        fecha_entry.pack()
+
+        # Diccionario para Estado de Autorización
+        estados_autorizacion = {
+            "AUT": "Autorizados",
+            "NAT": "No Autorizados",
+            "PPR": "Por Procesar"
+        }
+        # Convertimos los valores del diccionario a una lista para el OptionMenu
+        estado_opciones = list(estados_autorizacion.values())
+        tk.Label(ventana_opciones, text="Estado de autorización:").pack()
+        estado_var = StringVar(value="Autorizados")
+        estado_menu = OptionMenu(ventana_opciones, estado_var, *estado_opciones)
+        estado_menu.pack()
+
+        # Establecimiento
+        estab_var = StringVar(value="Todos")
+        tk.Label(ventana_opciones, text="Establecimiento:").pack()
+        tk.Entry(ventana_opciones, textvariable=estab_var).pack()
+
+        # Punto de emisión
+        pemi_var = StringVar(value="001")
+        tk.Label(ventana_opciones, text="Punto de emisión:").pack()
+        tk.Entry(ventana_opciones, textvariable=pemi_var).pack()
+
+        # Botón de aceptar para iniciar descarga
+        aceptar_btn = Button(
+            ventana_opciones, text="Aceptar",
+            command=lambda: descargar_emitidos(
+                self.configuraciones.get('ruta_chromedriver'),
+                fecha_var.get(),
+                next((k for k, v in estados_autorizacion.items() if v == estado_var.get()), None),
+                tipo_comprobante,
+                estab_var.get(),
+                pemi_var.get(),
+                ruc,
+                clave
+            ),
+            bg="#007BFF", fg="white", font=("Arial", 12, "bold"), padx=10, pady=5
+        )
+        aceptar_btn.pack(pady=20)
 
     def configurar_nombre_guardado(self):
         """
