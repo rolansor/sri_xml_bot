@@ -64,11 +64,7 @@ def pedir_credenciales(root):
 
 
 # Funciones para cada opción
-def descargar_documentos(root):
-    usuario, contrasena = pedir_credenciales(root)
-    if not usuario or not contrasena:
-        return
-
+def descargar_documentos(root, usuario, contrasena):
     tipos_documento = {
         "Factura": "Factura",
         "Liquidación de compra de bienes y prestación de servicios": "Liquidación de compra de bienes y prestación de servicios",
@@ -246,19 +242,31 @@ def renombrar_documentos(root):
 
 
 def main():
+    fecha_limite = datetime.datetime(2024, 12, 31, 1, 1, 59)
+    hoy = datetime.datetime.now()
+    if hoy >= fecha_limite:
+        # Formatear fecha y hora con strftime (ej. "2024-12-31 23:59:59")
+        fecha_formateada = fecha_limite.strftime("%Y-%m-%d %H:%M:%S")
+        messagebox.showerror("Licencia expirada",
+                             f"La licencia ha expirado.\nNo puedes ejecutar el programa después de {fecha_formateada}")
+        return False
+
     # Crear la ventana principal
     root = tk.Tk()
     root.title("Opciones Principales")
     centrar_ventana(root)
 
-    # Opciones principales
+    usuario, contrasena = pedir_credenciales(root)
+    if not usuario or not contrasena:
+        return
+
     opciones_principales = {
-        "Descargar Documentos": descargar_documentos,
-        "Ordenar Documentos": ordenar_documentos,
-        "Generar Reporte": seleccionar_raiz,
-        "Generar PDF's": generar_pdf,
-        "Imprimir PDF's": imprimir_pdf,
-        "Renombrar Documentos": renombrar_documentos
+        "Descargar Documentos": lambda r=root, u=usuario, c=contrasena: descargar_documentos(r, u, c),
+        "Ordenar Documentos": lambda r=root: ordenar_documentos(r),
+        "Generar Reporte": lambda r=root: seleccionar_raiz(r),
+        "Generar PDF's": lambda r=root: generar_pdf(r),
+        "Imprimir PDF's": lambda r=root: imprimir_pdf(r),
+        "Renombrar Documentos": lambda r=root: renombrar_documentos(r),
     }
 
     # Crear un frame para centrar el contenido

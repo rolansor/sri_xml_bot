@@ -247,51 +247,25 @@ def contenido_fac(pdf, ult_x, ult_y, detalles, identificacion):
     p8_right = ParagraphStyle('parrafos', fontSize=8, fontName="Helvetica", alignment=TA_RIGHT)
 
     data = []
-    mostrar_cr = identificacion in ['0910441310', '0910441310001', '0930808662', '0930808662001']
     col_width = (ancho_bloque / float(24))
-
-    # Definir encabezados según la condición
-    if mostrar_cr:
-        header = [
-            Paragraph('Cod. Principal', p8_center),
-            Paragraph('Cod. Auxiliar', p8_center),
-            Paragraph('CR', p8_center),
-            Paragraph('Descripción', p8_center),
-            Paragraph('#', p8_center),
-            Paragraph('Precio Uni.', p8_center),
-            Paragraph('Desc.', p8_center),
-            Paragraph('Precio Tot.', p8_center)
-        ]
-        widths = [
-            col_width * 3 * mm,
-            col_width * 3 * mm,
-            col_width * 2 * mm,
-            col_width * 8 * mm,
-            col_width * 2 * mm,
-            col_width * 2 * mm,
-            col_width * 2 * mm,
-            col_width * 2 * mm
-        ]
-    else:
-        # Sin CR
-        header = [
-            Paragraph('Cod. Principal', p8_center),
-            Paragraph('Cod. Auxiliar', p8_center),
-            Paragraph('Descripción', p8_center),
-            Paragraph('#', p8_center),
-            Paragraph('Precio Uni.', p8_center),
-            Paragraph('Desc.', p8_center),
-            Paragraph('Precio Tot.', p8_center)
-        ]
-        widths = [
-            col_width * 3 * mm,
-            col_width * 3 * mm,
-            col_width * 10 * mm,
-            col_width * 2 * mm,
-            col_width * 2 * mm,
-            col_width * 2 * mm,
-            col_width * 2 * mm
-        ]
+    header = [
+        Paragraph('Cod. Principal', p8_center),
+        Paragraph('Cod. Auxiliar', p8_center),
+        Paragraph('Descripción', p8_center),
+        Paragraph('#', p8_center),
+        Paragraph('Precio Uni.', p8_center),
+        Paragraph('Desc.', p8_center),
+        Paragraph('Precio Tot.', p8_center)
+    ]
+    widths = [
+        col_width * 3 * mm,
+        col_width * 3 * mm,
+        col_width * 10 * mm,
+        col_width * 2 * mm,
+        col_width * 2 * mm,
+        col_width * 2 * mm,
+        col_width * 2 * mm
+    ]
 
     data.append(header)
 
@@ -304,30 +278,15 @@ def contenido_fac(pdf, ult_x, ult_y, detalles, identificacion):
         precio_unitario = '{:.3f}'.format(float(detalle['precioUnitario']))
         descuento = '{:.3f}'.format(float(detalle.get('descuento', '0.00')))
         precio_total_sin_impuesto = '{:.3f}'.format(float(detalle['precioTotalSinImpuesto']))
-
-        if mostrar_cr:
-            row = [
-                Paragraph(codigo_principal, p8_center),
-                Paragraph(codigo_auxiliar, p8_center),
-                Paragraph('', p8_center),  # CR vacío
-                Paragraph(descripcion, p8_center),
-                Paragraph(str(cantidad), p8_center),
-                Paragraph(precio_unitario, p8_right),
-                Paragraph(descuento, p8_right),
-                Paragraph(precio_total_sin_impuesto, p8_right)
-            ]
-        else:
-            # Sin columna CR
-            row = [
-                Paragraph(codigo_principal, p8_center),
-                Paragraph(codigo_auxiliar, p8_center),
-                Paragraph(descripcion, p8_center),
-                Paragraph(str(cantidad), p8_center),
-                Paragraph(precio_unitario, p8_right),
-                Paragraph(descuento, p8_right),
-                Paragraph(precio_total_sin_impuesto, p8_right)
-            ]
-
+        row = [
+            Paragraph(codigo_principal, p8_center),
+            Paragraph(codigo_auxiliar, p8_center),
+            Paragraph(descripcion, p8_center),
+            Paragraph(str(cantidad), p8_center),
+            Paragraph(precio_unitario, p8_right),
+            Paragraph(descuento, p8_right),
+            Paragraph(precio_total_sin_impuesto, p8_right)
+        ]
         data.append(row)
 
     tabla_contenido = Table(data, colWidths=widths)
@@ -533,24 +492,12 @@ def tabla_formas_pago_fac(pdf, ult_x, ult_y, formas_pago):
 
 def obtener_formas_pago_fac(datos_factura):
     formas_pago = []
-    mostrar_adi = datos_factura.get('infoFactura', {}).get('identificacionComprador', '9999999999999') in [
-        '0910441310',
-        '0910441310001',
-        '0930808662',
-        '0930808662001'
-    ]
     # Verificar si 'pagos' existe y no está vacío en datos_factura
     pagos = datos_factura.get('infoFactura', {}).get('pagos', [])
     if pagos:
         for pago in pagos:
             forma_pago_nombre = nombres_formapago.get(pago['formaPago'], 'Desconocido')
             formas_pago.append(f'{forma_pago_nombre}: {pago["total"]}')
-    if mostrar_adi:
-        formas_pago.append(f'# FACTURA: ')
-        formas_pago.append(f'# RETENCIÓN: ')
-        formas_pago.append(f'FORMA PAGO/#: ')
-        formas_pago.append(f'REVISADO/FECHA: ')
-        formas_pago.append(f'ETIQUETADO/FECHA: ')
     return formas_pago
 
 
