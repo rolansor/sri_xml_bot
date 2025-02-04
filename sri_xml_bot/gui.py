@@ -1,20 +1,24 @@
 import tkinter as tk
-from tkinter import messagebox, Toplevel, Listbox, Button, StringVar, OptionMenu, filedialog, Label
+import os
+import sys
+import base64
+import logging
+
+from tkinter import messagebox, Toplevel, Listbox, Button, simpledialog, Entry, StringVar, OptionMenu, filedialog, Label
 from tkinter.constants import END
 from PIL import Image, ImageTk
-import logging
 from datetime import datetime, timedelta
-
 from tkcalendar import DateEntry
 
-from sri_xml_bot.descargar_documentos import descargar_documentos
-from sri_xml_bot.descargar_emitidos import descargar_emitidos
-from sri_xml_bot.generar_pdfs import generar_pdfs
-from sri_xml_bot.generar_reporte import generar_reporte
-from sri_xml_bot.imprimir_pdfs import imprimir_pdfs
+from sri_xml_bot.librerias.encriptar import encriptar_texto, desencriptar_texto
+from sri_xml_bot.librerias.menus.descargar_emitidos import descargar_emitidos
+from sri_xml_bot.librerias.menus.generar_pdfs import generar_pdfs
+from sri_xml_bot.librerias.menus.generar_reporte import generar_reporte
+from sri_xml_bot.librerias.menus.imprimir_pdfs import imprimir_pdfs
+from sri_xml_bot.librerias.menus.ordenar_documentos import ordenar_documentos
+from sri_xml_bot.librerias.menus.descargar_documentos import descargar_documentos
 from sri_xml_bot.librerias.utils import centrar_ventana, ruta_relativa_recurso, guardar_configuracion_ini, \
     cargar_configuracion_ini
-from sri_xml_bot.ordenar_documentos import ordenar_documentos
 
 
 class Application:
@@ -23,16 +27,88 @@ class Application:
         Inicializa la aplicación y configura la ventana principal.
         """
         self.root = tk.Tk()
-        centrar_ventana("Sistema de Gestión de Documentos", self.root, ancho=800, alto=500)
+        self.root.withdraw()
 
         # Cargar todas las configuraciones al inicio
         self.configuraciones = cargar_configuracion_ini()
+
+        # Si es la primera vez (por ejemplo, no hay clave encriptada), mostramos la configuración inicial
+        if not self.configuraciones.get('clave_ruc_encriptada'):
+            self.mostrar_configuracion_inicial()
+            # Esperar a que se cierre la ventana de configuración
+            self.root.wait_window(self.ventana_config)
+            # Volver a cargar la configuración
+            self.configuraciones = cargar_configuracion_ini()
+            # Si aún no se completó la configuración, mostrar un error y salir
+            if not self.configuraciones.get('clave_ruc_encriptada'):
+                messagebox.showerror("Error", "Configuración inicial no completada. La aplicación se cerrará.")
+                self.root.destroy()
+                sys.exit(1)
+
+        # Una vez completada la configuración, se muestra la ventana principal
+        self.root.deiconify()  # Muestra la ventana principal
+        centrar_ventana("Sistema de Gestión de Documentos", self.root, ancho=800, alto=500)
 
         # Configurar el fondo de la ventana
         self.configurar_fondo()
 
         # Crear el menú principal
         self.crear_menu()
+
+    def mostrar_configuracion_inicial(self):
+        """
+        Muestra una ventana (similar a un message box) para configurar el RUC y la clave.
+        Se solicitará además una contraseña maestra para encriptar la clave.
+        """
+        self.ventana_config = Toplevel(self.root)
+        self.ventana_config.title("Configuración Inicial")
+        centrar_ventana("Configuración Inicial", self.ventana_config, ancho=400, alto=300)
+        self.ventana_config.grab_set()  # Bloquea la interacción con la ventana principal
+
+        Label(self.ventana_config, text="Ingrese el RUC:").pack(pady=5)
+        self.entry_ruc = Entry(self.ventana_config)
+        self.entry_ruc.pack(pady=5)
+
+        Label(self.ventana_config, text="Ingrese la Razón Social:").pack(pady=5)
+        self.entry_razonsocial = Entry(self.ventana_config)
+        self.entry_razonsocial.pack(pady=5)
+
+        Label(self.ventana_config, text="Ingrese la clave:").pack(pady=5)
+        self.entry_clave = Entry(self.ventana_config, show="*")
+        self.entry_clave.pack(pady=5)
+
+        Label(self.ventana_config, text="Contraseña maestra:").pack(pady=5)
+        self.entry_master = Entry(self.ventana_config, show="*")
+        self.entry_master.pack(pady=5)
+
+        Button(self.ventana_config, text="Aceptar", command=self.guardar_ruc_inicial).pack(pady=10)
+
+    def guardar_ruc_inicial(self):
+        ruc = self.entry_ruc.get().strip()
+        clave = self.entry_clave.get().strip()
+        razon_social = self.entry_razonsocial.get().strip()
+        master = self.entry_master.get().strip()
+
+        if not ruc or not clave or not master or not razon_social:
+            messagebox.showerror("Error", "Todos los campos son obligatorios.", parent=self.ventana_config)
+            return
+
+        # Generar una sal única y aleatoria (solo se genera la primera vez)
+        salt = os.urandom(16)
+        # Encriptar la clave usando la contraseña maestra y la sal
+        clave_encriptada = encriptar_texto(clave, master, salt)
+        # Convertir la sal a una cadena (por ejemplo, usando base64) para almacenarla en el archivo de configuración
+        salt_str = base64.urlsafe_b64encode(salt).decode()
+
+        # Guardar los valores en el archivo de configuración
+        guardar_configuracion_ini('ruc_actual', ruc)
+        guardar_configuracion_ini('clave_ruc_encriptada', clave_encriptada)
+        guardar_configuracion_ini('razon_social', razon_social)
+        guardar_configuracion_ini('clave_salt', salt_str)
+
+        messagebox.showinfo("Configuración guardada", "La configuración inicial se ha guardado correctamente.",
+                            parent=self.ventana_config)
+        self.ventana_config.destroy()
 
     def configurar_fondo(self):
         """
@@ -80,20 +156,9 @@ class Application:
         menu_recibidos.add_command(label="Todos", command=lambda: self.descargar_recibidos("0"))
         menubar.add_cascade(label="Recibidos", menu=menu_recibidos)
 
-        # Submenú de "Emitidos"
-        menu_emitidos = tk.Menu(menubar, tearoff=0)
-        menu_emitidos.add_command(label="Facturas", command=lambda: self.descargar_emitidos("1"))
-        menu_emitidos.add_command(label="Notas de Crédito", command=lambda: self.descargar_emitidos("3"))
-        menu_emitidos.add_command(label="Comprobantes de Retención", command=lambda: self.descargar_emitidos("6"))
-        menu_emitidos.add_command(label="Notas de Débito", command=lambda: self.descargar_emitidos("4"))
-        menu_emitidos.add_command(label="Liquidación de Compras", command=lambda: self.descargar_emitidos("2"))
-        menu_emitidos.add_command(label="Todos", command=lambda: self.descargar_emitidos("0"))
-        menubar.add_cascade(label="Emitidos", menu=menu_emitidos)
-
         # Submenú de "Clasificar"
         menu_clasificar = tk.Menu(menubar, tearoff=0)
         menu_clasificar.add_command(label="Ordenar Documentos Recibidos", command=self.ordenar_documentos_recibidos)
-        menu_clasificar.add_command(label="Ordenar Documentos Emitidos", command=self.ordenar_documentos_recibidos)
         menu_clasificar.add_command(label="Reorganizar Documentos", command=self.mostrar_acerca_de)
         menubar.add_cascade(label="Clasificar", menu=menu_clasificar)
 
@@ -129,57 +194,58 @@ class Application:
 
     def descargar_recibidos(self, tipo_documento):
         """
-        Lee el archivo de datos y muestra una ventana secundaria para seleccionar un registro.
+        Utiliza los datos de configuración (RUC y clave) para iniciar el proceso
+        de descarga de documentos.
         """
-        # Ruta al archivo de datos
-        archivo_path = ruta_relativa_recurso(self.configuraciones.get('ruta_rucs'), filetypes=[("Archivos de texto", "*.txt")])
+        # Obtener el RUC configurado
+        ruc = self.configuraciones.get('ruc_actual')
+        razon_social = self.configuraciones.get('razon_social')
+        if not ruc:
+            messagebox.showerror("Error", "No se configuró el RUC en las configuraciones.", parent=self.root)
+            return
 
-        # Leer el archivo y cargar los datos en una lista de tuplas
-        datos = []
+        # Obtener la clave encriptada y la sal de la configuración
+        clave_encriptada = self.configuraciones.get('clave_ruc_encriptada')
+        salt_str = self.configuraciones.get('clave_salt')
+        if not clave_encriptada or not salt_str:
+            messagebox.showerror("Error", "No se configuró la clave en las configuraciones.", parent=self.root)
+            return
+
         try:
-            with open(archivo_path, 'r') as file:
-                for linea in file:
-                    nombre, ruc, clave = linea.strip().split(',')
-                    datos.append((nombre, ruc, clave))
-            logging.info("Datos cargados correctamente desde el archivo.")
+            # Convertir la sal (almacenada en base64) a bytes
+            salt = base64.urlsafe_b64decode(salt_str.encode())
         except Exception as e:
-            messagebox.showerror("Error", f"No se pudo leer el archivo: {e}", parent=self.root)
-            logging.exception("Error al leer el archivo.")
+            messagebox.showerror("Error", f"Error al decodificar la sal: {e}", parent=self.root)
+            logging.exception("Error al decodificar la sal.")
             return
 
-        # Abrir una ventana secundaria para mostrar la lista de opciones
-        self.ventana_seleccion = Toplevel(self.root)
-        centrar_ventana("Seleccionar Cliente", self.ventana_seleccion, ancho=400, alto=250)
-        # Evitar interacción con la ventana principal hasta cerrar esta
-        self.ventana_seleccion.grab_set()
-        self.ventana_seleccion.transient(self.root)  # Asegura que se mantenga sobre la ventana principal
-
-        # Listbox para mostrar nombre y RUC
-        listbox = tk.Listbox(self.ventana_seleccion, width=50, height=10)
-        listbox.pack(pady=20)
-        # Llenar el Listbox con los nombres y RUCs
-        for nombre, ruc, _ in datos:
-            listbox.insert(tk.END, f"{nombre} - {ruc}")
-
-        # Botón para seleccionar el elemento
-        seleccionar_btn = Button(
-            self.ventana_seleccion, text="Seleccionar",
-            command=lambda: self.mostrar_opciones(datos, tipo_documento, listbox.curselection())
-        )
-        seleccionar_btn.pack(pady=10)
-
-    def mostrar_opciones(self, datos, tipo_documento, seleccion):
-        if not seleccion:
-            messagebox.showwarning("Selección inválida", "Por favor, seleccione un elemento de la lista.", parent=self.ventana_seleccion)
+        # Solicitar al usuario la contraseña maestra para poder desencriptar la clave
+        master = simpledialog.askstring("Contraseña Maestra", "Ingrese la contraseña maestra:", show="*", parent=self.root)
+        if not master:
+            messagebox.showwarning("Cancelado", "No se ingresó la contraseña maestra.", parent=self.root)
             return
 
-        indice = seleccion[0]
-        nombre, ruc, clave = datos[indice]
+        try:
+            # Desencriptar la clave usando la contraseña maestra y la sal
+            clave = desencriptar_texto(clave_encriptada, master, salt)
+        except Exception as e:
+            messagebox.showerror("Error", f"No se pudo desencriptar la clave: {e}", parent=self.root)
+            logging.exception("Error al desencriptar la clave.")
+            return
 
-        ventana_opciones = Toplevel(self.ventana_seleccion)
+        # Con la información obtenida (razón social, RUC y clave), continuamos directamente
+        datos = (razon_social, ruc, clave)
+        self.mostrar_opciones(datos, tipo_documento)
+
+    def mostrar_opciones(self, datos, tipo_documento):
+
+        # Extraer los datos del cliente
+        nombre, ruc, clave = datos
+
+        ventana_opciones = Toplevel(self.root)
         centrar_ventana(f"Opciones de Descarga para {nombre}", ventana_opciones, ancho=400, alto=400)
         ventana_opciones.grab_set()  # Bloquear interacción con la ventana de selección hasta que se cierre
-        ventana_opciones.transient(self.ventana_seleccion)
+        ventana_opciones.transient(self.root)
 
         # Etiquetas y listas desplegables para selección de fecha
         tk.Label(ventana_opciones, text="Introduce la fecha correspondiente:").pack(pady=5)
@@ -227,42 +293,6 @@ class Application:
             bg="#007BFF", fg="white", font=("Arial", 12, "bold"), padx=10, pady=5
         )
         aceptar_btn.pack(pady=20)
-
-    def descargar_emitidos(self, tipo_comprobante):
-        """
-        Lee el archivo de datos y muestra una ventana para seleccionar un cliente para la descarga de documentos emitidos.
-        """
-        archivo_path = ruta_relativa_recurso(self.configuraciones.get('ruta_rucs'), filetypes=[("Archivos de texto", "*.txt")])
-        datos = []
-        try:
-            with open(archivo_path, 'r') as file:
-                for linea in file:
-                    nombre, ruc, clave = linea.strip().split(',')
-                    datos.append((nombre, ruc, clave))
-            logging.info("Datos de clientes cargados correctamente desde el archivo.")
-        except Exception as e:
-            messagebox.showerror("Error", f"No se pudo leer el archivo: {e}", parent=self.root)
-            logging.exception("Error al leer el archivo de clientes.")
-            return
-
-        # Crear ventana de selección de cliente
-        self.ventana_seleccion = Toplevel(self.root)
-        centrar_ventana("Seleccionar Cliente", self.ventana_seleccion, ancho=400, alto=250)
-        self.ventana_seleccion.grab_set()
-        self.ventana_seleccion.transient(self.root)
-
-        # Listbox para mostrar nombre y RUC de clientes
-        listbox = tk.Listbox(self.ventana_seleccion, width=50, height=10)
-        listbox.pack(pady=20)
-        for nombre, ruc, _ in datos:
-            listbox.insert(tk.END, f"{nombre} - {ruc}")
-
-        # Botón para seleccionar el cliente
-        seleccionar_btn = Button(
-            self.ventana_seleccion, text="Seleccionar",
-            command=lambda: self.mostrar_opciones_emitidos(datos, tipo_comprobante, listbox.curselection())
-        )
-        seleccionar_btn.pack(pady=10)
 
     def mostrar_opciones_emitidos(self, datos, tipo_comprobante, seleccion):
         """

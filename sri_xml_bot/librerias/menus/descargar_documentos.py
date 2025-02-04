@@ -151,7 +151,7 @@ def click_consulta():
     global driver
     try:
         # Intentar hacer clic en el botón de consulta
-        driver.find_element(By.ID, 'btnRecaptcha').click()
+        driver.find_element(By.ID, 'frmPrincipal:btnConsultar').click()
         logging.info("Botón de consulta presionado, verificando resultados.")
 
         # Intentar encontrar el mensaje inmediatamente sin espera
