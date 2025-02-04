@@ -13,11 +13,12 @@ from selenium.webdriver.support.ui import WebDriverWait, Select
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, SessionNotCreatedException, NoSuchWindowException, \
     StaleElementReferenceException, NoSuchElementException
-from sri_xml_bot.librerias.utils import ruta_relativa_recurso, separar_tipo_y_serie
+from sri_xml_bot.librerias.utils import ruta_relativa_recurso, separar_tipo_y_serie, obtener_directorio_base
 
 # WebDriver global para controlarlo en distintas funciones
 driver = None
 delay_web = 1
+
 
 def descargar_documentos(ruta_chromedriver, anio, mes, dia, tipo_descarga, tipo_documento, ruc, clave):
     """
@@ -71,6 +72,7 @@ def descargar_documentos(ruta_chromedriver, anio, mes, dia, tipo_descarga, tipo_
 # ===================================
 # Configuración del WebDriver
 # ===================================
+
 
 def configurar_webdriver(ruta):
     """
@@ -314,11 +316,15 @@ def obtener_filas_a_procesar_web():
 
 
 def obtener_filas_a_procesar_excel(ruc, anio=None, mes=None):
-    archivo_excel = f"librerias/archivos/docs_{ruc}_2024.xlsx"
+    base_dir = obtener_directorio_base()
+    anio_actual = datetime.now().year
+    archivo_excel_rel = f"archivos/docs_{ruc}_{anio_actual}.xlsx"
+    ruta_archivo = os.path.join(base_dir, archivo_excel_rel)
+
     filas_existentes = []
 
-    if os.path.exists(archivo_excel):
-        df_existente = pd.read_excel(archivo_excel, dtype=str)
+    if os.path.exists(ruta_archivo):
+        df_existente = pd.read_excel(ruta_archivo, dtype=str)
         if anio and mes:
             df_existente_filtro = df_existente[(df_existente['Año'] == str(anio)) & (df_existente['Mes'] == str(mes))]
         else:
@@ -360,15 +366,18 @@ def comparar_registros(ruc, anio=None, mes=None):
 
 
 def actualizar_excel(ruc, procesados=None):
-    archivo_excel = f"librerias/archivos/docs_{ruc}_2024.xlsx"
+    base_dir = obtener_directorio_base()
+    anio_actual = datetime.now().year
+    archivo_excel_rel = f"archivos/docs_{ruc}_{anio_actual}.xlsx"
+    ruta_archivo = os.path.join(base_dir, archivo_excel_rel)
 
     try:
         if procesados:
             df_nuevas = pd.DataFrame(procesados, columns=["Año", "Mes", "Nro", "RUC", "TipoDocumento", "SerieComprobante", "Estado", "FechaHoraProcesado"])
 
-            if os.path.exists(archivo_excel):
+            if os.path.exists(ruta_archivo):
                 # Cargar el archivo existente
-                df_existente = pd.read_excel(archivo_excel, dtype=str)
+                df_existente = pd.read_excel(ruta_archivo, dtype=str)
                 # Añadir nuevas filas al final del DataFrame existente
                 df_final = pd.concat([df_existente, df_nuevas], ignore_index=True)
             else:
@@ -379,7 +388,7 @@ def actualizar_excel(ruc, procesados=None):
             df_final["Año"] = df_final["Año"].astype(int)
             df_final["Mes"] = df_final["Mes"].astype(int)
             df_final["Nro"] = df_final["Nro"].astype(int)
-            df_final.to_excel(archivo_excel, index=False, engine='openpyxl')
+            df_final.to_excel(ruta_archivo, index=False, engine='openpyxl')
 
     except Exception as e:
         logging.error(f"Se produjo un error al actualizar el archivo Excel: {e}.")
@@ -392,6 +401,9 @@ def liberar_recursos():
     """
     global driver
     if driver:
-        driver.quit()
-        logging.info("WebDriver cerrado y recursos liberados.")
-    driver = None
+        try:
+            driver.quit()
+        except Exception as e:
+            logging.exception("Error al cerrar el WebDriver: %s", e)
+        finally:
+            driver = None

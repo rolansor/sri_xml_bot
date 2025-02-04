@@ -91,6 +91,7 @@ def cargar_configuracion_ini() -> dict:
         "nombre_archivo": "ruc_secuencial",
         "ruta_guardado": "Año/Mes/RUC/RecEmi/XML/TipoDocumento",
         "ruc_actual": "9999999999999",
+        "razon_social": "S/N",
         "clave_ruc_encriptada": "",
         "clave_salt": "",
         "ruta_chromedriver": "archivos/chromedriver.exe",

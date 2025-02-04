@@ -11,7 +11,6 @@ from datetime import datetime, timedelta
 from tkcalendar import DateEntry
 
 from sri_xml_bot.librerias.encriptar import encriptar_texto, desencriptar_texto
-from sri_xml_bot.librerias.menus.descargar_emitidos import descargar_emitidos
 from sri_xml_bot.librerias.menus.generar_pdfs import generar_pdfs
 from sri_xml_bot.librerias.menus.generar_reporte import generar_reporte
 from sri_xml_bot.librerias.menus.imprimir_pdfs import imprimir_pdfs
@@ -175,13 +174,12 @@ class Application:
 
         # Menú "Configuraciones"
         menu_configuracion = tk.Menu(menubar, tearoff=0)
+        menu_configuracion.add_command(label="Ruc/Razon Social/Clave", command=self.configurar_ruc_datos)
         menu_configuracion.add_command(label="Estructura de Rutas", command=self.configurar_ruta_guardado)
         menu_configuracion.add_command(label="Formato Nombre Archivo", command=self.configurar_nombre_guardado)
-        menu_configuracion.add_command(label="Ruta Rucs", command=self.mostrar_acerca_de)
-        menu_configuracion.add_command(label="RUC ACTUAL", command=self.mostrar_acerca_de)
-        menu_configuracion.add_command(label="Ruta WebDriver", command=self.mostrar_acerca_de)
-        menu_configuracion.add_command(label="Ruta Log", command=self.mostrar_acerca_de)
-        menu_configuracion.add_command(label="Ruta Logo por defecto", command=self.mostrar_acerca_de)
+        menu_configuracion.add_command(label="Ruta WebDriver", command=self.configurar_ruta_chromedriver)
+        menu_configuracion.add_command(label="Ruta Log", command=self.configurar_ruta_log)
+        menu_configuracion.add_command(label="Ruta Logo por defecto", command=self.configurar_ruta_logo)
         menubar.add_cascade(label="Configuraciones", menu=menu_configuracion)
 
 
@@ -294,113 +292,144 @@ class Application:
         )
         aceptar_btn.pack(pady=20)
 
-    def mostrar_opciones_emitidos(self, datos, tipo_comprobante, seleccion):
+    def ordenar_documentos_recibidos(self):
         """
-        Muestra opciones para documentos emitidos tras seleccionar un cliente.
+        Muestra un mensaje de progreso mientras se ordenan los documentos y retroalimenta el progreso.
         """
-        if not seleccion:
-            messagebox.showwarning("Selección inválida", "Por favor, seleccione un cliente de la lista.",
-                                   parent=self.ventana_seleccion)
-            return
+        try:
+            # Pedir directorio y organizar archivos
+            directorio = filedialog.askdirectory(title="Seleccione la Carpeta de Documentos a Ordenar")
+            if directorio:
+                # Obtener configuraciones necesarias
+                nombre_archivo = self.configuraciones.get("nombre_archivo")
+                ruta_guardado = self.configuraciones.get("ruta_guardado")
+                ruc_actual = self.configuraciones.get("ruc_actual")
+                try:
+                    # Ordenar documentos y obtener mensajes de progreso
+                    resultado = ordenar_documentos(nombre_archivo, ruta_guardado, ruc_actual, "recibidos", directorio)
+                    # Formatear los mensajes de éxito y errores
+                    organizados = "\n".join(resultado["resultado_organizacion"])
+                    eliminados = "\n".join(resultado["resultado_eliminados"])
+                    errores = "\n".join(resultado["mensaje_error"]) if resultado["mensaje_error"] else "No hay errores."
 
-        indice = seleccion[0]
-        nombre, ruc, clave = datos[indice]
+                    # Mostrar mensaje de finalización en un messagebox
+                    messagebox.showinfo(
+                        "Proceso Completado",
+                        f"Archivos organizados:\n{organizados}\n\nArchivos eliminados:\n{eliminados}\n\nMensajes de Error:\n{errores}")
 
-        ventana_opciones = Toplevel(self.ventana_seleccion)
-        centrar_ventana(f"Opciones de Descarga para {nombre}", ventana_opciones, ancho=400, alto=400)
-        ventana_opciones.grab_set()
-        ventana_opciones.transient(self.ventana_seleccion)
+                except Exception as e:
+                    logging.exception(f"Error durante el ordenamiento de documentos: {e}")
+            else:
+                messagebox.showinfo("Información", f"No se selecciono ninguna carpeta.")
+        except Exception as e:
+            logging.exception(f"Error al iniciar la ventana de progreso: {e}")
 
-        # Dentro de tu función o clase, reemplaza el campo de fecha así:
-        tk.Label(ventana_opciones, text="Introduce la fecha de emisión:").pack(pady=5)
-
-        # Crear el widget DateEntry en lugar del campo Entry
-        dia_anterior = datetime.now() - timedelta(days=1)
-        fecha_var = StringVar(value=dia_anterior.strftime("%d/%m/%Y"))
-        fecha_entry = DateEntry(ventana_opciones, textvariable=fecha_var, date_pattern='dd/MM/yyyy', maxdate=dia_anterior)
-        fecha_entry.pack()
-
-        # Diccionario para Estado de Autorización
-        estados_autorizacion = {
-            "AUT": "Autorizados",
-            "NAT": "No Autorizados",
-            "PPR": "Por Procesar"
-        }
-        # Convertimos los valores del diccionario a una lista para el OptionMenu
-        estado_opciones = list(estados_autorizacion.values())
-        tk.Label(ventana_opciones, text="Estado de autorización:").pack()
-        estado_var = StringVar(value="Autorizados")
-        estado_menu = OptionMenu(ventana_opciones, estado_var, *estado_opciones)
-        estado_menu.pack()
-
-        # Establecimiento
-        estab_var = StringVar(value="Todos")
-        tk.Label(ventana_opciones, text="Establecimiento:").pack()
-        tk.Entry(ventana_opciones, textvariable=estab_var).pack()
-
-        # Punto de emisión
-        pemi_var = StringVar(value="001")
-        tk.Label(ventana_opciones, text="Punto de emisión:").pack()
-        tk.Entry(ventana_opciones, textvariable=pemi_var).pack()
-
-        # Botón de aceptar para iniciar descarga
-        aceptar_btn = Button(
-            ventana_opciones, text="Aceptar",
-            command=lambda: descargar_emitidos(
-                self.configuraciones.get('ruta_chromedriver'),
-                fecha_var.get(),
-                next((k for k, v in estados_autorizacion.items() if v == estado_var.get()), None),
-                tipo_comprobante,
-                estab_var.get(),
-                pemi_var.get(),
-                ruc,
-                clave
-            ),
-            bg="#007BFF", fg="white", font=("Arial", 12, "bold"), padx=10, pady=5
-        )
-        aceptar_btn.pack(pady=20)
-
-    def configurar_nombre_guardado(self):
+    def generar_reporte(self):
         """
-        Abre una ventana para configurar la estructura de nombres y la ruta de guardado para los archivos recibidos.
+        Maneja la opción de generar reportes.
         """
-        self.venta_configuracion_nombre = Toplevel(self.root)
-        centrar_ventana("Configurar nombres XMLs", self.venta_configuracion_nombre, ancho=350, alto=450)
+        try:
+            generar_reporte()
+            messagebox.showinfo("Éxito", "Reporte generado correctamente.")
+            logging.info("Reporte generado exitosamente.")
+        except Exception as e:
+            messagebox.showerror("Error", f"No se pudo generar el reporte: {e}")
+            logging.exception("Error al generar reporte.")
 
-        # Evitar interacción con la ventana principal hasta cerrar esta
-        self.venta_configuracion_nombre.grab_set()
-        self.venta_configuracion_nombre.transient(self.root)
+    def generar_pdfs(self):
+        """
+        Maneja la opción de generar PDFs.
+        """
+        try:
+            generar_pdfs()
+            messagebox.showinfo("Éxito", "PDFs generados correctamente.")
+            logging.info("PDFs generados exitosamente.")
+        except Exception as e:
+            messagebox.showerror("Error", f"No se pudo generar los PDFs: {e}")
+            logging.exception("Error al generar PDFs.")
 
-        # Crear un marco para centrar las opciones de nombre del archivo
-        frame_nombre = tk.Frame(self.venta_configuracion_nombre)
-        frame_nombre.pack(pady=10)
+    def imprimir_pdfs(self):
+        """
+        Maneja la opción de imprimir PDFs.
+        """
+        try:
+            imprimir_pdfs()
+            messagebox.showinfo("Éxito", "PDFs enviados a impresión correctamente.")
+            logging.info("PDFs enviados a impresión exitosamente.")
+        except Exception as e:
+            messagebox.showerror("Error", f"No se pudo imprimir los PDFs: {e}")
+            logging.exception("Error al imprimir PDFs.")
 
-        # Etiqueta para el título de las opciones de nombre del archivo
-        tk.Label(frame_nombre, text="Formato de Nombre del Archivo XML:").pack(pady=10)
+    def configurar_ruc_datos(self):
+        """
+        Muestra una ventana para configurar el RUC, la Razón Social, la clave y la contraseña maestra.
+        Valida que el RUC sea de 13 dígitos y que la Razón Social tenga al menos 3 caracteres (se convierte a mayúsculas).
+        Si la validación es correcta, encripta la clave y guarda los datos en el archivo de configuración.
+        """
+        self.ventana_config = Toplevel(self.root)
+        self.ventana_config.title("Configuración Inicial")
+        centrar_ventana("Configuración Inicial", self.ventana_config, ancho=400, alto=300)
+        self.ventana_config.grab_set()  # Bloquea la interacción con la ventana principal
 
-        nombre_var = StringVar(value="clave_acceso")
-        opciones_nombre = {
-            "RUC Emisor + Secuencial": "ruc_secuencial",
-            "Clave de Acceso": "clave_acceso",
-            "Fecha + Secuencial": "fecha_secuencial"
-        }
+        Label(self.ventana_config, text="Ingrese el RUC:").pack(pady=5)
+        entry_ruc = Entry(self.ventana_config)
+        entry_ruc.pack(pady=5)
 
-        # Crear los Radiobuttons dentro del marco y centrarlos
-        for texto, valor in opciones_nombre.items():
-            tk.Radiobutton(frame_nombre, text=texto, variable=nombre_var, value=valor).pack(anchor="center")
+        Label(self.ventana_config, text="Ingrese la Razón Social:").pack(pady=5)
+        entry_razon = Entry(self.ventana_config)
+        entry_razon.pack(pady=5)
 
+        Label(self.ventana_config, text="Ingrese la clave:").pack(pady=5)
+        entry_clave = Entry(self.ventana_config, show="*")
+        entry_clave.pack(pady=5)
 
-        # Guardar configuración
-        def guardar_configuracion():
-            # Obtener la selección de nombre de archivo
-            nombre_archivo = nombre_var.get()
-            # Cambiar solo la configuración 'nombre_archivo'
-            guardar_configuracion_ini('nombre_archivo', nombre_archivo)
-            # Cierra luego de guardar
-            self.venta_configuracion_nombre.destroy()
+        Label(self.ventana_config, text="Contraseña maestra:").pack(pady=5)
+        entry_master = Entry(self.ventana_config, show="*")
+        entry_master.pack(pady=5)
 
-        # Botón para guardar la configuración
-        Button(self.venta_configuracion_nombre, text="Guardar Opción Nombre", command=guardar_configuracion).pack(pady=20)
+        def guardar_config():
+            ruc = entry_ruc.get().strip()
+            # Convertir la razón social a mayúsculas automáticamente
+            razon_social = entry_razon.get().strip().upper()
+            clave = entry_clave.get().strip()
+            master = entry_master.get().strip()
+
+            # Validar que el RUC tenga exactamente 13 dígitos y que sean numéricos
+            if not (ruc.isdigit() and len(ruc) == 13):
+                messagebox.showerror("Error", "El RUC debe tener exactamente 13 dígitos numéricos.",
+                                     parent=self.ventana_config)
+                return
+
+            # Validar que la razón social tenga al menos 3 caracteres
+            if len(razon_social) < 3:
+                messagebox.showerror("Error", "La Razón Social debe tener al menos 3 caracteres.",
+                                     parent=self.ventana_config)
+                return
+
+            # Validar que se hayan ingresado la clave y la contraseña maestra
+            if not clave or not master:
+                messagebox.showerror("Error", "La clave y la contraseña maestra son obligatorias.",
+                                     parent=self.ventana_config)
+                return
+
+            # Generar una sal única y aleatoria
+            salt = os.urandom(16)
+            # Encriptar la clave usando la contraseña maestra y la sal
+            clave_encriptada = encriptar_texto(clave, master, salt)
+            # Convertir la sal a una cadena (usando base64) para almacenarla en el archivo de configuración
+            salt_str = base64.urlsafe_b64encode(salt).decode()
+
+            # Guardar los valores en el archivo de configuración
+            guardar_configuracion_ini('ruc_actual', ruc)
+            guardar_configuracion_ini('razon_social', razon_social)
+            guardar_configuracion_ini('clave_ruc_encriptada', clave_encriptada)
+            guardar_configuracion_ini('clave_salt', salt_str)
+
+            messagebox.showinfo("Configuración guardada", "La configuración inicial se ha guardado correctamente.",
+                                parent=self.ventana_config)
+            self.ventana_config.destroy()
+
+        Button(self.ventana_config, text="Aceptar", command=guardar_config).pack(pady=10)
 
     def configurar_ruta_guardado(self):
         """
@@ -481,73 +510,157 @@ class Application:
         # Botón para guardar la configuración
         Button(self.ventana_configuracion_ruta, text="Guardar Opción Ruta", command=guardar_configuracion).pack(pady=20)
 
-    def ordenar_documentos_recibidos(self):
+    def configurar_nombre_guardado(self):
         """
-        Muestra un mensaje de progreso mientras se ordenan los documentos y retroalimenta el progreso.
+        Abre una ventana para configurar la estructura de nombres y la ruta de guardado para los archivos recibidos.
         """
-        try:
-            # Pedir directorio y organizar archivos
-            directorio = filedialog.askdirectory(title="Seleccione la Carpeta de Documentos a Ordenar")
-            if directorio:
-                # Obtener configuraciones necesarias
-                nombre_archivo = self.configuraciones.get("nombre_archivo")
-                ruta_guardado = self.configuraciones.get("ruta_guardado")
-                ruc_actual = self.configuraciones.get("ruc_actual")
-                try:
-                    # Ordenar documentos y obtener mensajes de progreso
-                    resultado = ordenar_documentos(nombre_archivo, ruta_guardado, ruc_actual, "recibidos", directorio)
-                    # Formatear los mensajes de éxito y errores
-                    organizados = "\n".join(resultado["resultado_organizacion"])
-                    eliminados = "\n".join(resultado["resultado_eliminados"])
-                    errores = "\n".join(resultado["mensaje_error"]) if resultado["mensaje_error"] else "No hay errores."
+        self.venta_configuracion_nombre = Toplevel(self.root)
+        centrar_ventana("Configurar nombres XMLs", self.venta_configuracion_nombre, ancho=350, alto=450)
 
-                    # Mostrar mensaje de finalización en un messagebox
-                    messagebox.showinfo(
-                        "Proceso Completado",
-                        f"Archivos organizados:\n{organizados}\n\nArchivos eliminados:\n{eliminados}\n\nMensajes de Error:\n{errores}")
+        # Evitar interacción con la ventana principal hasta cerrar esta
+        self.venta_configuracion_nombre.grab_set()
+        self.venta_configuracion_nombre.transient(self.root)
 
-                except Exception as e:
-                    logging.exception(f"Error durante el ordenamiento de documentos: {e}")
+        # Crear un marco para centrar las opciones de nombre del archivo
+        frame_nombre = tk.Frame(self.venta_configuracion_nombre)
+        frame_nombre.pack(pady=10)
+
+        # Etiqueta para el título de las opciones de nombre del archivo
+        tk.Label(frame_nombre, text="Formato de Nombre del Archivo XML:").pack(pady=10)
+
+        nombre_var = StringVar(value="clave_acceso")
+        opciones_nombre = {
+            "RUC Emisor + Secuencial": "ruc_secuencial",
+            "Clave de Acceso": "clave_acceso",
+            "Fecha + Secuencial": "fecha_secuencial",
+            "Nombre Truncado + Secuencial": "nombre_secuencial"
+        }
+
+        # Crear los Radiobuttons dentro del marco y centrarlos
+        for texto, valor in opciones_nombre.items():
+            tk.Radiobutton(frame_nombre, text=texto, variable=nombre_var, value=valor).pack(anchor="center")
+
+
+        # Guardar configuración
+        def guardar_configuracion():
+            # Obtener la selección de nombre de archivo
+            nombre_archivo = nombre_var.get()
+            # Cambiar solo la configuración 'nombre_archivo'
+            guardar_configuracion_ini('nombre_archivo', nombre_archivo)
+            # Cierra luego de guardar
+            self.venta_configuracion_nombre.destroy()
+
+        # Botón para guardar la configuración
+        Button(self.venta_configuracion_nombre, text="Guardar Opción Nombre", command=guardar_configuracion).pack(pady=20)
+
+    def configurar_ruta_chromedriver(self):
+        """Ventana para configurar la ruta del ChromeDriver."""
+        win = Toplevel(self.root)
+        win.title("Configurar Ruta WebDriver")
+        centrar_ventana("Configurar Ruta WebDriver", win, ancho=400, alto=150)
+        win.grab_set()
+
+        Label(win, text="Ruta actual:").pack(pady=5)
+        ruta_actual = self.configuraciones.get('ruta_chromedriver', '')
+        entry = Entry(win, width=50)
+        entry.insert(0, ruta_actual)
+        entry.pack(pady=5)
+
+        def seleccionar_archivo():
+            nueva_ruta = filedialog.askopenfilename(
+                title="Seleccionar ChromeDriver",
+                filetypes=[("Archivos ejecutables", "*.exe")]
+            )
+            if nueva_ruta:
+                entry.delete(0, END)
+                entry.insert(0, nueva_ruta)
+
+        Button(win, text="Seleccionar archivo", command=seleccionar_archivo).pack(pady=5)
+
+        def guardar():
+            nueva_ruta = entry.get().strip()
+            if nueva_ruta:
+                guardar_configuracion_ini('ruta_chromedriver', nueva_ruta)
+                messagebox.showinfo("Configuración guardada", "La ruta de WebDriver se ha actualizado.", parent=win)
+                self.configuraciones['ruta_chromedriver'] = nueva_ruta
+                win.destroy()
             else:
-                messagebox.showinfo("Información", f"No se selecciono ninguna carpeta.")
-        except Exception as e:
-            logging.exception(f"Error al iniciar la ventana de progreso: {e}")
+                messagebox.showerror("Error", "La ruta no puede estar vacía.", parent=win)
 
-    def generar_reporte(self):
-        """
-        Maneja la opción de generar reportes.
-        """
-        try:
-            generar_reporte()
-            messagebox.showinfo("Éxito", "Reporte generado correctamente.")
-            logging.info("Reporte generado exitosamente.")
-        except Exception as e:
-            messagebox.showerror("Error", f"No se pudo generar el reporte: {e}")
-            logging.exception("Error al generar reporte.")
+        Button(win, text="Guardar", command=guardar).pack(pady=5)
 
-    def generar_pdfs(self):
-        """
-        Maneja la opción de generar PDFs.
-        """
-        try:
-            generar_pdfs()
-            messagebox.showinfo("Éxito", "PDFs generados correctamente.")
-            logging.info("PDFs generados exitosamente.")
-        except Exception as e:
-            messagebox.showerror("Error", f"No se pudo generar los PDFs: {e}")
-            logging.exception("Error al generar PDFs.")
+    def configurar_ruta_log(self):
+        """Ventana para configurar la ruta del archivo de log."""
+        win = Toplevel(self.root)
+        win.title("Configurar Ruta Log")
+        centrar_ventana("Configurar Ruta Log", win, ancho=400, alto=150)
+        win.grab_set()
 
-    def imprimir_pdfs(self):
-        """
-        Maneja la opción de imprimir PDFs.
-        """
-        try:
-            imprimir_pdfs()
-            messagebox.showinfo("Éxito", "PDFs enviados a impresión correctamente.")
-            logging.info("PDFs enviados a impresión exitosamente.")
-        except Exception as e:
-            messagebox.showerror("Error", f"No se pudo imprimir los PDFs: {e}")
-            logging.exception("Error al imprimir PDFs.")
+        Label(win, text="Ruta actual:").pack(pady=5)
+        ruta_actual = self.configuraciones.get('ruta_logs', '')
+        entry = Entry(win, width=50)
+        entry.insert(0, ruta_actual)
+        entry.pack(pady=5)
+
+        def seleccionar_archivo():
+            nueva_ruta = filedialog.asksaveasfilename(
+                title="Seleccionar o crear archivo Log",
+                filetypes=[("Archivos de log", "*.log")],
+                defaultextension=".log"
+            )
+            if nueva_ruta:
+                entry.delete(0, END)
+                entry.insert(0, nueva_ruta)
+
+        Button(win, text="Seleccionar archivo", command=seleccionar_archivo).pack(pady=5)
+
+        def guardar():
+            nueva_ruta = entry.get().strip()
+            if nueva_ruta:
+                guardar_configuracion_ini('ruta_logs', nueva_ruta)
+                messagebox.showinfo("Configuración guardada", "La ruta de Log se ha actualizado.", parent=win)
+                self.configuraciones['ruta_logs'] = nueva_ruta
+                win.destroy()
+            else:
+                messagebox.showerror("Error", "La ruta no puede estar vacía.", parent=win)
+
+        Button(win, text="Guardar", command=guardar).pack(pady=5)
+
+    def configurar_ruta_logo(self):
+        """Ventana para configurar la ruta del logo por defecto."""
+        win = Toplevel(self.root)
+        win.title("Configurar Ruta Logo")
+        centrar_ventana("Configurar Ruta Logo", win, ancho=400, alto=150)
+        win.grab_set()
+
+        Label(win, text="Ruta actual:").pack(pady=5)
+        ruta_actual = self.configuraciones.get('ruta_logos', '')
+        entry = Entry(win, width=50)
+        entry.insert(0, ruta_actual)
+        entry.pack(pady=5)
+
+        def seleccionar_archivo():
+            nueva_ruta = filedialog.askopenfilename(
+                title="Seleccionar imagen del logo",
+                filetypes=[("Imágenes", "*.png;*.jpg;*.jpeg;*.gif")]
+            )
+            if nueva_ruta:
+                entry.delete(0, END)
+                entry.insert(0, nueva_ruta)
+
+        Button(win, text="Seleccionar archivo", command=seleccionar_archivo).pack(pady=5)
+
+        def guardar():
+            nueva_ruta = entry.get().strip()
+            if nueva_ruta:
+                guardar_configuracion_ini('ruta_logos', nueva_ruta)
+                messagebox.showinfo("Configuración guardada", "La ruta del logo se ha actualizado.", parent=win)
+                self.configuraciones['ruta_logos'] = nueva_ruta
+                win.destroy()
+            else:
+                messagebox.showerror("Error", "La ruta no puede estar vacía.", parent=win)
+
+        Button(win, text="Guardar", command=guardar).pack(pady=5)
 
     def mostrar_acerca_de(self):
         """
