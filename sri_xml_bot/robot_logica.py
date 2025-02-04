@@ -278,7 +278,7 @@ def seleccionar_opciones_de_consulta(driver, anio, mes, dia, tipo_comprobante):
 @medir_tiempo
 def click_consulta(driver):
     # Hace clic en el botón de consulta para iniciar la búsqueda de comprobantes.
-    driver.find_element(By.ID, 'btnRecaptcha').click()
+    driver.find_element(By.ID, 'frmPrincipal:btnConsultar').click()
 
     try:
         WebDriverWait(driver, 10).until(EC.frame_to_be_available_and_switch_to_it((By.XPATH, "//iframe[contains(@title, 'El reCAPTCHA caduca dentro de dos minutos')]")))
