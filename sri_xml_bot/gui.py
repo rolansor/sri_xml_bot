@@ -7,14 +7,13 @@ import logging
 from tkinter import messagebox, Toplevel, Listbox, Button, simpledialog, Entry, StringVar, OptionMenu, filedialog, Label
 from tkinter.constants import END
 from PIL import Image, ImageTk
-from datetime import datetime, timedelta
-from tkcalendar import DateEntry
+from datetime import datetime
 
 from sri_xml_bot.librerias.encriptar import encriptar_texto, desencriptar_texto
 from sri_xml_bot.librerias.menus.generar_pdfs import generar_pdfs
 from sri_xml_bot.librerias.menus.generar_reporte import generar_reporte
 from sri_xml_bot.librerias.menus.imprimir_pdfs import imprimir_pdfs
-from sri_xml_bot.librerias.menus.ordenar_documentos import ordenar_documentos
+from sri_xml_bot.librerias.menus.ordenar_documentos import ordenar_documentos, desclasificar_xmls
 from sri_xml_bot.librerias.menus.descargar_documentos import descargar_documentos
 from sri_xml_bot.librerias.utils import centrar_ventana, ruta_relativa_recurso, guardar_configuracion_ini, \
     cargar_configuracion_ini
@@ -157,8 +156,15 @@ class Application:
 
         # Submenú de "Clasificar"
         menu_clasificar = tk.Menu(menubar, tearoff=0)
-        menu_clasificar.add_command(label="Ordenar Documentos Recibidos", command=self.ordenar_documentos_recibidos)
-        menu_clasificar.add_command(label="Reorganizar Documentos", command=self.mostrar_acerca_de)
+        menu_clasificar.add_command(label="Ordenar Documentos Recibidos",
+                                    command=lambda: self.ordenar_documentos("recibidos", False))
+        menu_clasificar.add_command(label="Ordenar Documentos Emitidos",
+                                    command=lambda: self.ordenar_documentos("emitidos", False))
+        menu_clasificar.add_command(label="Reorganizar Documentos Recibidos",
+                                    command=lambda: self.ordenar_documentos("recibidos", True))
+        menu_clasificar.add_command(label="Reorganizar Documentos Emitidos",
+                                    command=lambda: self.ordenar_documentos("emitidos", True))
+        menu_clasificar.add_command(label="Extraer XML's", command=self.extraer_xmls)
         menubar.add_cascade(label="Clasificar", menu=menu_clasificar)
 
         # Submenú de "Reportes"
@@ -195,6 +201,7 @@ class Application:
         Utiliza los datos de configuración (RUC y clave) para iniciar el proceso
         de descarga de documentos.
         """
+        self.configuraciones = cargar_configuracion_ini()
         # Obtener el RUC configurado
         ruc = self.configuraciones.get('ruc_actual')
         razon_social = self.configuraciones.get('razon_social')
@@ -292,10 +299,11 @@ class Application:
         )
         aceptar_btn.pack(pady=20)
 
-    def ordenar_documentos_recibidos(self):
+    def ordenar_documentos(self, emitido_recibido, recursivo):
         """
         Muestra un mensaje de progreso mientras se ordenan los documentos y retroalimenta el progreso.
         """
+        self.configuraciones = cargar_configuracion_ini()
         try:
             # Pedir directorio y organizar archivos
             directorio = filedialog.askdirectory(title="Seleccione la Carpeta de Documentos a Ordenar")
@@ -306,7 +314,8 @@ class Application:
                 ruc_actual = self.configuraciones.get("ruc_actual")
                 try:
                     # Ordenar documentos y obtener mensajes de progreso
-                    resultado = ordenar_documentos(nombre_archivo, ruta_guardado, ruc_actual, "recibidos", directorio)
+                    resultado = ordenar_documentos(nombre_archivo, ruta_guardado, ruc_actual, emitido_recibido,
+                                                   directorio, recursivo)
                     # Formatear los mensajes de éxito y errores
                     organizados = "\n".join(resultado["resultado_organizacion"])
                     eliminados = "\n".join(resultado["resultado_eliminados"])
@@ -319,6 +328,29 @@ class Application:
 
                 except Exception as e:
                     logging.exception(f"Error durante el ordenamiento de documentos: {e}")
+            else:
+                messagebox.showinfo("Información", f"No se selecciono ninguna carpeta.")
+        except Exception as e:
+            logging.exception(f"Error al iniciar la ventana de progreso: {e}")
+
+    def extraer_xmls(self):
+        """
+        Muestra un mensaje de progreso mientras se ordenan los documentos y retroalimenta el progreso.
+        """
+        self.configuraciones = cargar_configuracion_ini()
+        try:
+            # Pedir directorio y organizar archivos
+            directorio = filedialog.askdirectory(title="Seleccione la carpeta de documentos a extraer los xmls")
+            if directorio:
+                try:
+                    # Ordenar documentos y obtener mensajes de progreso
+                    resultado = desclasificar_xmls(directorio)
+                    messagebox.showinfo(
+                        "Proceso Completado",
+                        f"Archivos organizados:\n{resultado}")
+
+                except Exception as e:
+                    logging.exception(f"Error durante la extracción de XMLs: {e}")
             else:
                 messagebox.showinfo("Información", f"No se selecciono ninguna carpeta.")
         except Exception as e:
