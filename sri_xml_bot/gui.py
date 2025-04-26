@@ -29,6 +29,7 @@ class Application:
 
         # Cargar todas las configuraciones al inicio
         self.configuraciones = cargar_configuracion_ini()
+        self.master_password = None
 
         # Si es la primera vez (por ejemplo, no hay clave encriptada), mostramos la configuración inicial
         if not self.configuraciones.get('clave_ruc_encriptada'):
@@ -82,6 +83,18 @@ class Application:
             font=("Arial", 12, "bold"),
             fill="black"  # Color del texto
         )
+
+    def pedir_contrasena_maestra(self):
+        """
+        Solicita una única vez la contraseña maestra y la guarda en memoria.
+        """
+        master = simpledialog.askstring(
+            "Contraseña Maestra",
+            "Ingrese su contraseña maestra para desbloquear la aplicación:",
+            show="*",
+            parent=self.root
+        )
+        return master
 
     def crear_menu(self):
         """
@@ -161,6 +174,16 @@ class Application:
             messagebox.showerror("Error", "No se configuró la clave en las configuraciones.", parent=self.root)
             return
 
+        # Pedir contraseña maestra solo la primera vez
+        if not self.master_password:
+            self.master_password = simpledialog.askstring(
+                "Contraseña Maestra", "Ingrese la contraseña maestra:",
+                show="*", parent=self.root)
+            if not self.master_password:
+                messagebox.showwarning("Cancelado",
+                                       "No se ingresó la contraseña maestra.",
+                                       parent=self.root)
+                return
         try:
             # Convertir la sal (almacenada en base64) a bytes
             salt = base64.urlsafe_b64decode(salt_str.encode())
@@ -169,15 +192,9 @@ class Application:
             logging.exception("Error al decodificar la sal.")
             return
 
-        # Solicitar al usuario la contraseña maestra para poder desencriptar la clave
-        master = simpledialog.askstring("Contraseña Maestra", "Ingrese la contraseña maestra:", show="*", parent=self.root)
-        if not master:
-            messagebox.showwarning("Cancelado", "No se ingresó la contraseña maestra.", parent=self.root)
-            return
-
         try:
             # Desencriptar la clave usando la contraseña maestra y la sal
-            clave = desencriptar_texto(clave_encriptada, master, salt)
+            clave = desencriptar_texto(clave_encriptada, self.master_password, salt)
         except Exception as e:
             messagebox.showerror("Error", f"No se pudo desencriptar la clave: {e}", parent=self.root)
             logging.exception("Error al desencriptar la clave.")

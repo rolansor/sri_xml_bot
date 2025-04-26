@@ -126,7 +126,7 @@ def guardar_configuracion_ini(config_key: str, config_value: str) -> None:
     """
     Guarda o actualiza una configuración en el archivo .ini.
     """
-    archivo_ini = 'archivos/configuraciones.ini'
+    archivo_ini = '../archivos/configuraciones.ini'
     base_dir = obtener_directorio_base()
     ruta_config = os.path.join(base_dir, archivo_ini)
 

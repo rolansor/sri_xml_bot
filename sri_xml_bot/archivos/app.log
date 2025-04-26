@@ -1312,3 +1312,223 @@ AttributeError: 'NoneType' object has no attribute 'get'
 2025-04-25 23:33:26,548 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
 2025-04-25 23:33:50,578 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
 2025-04-25 23:33:50,617 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-25 23:37:26,811 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-25 23:37:26,851 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-25 23:37:30,602 - INFO - root - PDFs generados exitosamente.
+2025-04-25 23:37:33,089 - INFO - root - PDFs generados exitosamente.
+2025-04-26 00:25:29,417 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-26 00:25:29,892 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-26 00:25:49,335 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-26 00:25:49,384 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-26 00:25:58,612 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-26 00:26:03,564 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-26 00:26:16,234 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-26 00:26:16,275 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-26 00:26:22,268 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-26 01:06:38,423 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-26 01:06:38,666 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-26 01:07:00,481 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-26 01:07:00,521 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-26 01:07:02,095 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-26 01:07:06,896 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-26 01:07:08,868 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-26 01:07:17,036 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-26 01:07:17,074 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-26 01:07:18,502 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-26 01:07:41,227 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-26 01:07:41,266 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-26 01:07:42,460 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-26 01:07:45,763 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-26 01:20:34,418 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-26 01:20:34,454 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-26 01:20:45,619 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-26 01:20:45,658 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-26 01:22:03,367 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-26 01:22:03,403 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-26 01:22:28,466 - INFO - root - Configuración 'ruc_actual' guardada exitosamente en C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini.
+2025-04-26 01:22:28,467 - INFO - root - Configuración 'razon_social' guardada exitosamente en C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini.
+2025-04-26 01:22:28,475 - INFO - root - Configuración 'clave_ruc_encriptada' guardada exitosamente en C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini.
+2025-04-26 01:22:28,480 - INFO - root - Configuración 'clave_salt' guardada exitosamente en C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini.
+2025-04-26 01:22:48,345 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-26 01:22:48,384 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-26 01:22:56,703 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-26 01:23:02,431 - INFO - root - Parámetros de descarga -> Año: 2025, Mes: 4, Día: Todos, Tipo de descarga: 1, Tipo de documento: 1
+2025-04-26 01:23:03,631 - INFO - root - WebDriver configurado exitosamente.
+2025-04-26 01:23:05,310 - INFO - root - Inicio de sesión completado.
+2025-04-26 01:23:32,528 - INFO - root - Opciones de consulta seleccionadas.
+2025-04-26 01:23:32,622 - INFO - root - Botón de consulta presionado, verificando resultados.
+2025-04-26 01:23:32,641 - INFO - root - Mensaje de 'No existen datos' no encontrado inmediatamente, buscando tabla de resultados.
+2025-04-26 01:23:33,158 - INFO - root - Consulta completada, tabla de resultados encontrada.
+2025-04-26 01:23:35,513 - INFO - root - Se encontraron 50 filas para procesar.
+2025-04-26 01:23:36,525 - INFO - root - Procesando documento: #43
+2025-04-26 01:23:36,636 - INFO - root - Documento #43 procesado con éxito.
+2025-04-26 01:23:36,636 - INFO - root - Procesando documento: #50
+2025-04-26 01:23:36,745 - INFO - root - Documento #50 procesado con éxito.
+2025-04-26 01:23:36,746 - INFO - root - Procesando documento: #38
+2025-04-26 01:23:36,854 - INFO - root - Documento #38 procesado con éxito.
+2025-04-26 01:23:36,855 - INFO - root - Procesando documento: #17
+2025-04-26 01:23:36,950 - INFO - root - Documento #17 procesado con éxito.
+2025-04-26 01:23:36,951 - INFO - root - Procesando documento: #34
+2025-04-26 01:23:37,054 - INFO - root - Documento #34 procesado con éxito.
+2025-04-26 01:23:37,054 - INFO - root - Procesando documento: #28
+2025-04-26 01:23:37,147 - INFO - root - Documento #28 procesado con éxito.
+2025-04-26 01:23:37,148 - INFO - root - Procesando documento: #19
+2025-04-26 01:23:37,255 - INFO - root - Documento #19 procesado con éxito.
+2025-04-26 01:23:37,255 - INFO - root - Procesando documento: #41
+2025-04-26 01:23:37,363 - INFO - root - Documento #41 procesado con éxito.
+2025-04-26 01:23:37,363 - INFO - root - Procesando documento: #47
+2025-04-26 01:23:37,463 - INFO - root - Documento #47 procesado con éxito.
+2025-04-26 01:23:37,463 - INFO - root - Procesando documento: #1
+2025-04-26 01:23:37,599 - INFO - root - Documento #1 procesado con éxito.
+2025-04-26 01:23:37,599 - INFO - root - Procesando documento: #40
+2025-04-26 01:23:37,708 - INFO - root - Documento #40 procesado con éxito.
+2025-04-26 01:23:37,708 - INFO - root - Procesando documento: #46
+2025-04-26 01:23:37,806 - INFO - root - Documento #46 procesado con éxito.
+2025-04-26 01:23:37,806 - INFO - root - Procesando documento: #31
+2025-04-26 01:23:37,919 - INFO - root - Documento #31 procesado con éxito.
+2025-04-26 01:23:37,919 - INFO - root - Procesando documento: #22
+2025-04-26 01:23:38,033 - INFO - root - Documento #22 procesado con éxito.
+2025-04-26 01:23:38,033 - INFO - root - Procesando documento: #3
+2025-04-26 01:23:38,141 - INFO - root - Documento #3 procesado con éxito.
+2025-04-26 01:23:38,141 - INFO - root - Procesando documento: #12
+2025-04-26 01:23:38,251 - INFO - root - Documento #12 procesado con éxito.
+2025-04-26 01:23:38,251 - INFO - root - Procesando documento: #37
+2025-04-26 01:23:38,351 - INFO - root - Documento #37 procesado con éxito.
+2025-04-26 01:23:38,351 - INFO - root - Procesando documento: #21
+2025-04-26 01:23:38,472 - INFO - root - Documento #21 procesado con éxito.
+2025-04-26 01:23:38,472 - INFO - root - Procesando documento: #7
+2025-04-26 01:23:38,594 - INFO - root - Documento #7 procesado con éxito.
+2025-04-26 01:23:38,594 - INFO - root - Procesando documento: #8
+2025-04-26 01:23:38,715 - INFO - root - Documento #8 procesado con éxito.
+2025-04-26 01:23:38,715 - INFO - root - Procesando documento: #6
+2025-04-26 01:23:38,821 - INFO - root - Documento #6 procesado con éxito.
+2025-04-26 01:23:38,821 - INFO - root - Procesando documento: #32
+2025-04-26 01:23:38,922 - INFO - root - Documento #32 procesado con éxito.
+2025-04-26 01:23:38,922 - INFO - root - Procesando documento: #16
+2025-04-26 01:23:39,025 - INFO - root - Documento #16 procesado con éxito.
+2025-04-26 01:23:39,026 - INFO - root - Procesando documento: #36
+2025-04-26 01:23:39,131 - INFO - root - Documento #36 procesado con éxito.
+2025-04-26 01:23:39,131 - INFO - root - Procesando documento: #49
+2025-04-26 01:23:39,253 - INFO - root - Documento #49 procesado con éxito.
+2025-04-26 01:23:39,253 - INFO - root - Procesando documento: #9
+2025-04-26 01:23:39,361 - INFO - root - Documento #9 procesado con éxito.
+2025-04-26 01:23:39,362 - INFO - root - Procesando documento: #14
+2025-04-26 01:23:39,461 - INFO - root - Documento #14 procesado con éxito.
+2025-04-26 01:23:39,461 - INFO - root - Procesando documento: #24
+2025-04-26 01:23:39,568 - INFO - root - Documento #24 procesado con éxito.
+2025-04-26 01:23:39,568 - INFO - root - Procesando documento: #18
+2025-04-26 01:23:39,679 - INFO - root - Documento #18 procesado con éxito.
+2025-04-26 01:23:39,680 - INFO - root - Procesando documento: #26
+2025-04-26 01:23:39,787 - INFO - root - Documento #26 procesado con éxito.
+2025-04-26 01:23:39,787 - INFO - root - Procesando documento: #10
+2025-04-26 01:23:39,889 - INFO - root - Documento #10 procesado con éxito.
+2025-04-26 01:23:39,889 - INFO - root - Procesando documento: #25
+2025-04-26 01:23:40,012 - INFO - root - Documento #25 procesado con éxito.
+2025-04-26 01:23:40,013 - INFO - root - Procesando documento: #30
+2025-04-26 01:23:40,123 - INFO - root - Documento #30 procesado con éxito.
+2025-04-26 01:23:40,123 - INFO - root - Procesando documento: #11
+2025-04-26 01:23:40,238 - INFO - root - Documento #11 procesado con éxito.
+2025-04-26 01:23:40,238 - INFO - root - Procesando documento: #4
+2025-04-26 01:23:40,337 - INFO - root - Documento #4 procesado con éxito.
+2025-04-26 01:23:40,337 - INFO - root - Procesando documento: #15
+2025-04-26 01:23:40,446 - INFO - root - Documento #15 procesado con éxito.
+2025-04-26 01:23:40,446 - INFO - root - Procesando documento: #48
+2025-04-26 01:23:40,577 - INFO - root - Documento #48 procesado con éxito.
+2025-04-26 01:23:40,577 - INFO - root - Procesando documento: #13
+2025-04-26 01:23:40,682 - INFO - root - Documento #13 procesado con éxito.
+2025-04-26 01:23:40,683 - INFO - root - Procesando documento: #29
+2025-04-26 01:23:40,803 - INFO - root - Documento #29 procesado con éxito.
+2025-04-26 01:23:40,804 - INFO - root - Procesando documento: #5
+2025-04-26 01:23:40,903 - INFO - root - Documento #5 procesado con éxito.
+2025-04-26 01:23:40,903 - INFO - root - Procesando documento: #27
+2025-04-26 01:23:41,023 - INFO - root - Documento #27 procesado con éxito.
+2025-04-26 01:23:41,023 - INFO - root - Procesando documento: #35
+2025-04-26 01:23:41,149 - INFO - root - Documento #35 procesado con éxito.
+2025-04-26 01:23:41,149 - INFO - root - Procesando documento: #33
+2025-04-26 01:23:41,250 - INFO - root - Documento #33 procesado con éxito.
+2025-04-26 01:23:41,250 - INFO - root - Procesando documento: #45
+2025-04-26 01:23:41,360 - INFO - root - Documento #45 procesado con éxito.
+2025-04-26 01:23:41,360 - INFO - root - Procesando documento: #39
+2025-04-26 01:23:41,459 - INFO - root - Documento #39 procesado con éxito.
+2025-04-26 01:23:41,459 - INFO - root - Procesando documento: #23
+2025-04-26 01:23:41,569 - INFO - root - Documento #23 procesado con éxito.
+2025-04-26 01:23:41,569 - INFO - root - Procesando documento: #42
+2025-04-26 01:23:41,675 - INFO - root - Documento #42 procesado con éxito.
+2025-04-26 01:23:41,676 - INFO - root - Procesando documento: #20
+2025-04-26 01:23:41,796 - INFO - root - Documento #20 procesado con éxito.
+2025-04-26 01:23:41,796 - INFO - root - Procesando documento: #2
+2025-04-26 01:23:41,900 - INFO - root - Documento #2 procesado con éxito.
+2025-04-26 01:23:41,900 - INFO - root - Procesando documento: #44
+2025-04-26 01:23:42,019 - INFO - root - Documento #44 procesado con éxito.
+2025-04-26 01:23:42,339 - ERROR - root - Se produjo un error al actualizar el archivo Excel: [Errno 2] No such file or directory: 'C:\\Users\\rolan\\PycharmProjects\\sri_xml_bot\\sri_xml_bot\\librerias\\archivos/docs_0930808662001_2025.xlsx'.
+2025-04-26 01:23:52,247 - INFO - root - Se encontraron 21 filas para procesar.
+2025-04-26 01:23:53,256 - INFO - root - Procesando documento: #56
+2025-04-26 01:23:53,388 - INFO - root - Documento #56 procesado con éxito.
+2025-04-26 01:23:53,388 - INFO - root - Procesando documento: #55
+2025-04-26 01:23:53,623 - INFO - root - Documento #55 procesado con éxito.
+2025-04-26 01:23:53,624 - INFO - root - Procesando documento: #66
+2025-04-26 01:23:53,722 - INFO - root - Documento #66 procesado con éxito.
+2025-04-26 01:23:53,722 - INFO - root - Procesando documento: #68
+2025-04-26 01:23:53,831 - INFO - root - Documento #68 procesado con éxito.
+2025-04-26 01:23:53,831 - INFO - root - Procesando documento: #63
+2025-04-26 01:23:53,954 - INFO - root - Documento #63 procesado con éxito.
+2025-04-26 01:23:53,954 - INFO - root - Procesando documento: #59
+2025-04-26 01:23:54,063 - INFO - root - Documento #59 procesado con éxito.
+2025-04-26 01:23:54,063 - INFO - root - Procesando documento: #57
+2025-04-26 01:23:54,173 - INFO - root - Documento #57 procesado con éxito.
+2025-04-26 01:23:54,174 - INFO - root - Procesando documento: #52
+2025-04-26 01:23:54,269 - INFO - root - Documento #52 procesado con éxito.
+2025-04-26 01:23:54,269 - INFO - root - Procesando documento: #64
+2025-04-26 01:23:54,391 - INFO - root - Documento #64 procesado con éxito.
+2025-04-26 01:23:54,392 - INFO - root - Procesando documento: #58
+2025-04-26 01:23:54,499 - INFO - root - Documento #58 procesado con éxito.
+2025-04-26 01:23:54,500 - INFO - root - Procesando documento: #61
+2025-04-26 01:23:54,601 - INFO - root - Documento #61 procesado con éxito.
+2025-04-26 01:23:54,602 - INFO - root - Procesando documento: #70
+2025-04-26 01:23:54,691 - INFO - root - Documento #70 procesado con éxito.
+2025-04-26 01:23:54,691 - INFO - root - Procesando documento: #53
+2025-04-26 01:23:54,819 - INFO - root - Documento #53 procesado con éxito.
+2025-04-26 01:23:54,819 - INFO - root - Procesando documento: #65
+2025-04-26 01:23:54,960 - INFO - root - Documento #65 procesado con éxito.
+2025-04-26 01:23:54,960 - INFO - root - Procesando documento: #69
+2025-04-26 01:23:55,060 - INFO - root - Documento #69 procesado con éxito.
+2025-04-26 01:23:55,060 - INFO - root - Procesando documento: #71
+2025-04-26 01:23:55,172 - INFO - root - Documento #71 procesado con éxito.
+2025-04-26 01:23:55,172 - INFO - root - Procesando documento: #51
+2025-04-26 01:23:55,266 - INFO - root - Documento #51 procesado con éxito.
+2025-04-26 01:23:55,266 - INFO - root - Procesando documento: #62
+2025-04-26 01:23:55,367 - INFO - root - Documento #62 procesado con éxito.
+2025-04-26 01:23:55,367 - INFO - root - Procesando documento: #60
+2025-04-26 01:23:55,512 - INFO - root - Documento #60 procesado con éxito.
+2025-04-26 01:23:55,512 - INFO - root - Procesando documento: #54
+2025-04-26 01:23:55,641 - INFO - root - Documento #54 procesado con éxito.
+2025-04-26 01:23:55,641 - INFO - root - Procesando documento: #67
+2025-04-26 01:23:55,749 - INFO - root - Documento #67 procesado con éxito.
+2025-04-26 01:23:55,751 - ERROR - root - Se produjo un error al actualizar el archivo Excel: [Errno 2] No such file or directory: 'C:\\Users\\rolan\\PycharmProjects\\sri_xml_bot\\sri_xml_bot\\librerias\\archivos/docs_0930808662001_2025.xlsx'.
+2025-04-26 01:25:58,170 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-26 01:25:58,209 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-26 01:26:00,151 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-26 01:26:04,177 - INFO - root - Parámetros de descarga -> Año: 2025, Mes: 4, Día: Todos, Tipo de descarga: 1, Tipo de documento: 3
+2025-04-26 01:26:05,166 - INFO - root - WebDriver configurado exitosamente.
+2025-04-26 01:26:06,633 - INFO - root - Inicio de sesión completado.
+2025-04-26 01:26:08,983 - INFO - root - Opciones de consulta seleccionadas.
+2025-04-26 01:26:09,074 - INFO - root - Botón de consulta presionado, verificando resultados.
+2025-04-26 01:26:09,080 - INFO - root - Mensaje de 'No existen datos' no encontrado inmediatamente, buscando tabla de resultados.
+2025-04-26 01:26:09,609 - INFO - root - Consulta completada, tabla de resultados encontrada.
+2025-04-26 01:26:10,831 - INFO - root - Se encontraron 2 filas para procesar.
+2025-04-26 01:26:11,831 - INFO - root - Procesando documento: #1
+2025-04-26 01:26:11,936 - INFO - root - Documento #1 procesado con éxito.
+2025-04-26 01:26:11,937 - INFO - root - Procesando documento: #2
+2025-04-26 01:26:12,043 - INFO - root - Documento #2 procesado con éxito.
+2025-04-26 01:27:42,641 - INFO - root - Parámetros de descarga -> Año: 2025, Mes: 4, Día: Todos, Tipo de descarga: 0, Tipo de documento: 3
+2025-04-26 01:27:43,688 - INFO - root - WebDriver configurado exitosamente.
+2025-04-26 01:27:44,946 - INFO - root - Inicio de sesión completado.
+2025-04-26 01:27:47,333 - INFO - root - Opciones de consulta seleccionadas.
+2025-04-26 01:27:47,420 - INFO - root - Botón de consulta presionado, verificando resultados.
+2025-04-26 01:27:47,428 - INFO - root - Mensaje de 'No existen datos' no encontrado inmediatamente, buscando tabla de resultados.
+2025-04-26 01:27:47,949 - INFO - root - Consulta completada, tabla de resultados encontrada.
+2025-04-26 01:27:49,016 - INFO - root - Se encontraron 2 filas para procesar.
+2025-04-26 01:27:50,017 - INFO - root - Procesando documento: #1
+2025-04-26 01:27:51,437 - INFO - root - Documento #1 procesado con éxito.
+2025-04-26 01:27:51,437 - INFO - root - Procesando documento: #2
+2025-04-26 01:27:52,804 - INFO - root - Documento #2 procesado con éxito.

@@ -368,7 +368,7 @@ def comparar_registros(ruc, anio=None, mes=None):
 def actualizar_excel(ruc, procesados=None):
     base_dir = obtener_directorio_base()
     anio_actual = datetime.now().year
-    archivo_excel_rel = f"archivos/docs_{ruc}_{anio_actual}.xlsx"
+    archivo_excel_rel = f"../archivos/docs_{ruc}_{anio_actual}.xlsx"
     ruta_archivo = os.path.join(base_dir, archivo_excel_rel)
 
     try:
