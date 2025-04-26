@@ -32,7 +32,7 @@ class Application:
 
         # Si es la primera vez (por ejemplo, no hay clave encriptada), mostramos la configuración inicial
         if not self.configuraciones.get('clave_ruc_encriptada'):
-            self.mostrar_configuracion_inicial()
+            self.mostrar_configurar_ruc(primer_uso=True)
             # Esperar a que se cierre la ventana de configuración
             self.root.wait_window(self.ventana_config)
             # Volver a cargar la configuración
@@ -52,61 +52,6 @@ class Application:
 
         # Crear el menú principal
         self.crear_menu()
-
-    def mostrar_configuracion_inicial(self):
-        """
-        Muestra una ventana (similar a un message box) para configurar el RUC y la clave.
-        Se solicitará además una contraseña maestra para encriptar la clave.
-        """
-        self.ventana_config = Toplevel(self.root)
-        self.ventana_config.title("Configuración Inicial")
-        centrar_ventana("Configuración Inicial", self.ventana_config, ancho=400, alto=300)
-        self.ventana_config.grab_set()  # Bloquea la interacción con la ventana principal
-
-        Label(self.ventana_config, text="Ingrese el RUC:").pack(pady=5)
-        self.entry_ruc = Entry(self.ventana_config)
-        self.entry_ruc.pack(pady=5)
-
-        Label(self.ventana_config, text="Ingrese la Razón Social:").pack(pady=5)
-        self.entry_razonsocial = Entry(self.ventana_config)
-        self.entry_razonsocial.pack(pady=5)
-
-        Label(self.ventana_config, text="Ingrese la clave:").pack(pady=5)
-        self.entry_clave = Entry(self.ventana_config, show="*")
-        self.entry_clave.pack(pady=5)
-
-        Label(self.ventana_config, text="Contraseña maestra:").pack(pady=5)
-        self.entry_master = Entry(self.ventana_config, show="*")
-        self.entry_master.pack(pady=5)
-
-        Button(self.ventana_config, text="Aceptar", command=self.guardar_ruc_inicial).pack(pady=10)
-
-    def guardar_ruc_inicial(self):
-        ruc = self.entry_ruc.get().strip()
-        clave = self.entry_clave.get().strip()
-        razon_social = self.entry_razonsocial.get().strip()
-        master = self.entry_master.get().strip()
-
-        if not ruc or not clave or not master or not razon_social:
-            messagebox.showerror("Error", "Todos los campos son obligatorios.", parent=self.ventana_config)
-            return
-
-        # Generar una sal única y aleatoria (solo se genera la primera vez)
-        salt = os.urandom(16)
-        # Encriptar la clave usando la contraseña maestra y la sal
-        clave_encriptada = encriptar_texto(clave, master, salt)
-        # Convertir la sal a una cadena (por ejemplo, usando base64) para almacenarla en el archivo de configuración
-        salt_str = base64.urlsafe_b64encode(salt).decode()
-
-        # Guardar los valores en el archivo de configuración
-        guardar_configuracion_ini('ruc_actual', ruc)
-        guardar_configuracion_ini('clave_ruc_encriptada', clave_encriptada)
-        guardar_configuracion_ini('razon_social', razon_social)
-        guardar_configuracion_ini('clave_salt', salt_str)
-
-        messagebox.showinfo("Configuración guardada", "La configuración inicial se ha guardado correctamente.",
-                            parent=self.ventana_config)
-        self.ventana_config.destroy()
 
     def configurar_fondo(self):
         """
@@ -180,7 +125,7 @@ class Application:
 
         # Menú "Configuraciones"
         menu_configuracion = tk.Menu(menubar, tearoff=0)
-        menu_configuracion.add_command(label="Ruc/Razon Social/Clave", command=self.configurar_ruc_datos)
+        menu_configuracion.add_command(label="Ruc/Razon Social/Clave", command=self.mostrar_configurar_ruc)
         menu_configuracion.add_command(label="Estructura de Rutas", command=self.configurar_ruta_guardado)
         menu_configuracion.add_command(label="Formato Nombre Archivo", command=self.configurar_nombre_guardado)
         menu_configuracion.add_command(label="Ruta WebDriver", command=self.configurar_ruta_chromedriver)
@@ -392,16 +337,18 @@ class Application:
             messagebox.showerror("Error", f"No se pudo imprimir los PDFs: {e}")
             logging.exception("Error al imprimir PDFs.")
 
-    def configurar_ruc_datos(self):
+    def mostrar_configurar_ruc(self, primer_uso=False):
         """
-        Muestra una ventana para configurar el RUC, la Razón Social, la clave y la contraseña maestra.
-        Valida que el RUC sea de 13 dígitos y que la Razón Social tenga al menos 3 caracteres (se convierte a mayúsculas).
-        Si la validación es correcta, encripta la clave y guarda los datos en el archivo de configuración.
+        Muestra una ventana para configurar o actualizar el RUC, la Razón Social, la clave y la contraseña maestra.
+        Si es primer_uso=True, actúa como configuración inicial obligatoria.
         """
+        # TODO: El nuevo RUC no se actualiza dinamicamente, toca cerrar todo o volver a cargar.
+
         self.ventana_config = Toplevel(self.root)
-        self.ventana_config.title("Configuración Inicial")
-        centrar_ventana("Configuración Inicial", self.ventana_config, ancho=400, alto=300)
-        self.ventana_config.grab_set()  # Bloquea la interacción con la ventana principal
+        titulo = "Configuración Inicial" if primer_uso else "Actualizar RUC / Razón Social / Clave"
+        self.ventana_config.title(titulo)
+        centrar_ventana(titulo, self.ventana_config, ancho=400, alto=300)
+        self.ventana_config.grab_set()
 
         Label(self.ventana_config, text="Ingrese el RUC:").pack(pady=5)
         entry_ruc = Entry(self.ventana_config)
@@ -419,54 +366,51 @@ class Application:
         entry_master = Entry(self.ventana_config, show="*")
         entry_master.pack(pady=5)
 
-        def guardar_config():
+        def guardar():
             ruc = entry_ruc.get().strip()
-            # Convertir la razón social a mayúsculas automáticamente
             razon_social = entry_razon.get().strip().upper()
             clave = entry_clave.get().strip()
             master = entry_master.get().strip()
 
-            # Validar que el RUC tenga exactamente 13 dígitos y que sean numéricos
+            if not (ruc and razon_social and clave and master):
+                messagebox.showerror("Error", "Todos los campos son obligatorios.", parent=self.ventana_config)
+                return
+
             if not (ruc.isdigit() and len(ruc) == 13):
-                messagebox.showerror("Error", "El RUC debe tener exactamente 13 dígitos numéricos.",
-                                     parent=self.ventana_config)
+                messagebox.showerror("Error", "El RUC debe tener exactamente 13 dígitos numéricos.", parent=self.ventana_config)
                 return
 
-            # Validar que la razón social tenga al menos 3 caracteres
             if len(razon_social) < 3:
-                messagebox.showerror("Error", "La Razón Social debe tener al menos 3 caracteres.",
-                                     parent=self.ventana_config)
+                messagebox.showerror("Error", "La Razón Social debe tener al menos 3 caracteres.", parent=self.ventana_config)
                 return
 
-            # Validar que se hayan ingresado la clave y la contraseña maestra
-            if not clave or not master:
-                messagebox.showerror("Error", "La clave y la contraseña maestra son obligatorias.",
-                                     parent=self.ventana_config)
-                return
-
-            # Generar una sal única y aleatoria
             salt = os.urandom(16)
-            # Encriptar la clave usando la contraseña maestra y la sal
             clave_encriptada = encriptar_texto(clave, master, salt)
-            # Convertir la sal a una cadena (usando base64) para almacenarla en el archivo de configuración
             salt_str = base64.urlsafe_b64encode(salt).decode()
 
-            # Guardar los valores en el archivo de configuración
             guardar_configuracion_ini('ruc_actual', ruc)
             guardar_configuracion_ini('razon_social', razon_social)
             guardar_configuracion_ini('clave_ruc_encriptada', clave_encriptada)
             guardar_configuracion_ini('clave_salt', salt_str)
 
-            messagebox.showinfo("Configuración guardada", "La configuración inicial se ha guardado correctamente.",
-                                parent=self.ventana_config)
+            messagebox.showinfo("Configuración guardada", "La configuración se ha guardado correctamente.", parent=self.ventana_config)
             self.ventana_config.destroy()
 
-        Button(self.ventana_config, text="Aceptar", command=guardar_config).pack(pady=10)
+            # Si es primer uso y no se configuró, cerrar app
+            if primer_uso:
+                self.configuraciones = cargar_configuracion_ini()
+                if not self.configuraciones.get('clave_ruc_encriptada'):
+                    self.root.destroy()
+                    sys.exit(1)
+
+        Button(self.ventana_config, text="Aceptar", command=guardar).pack(pady=10)
 
     def configurar_ruta_guardado(self):
         """
         Abre una ventana para configurar la ruta de guardado para los archivos recibidos.
         """
+        # TODO: La estructura de ruta de guardado no se actualiza siempre se muestra la misma.
+
         self.ventana_configuracion_ruta = Toplevel(self.root)
         centrar_ventana("Configurar Ruta de Archivos XMLs", self.ventana_configuracion_ruta, ancho=350, alto=450)
 

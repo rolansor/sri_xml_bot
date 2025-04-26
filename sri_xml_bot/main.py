@@ -11,7 +11,7 @@ def configurar_logging():
     """
 
     # Construimos la ruta del archivo de log
-    ruta_archivo_log = ruta_relativa_recurso("archivos/app.log", [("Archivos de log", "*.log")])
+    ruta_archivo_log = ruta_relativa_recurso("../archivos/app.log", [("Archivos de log", "*.log")])
 
     # Obtenemos el logger raíz
     logger = logging.getLogger()

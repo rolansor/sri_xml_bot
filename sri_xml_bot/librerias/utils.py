@@ -94,13 +94,13 @@ def cargar_configuracion_ini() -> dict:
         "razon_social": "S/N",
         "clave_ruc_encriptada": "",
         "clave_salt": "",
-        "ruta_chromedriver": "archivos/chromedriver.exe",
-        "ruta_logos": "archivos/logo.png",
-        "ruta_rucs": "archivos/rucs.txt",
-        "ruta_logs": "archivos/app.log",
+        "ruta_chromedriver": "../archivos/chromedriver.exe",
+        "ruta_logos": "../archivos/logo.png",
+        "ruta_rucs": "../archivos/rucs.txt",
+        "ruta_logs": "../archivos/app.log",
     }
 
-    archivo_ini = 'archivos/configuraciones.ini'
+    archivo_ini = '../archivos/configuraciones.ini'
     base_dir = obtener_directorio_base()
     ruta_config = os.path.join(base_dir, archivo_ini)
 
