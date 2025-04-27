@@ -37,6 +37,7 @@ def extraer_ruc_receptor(documento, tipo):
         'comprobantes_de_retencion': 'infoCompRetencion',
         'notas_de_credito': 'infoNotaCredito'
     }
+    #TODO: Validar que el identificador del ruc receptor segun el tipo de documento electronico.
     ruc = documento[campo_ruc[tipo]]['identificacionComprador' if tipo != 'comprobantes_de_retencion' else 'identificacionSujetoRetenido']
     return ruc + "001" if len(ruc) == 10 else ruc
 
@@ -167,6 +168,7 @@ def procesar_archivo_xml(file_path):
 # ====================================
 # Funciones de Conversión de Comprobantes
 # ====================================
+
 
 def comprobante_a_dic_factura(comprobante_tree):
     """
