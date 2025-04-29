@@ -127,7 +127,7 @@ class Application:
 
         # Submenú de "Reportes"
         menu_reportes = tk.Menu(menubar, tearoff=0)
-        menu_reportes.add_command(label="Generar XLS", command=self.mostrar_acerca_de)
+        menu_reportes.add_command(label="Generar XLS", command=self.generar_reporte)
         menubar.add_cascade(label="Reportes", menu=menu_reportes)
 
         # Submenú de "PDFs"
@@ -322,13 +322,24 @@ class Application:
         """
         Maneja la opción de generar reportes.
         """
+        self.configuraciones = cargar_configuracion_ini()
         try:
-            generar_reporte()
-            messagebox.showinfo("Éxito", "Reporte generado correctamente.")
-            logging.info("Reporte generado exitosamente.")
+            # Pedir directorio y organizar archivos
+            directorio = filedialog.askdirectory(title="Seleccione la carpeta raiz, desde donde se procesaran los documentos.")
+            if directorio:
+                try:
+                    # Ordenar documentos y obtener mensajes de progreso
+                    resultado = generar_reporte(directorio)
+                    messagebox.showinfo(
+                        "Proceso Completado",
+                        f"Archivo Creado:\n{resultado}")
+
+                except Exception as e:
+                    logging.exception(f"Error durante la genarción del reporte Excel: {e}")
+            else:
+                messagebox.showinfo("Información", f"No se selecciono ninguna carpeta raiz.")
         except Exception as e:
-            messagebox.showerror("Error", f"No se pudo generar el reporte: {e}")
-            logging.exception("Error al generar reporte.")
+            logging.exception(f"Error al iniciar la ventana de progreso: {e}")
 
     def generar_pdfs(self):
         """

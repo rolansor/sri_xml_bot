@@ -72,8 +72,6 @@ def descargar_documentos(ruta_chromedriver, anio, mes, dia, tipo_descarga, tipo_
 # ===================================
 # Configuración del WebDriver
 # ===================================
-
-
 def configurar_webdriver(ruta):
     """
     Configura el WebDriver de Chrome con las preferencias necesarias para descargar documentos.
@@ -107,7 +105,6 @@ def configurar_webdriver(ruta):
 # ===================================
 # Funciones de Navegación y Acciones en la Web
 # ===================================
-
 def iniciar_sesion(usuario, password):
     """
     Inicia sesión en el portal del SRI.

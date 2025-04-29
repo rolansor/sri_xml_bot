@@ -1532,3 +1532,372 @@ AttributeError: 'NoneType' object has no attribute 'get'
 2025-04-26 01:27:51,437 - INFO - root - Documento #1 procesado con éxito.
 2025-04-26 01:27:51,437 - INFO - root - Procesando documento: #2
 2025-04-26 01:27:52,804 - INFO - root - Documento #2 procesado con éxito.
+2025-04-27 16:31:04,351 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-27 16:31:04,809 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-27 16:31:59,706 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-27 16:31:59,773 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-27 16:32:01,545 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-27 16:32:06,149 - INFO - root - Parámetros de descarga -> Año: 2025, Mes: 4, Día: Todos, Tipo de descarga: 1, Tipo de documento: 1
+2025-04-27 16:32:07,388 - INFO - root - WebDriver configurado exitosamente.
+2025-04-27 16:32:09,209 - INFO - root - Inicio de sesión completado.
+2025-04-27 16:32:11,644 - INFO - root - Opciones de consulta seleccionadas.
+2025-04-27 16:32:11,736 - INFO - root - Botón de consulta presionado, verificando resultados.
+2025-04-27 16:32:11,744 - INFO - root - Mensaje de 'No existen datos' no encontrado inmediatamente, buscando tabla de resultados.
+2025-04-27 16:32:12,272 - INFO - root - Consulta completada, tabla de resultados encontrada.
+2025-04-27 16:32:14,758 - INFO - root - Se encontraron 50 filas para procesar.
+2025-04-27 16:32:15,765 - INFO - root - Procesando documento: #5
+2025-04-27 16:32:15,870 - INFO - root - Documento #5 procesado con éxito.
+2025-04-27 16:32:15,871 - INFO - root - Procesando documento: #17
+2025-04-27 16:32:15,977 - INFO - root - Documento #17 procesado con éxito.
+2025-04-27 16:32:15,977 - INFO - root - Procesando documento: #45
+2025-04-27 16:32:16,085 - INFO - root - Documento #45 procesado con éxito.
+2025-04-27 16:32:16,085 - INFO - root - Procesando documento: #20
+2025-04-27 16:32:16,195 - INFO - root - Documento #20 procesado con éxito.
+2025-04-27 16:32:16,195 - INFO - root - Procesando documento: #21
+2025-04-27 16:32:16,284 - INFO - root - Documento #21 procesado con éxito.
+2025-04-27 16:32:16,284 - INFO - root - Procesando documento: #10
+2025-04-27 16:32:16,381 - INFO - root - Documento #10 procesado con éxito.
+2025-04-27 16:32:16,382 - INFO - root - Procesando documento: #37
+2025-04-27 16:32:16,476 - INFO - root - Documento #37 procesado con éxito.
+2025-04-27 16:32:16,476 - INFO - root - Procesando documento: #40
+2025-04-27 16:32:16,587 - INFO - root - Documento #40 procesado con éxito.
+2025-04-27 16:32:16,587 - INFO - root - Procesando documento: #30
+2025-04-27 16:32:16,682 - INFO - root - Documento #30 procesado con éxito.
+2025-04-27 16:32:16,682 - INFO - root - Procesando documento: #11
+2025-04-27 16:32:16,785 - INFO - root - Documento #11 procesado con éxito.
+2025-04-27 16:32:16,785 - INFO - root - Procesando documento: #42
+2025-04-27 16:32:16,911 - INFO - root - Documento #42 procesado con éxito.
+2025-04-27 16:32:16,911 - INFO - root - Procesando documento: #29
+2025-04-27 16:32:17,016 - INFO - root - Documento #29 procesado con éxito.
+2025-04-27 16:32:17,016 - INFO - root - Procesando documento: #49
+2025-04-27 16:32:17,107 - INFO - root - Documento #49 procesado con éxito.
+2025-04-27 16:32:17,107 - INFO - root - Procesando documento: #22
+2025-04-27 16:32:17,198 - INFO - root - Documento #22 procesado con éxito.
+2025-04-27 16:32:17,199 - INFO - root - Procesando documento: #8
+2025-04-27 16:32:17,296 - INFO - root - Documento #8 procesado con éxito.
+2025-04-27 16:32:17,296 - INFO - root - Procesando documento: #3
+2025-04-27 16:32:17,404 - INFO - root - Documento #3 procesado con éxito.
+2025-04-27 16:32:17,404 - INFO - root - Procesando documento: #24
+2025-04-27 16:32:17,516 - INFO - root - Documento #24 procesado con éxito.
+2025-04-27 16:32:17,517 - INFO - root - Procesando documento: #9
+2025-04-27 16:32:17,630 - INFO - root - Documento #9 procesado con éxito.
+2025-04-27 16:32:17,630 - INFO - root - Procesando documento: #23
+2025-04-27 16:32:17,724 - INFO - root - Documento #23 procesado con éxito.
+2025-04-27 16:32:17,724 - INFO - root - Procesando documento: #34
+2025-04-27 16:32:17,833 - INFO - root - Documento #34 procesado con éxito.
+2025-04-27 16:32:17,833 - INFO - root - Procesando documento: #43
+2025-04-27 16:32:17,933 - INFO - root - Documento #43 procesado con éxito.
+2025-04-27 16:32:17,933 - INFO - root - Procesando documento: #46
+2025-04-27 16:32:18,031 - INFO - root - Documento #46 procesado con éxito.
+2025-04-27 16:32:18,031 - INFO - root - Procesando documento: #19
+2025-04-27 16:32:18,127 - INFO - root - Documento #19 procesado con éxito.
+2025-04-27 16:32:18,127 - INFO - root - Procesando documento: #44
+2025-04-27 16:32:18,226 - INFO - root - Documento #44 procesado con éxito.
+2025-04-27 16:32:18,226 - INFO - root - Procesando documento: #39
+2025-04-27 16:32:18,323 - INFO - root - Documento #39 procesado con éxito.
+2025-04-27 16:32:18,323 - INFO - root - Procesando documento: #1
+2025-04-27 16:32:18,447 - INFO - root - Documento #1 procesado con éxito.
+2025-04-27 16:32:18,447 - INFO - root - Procesando documento: #41
+2025-04-27 16:32:18,544 - INFO - root - Documento #41 procesado con éxito.
+2025-04-27 16:32:18,544 - INFO - root - Procesando documento: #32
+2025-04-27 16:32:18,643 - INFO - root - Documento #32 procesado con éxito.
+2025-04-27 16:32:18,643 - INFO - root - Procesando documento: #13
+2025-04-27 16:32:18,746 - INFO - root - Documento #13 procesado con éxito.
+2025-04-27 16:32:18,746 - INFO - root - Procesando documento: #6
+2025-04-27 16:32:18,839 - INFO - root - Documento #6 procesado con éxito.
+2025-04-27 16:32:18,839 - INFO - root - Procesando documento: #4
+2025-04-27 16:32:18,932 - INFO - root - Documento #4 procesado con éxito.
+2025-04-27 16:32:18,932 - INFO - root - Procesando documento: #31
+2025-04-27 16:32:19,021 - INFO - root - Documento #31 procesado con éxito.
+2025-04-27 16:32:19,021 - INFO - root - Procesando documento: #33
+2025-04-27 16:32:19,130 - INFO - root - Documento #33 procesado con éxito.
+2025-04-27 16:32:19,131 - INFO - root - Procesando documento: #7
+2025-04-27 16:32:19,245 - INFO - root - Documento #7 procesado con éxito.
+2025-04-27 16:32:19,246 - INFO - root - Procesando documento: #18
+2025-04-27 16:32:19,350 - INFO - root - Documento #18 procesado con éxito.
+2025-04-27 16:32:19,351 - INFO - root - Procesando documento: #15
+2025-04-27 16:32:19,465 - INFO - root - Documento #15 procesado con éxito.
+2025-04-27 16:32:19,466 - INFO - root - Procesando documento: #16
+2025-04-27 16:32:19,585 - INFO - root - Documento #16 procesado con éxito.
+2025-04-27 16:32:19,586 - INFO - root - Procesando documento: #14
+2025-04-27 16:32:19,687 - INFO - root - Documento #14 procesado con éxito.
+2025-04-27 16:32:19,687 - INFO - root - Procesando documento: #38
+2025-04-27 16:32:19,788 - INFO - root - Documento #38 procesado con éxito.
+2025-04-27 16:32:19,789 - INFO - root - Procesando documento: #35
+2025-04-27 16:32:19,889 - INFO - root - Documento #35 procesado con éxito.
+2025-04-27 16:32:19,889 - INFO - root - Procesando documento: #12
+2025-04-27 16:32:19,994 - INFO - root - Documento #12 procesado con éxito.
+2025-04-27 16:32:19,994 - INFO - root - Procesando documento: #47
+2025-04-27 16:32:20,092 - INFO - root - Documento #47 procesado con éxito.
+2025-04-27 16:32:20,092 - INFO - root - Procesando documento: #36
+2025-04-27 16:32:20,210 - INFO - root - Documento #36 procesado con éxito.
+2025-04-27 16:32:20,210 - INFO - root - Procesando documento: #2
+2025-04-27 16:32:20,350 - INFO - root - Documento #2 procesado con éxito.
+2025-04-27 16:32:20,350 - INFO - root - Procesando documento: #50
+2025-04-27 16:32:20,496 - INFO - root - Documento #50 procesado con éxito.
+2025-04-27 16:32:20,496 - INFO - root - Procesando documento: #27
+2025-04-27 16:32:20,628 - INFO - root - Documento #27 procesado con éxito.
+2025-04-27 16:32:20,628 - INFO - root - Procesando documento: #28
+2025-04-27 16:32:20,770 - INFO - root - Documento #28 procesado con éxito.
+2025-04-27 16:32:20,770 - INFO - root - Procesando documento: #26
+2025-04-27 16:32:20,894 - INFO - root - Documento #26 procesado con éxito.
+2025-04-27 16:32:20,895 - INFO - root - Procesando documento: #48
+2025-04-27 16:32:21,022 - INFO - root - Documento #48 procesado con éxito.
+2025-04-27 16:32:21,022 - INFO - root - Procesando documento: #25
+2025-04-27 16:32:21,155 - INFO - root - Documento #25 procesado con éxito.
+2025-04-27 16:32:24,464 - INFO - root - Se encontraron 25 filas para procesar.
+2025-04-27 16:32:25,473 - INFO - root - Procesando documento: #72
+2025-04-27 16:32:25,596 - INFO - root - Documento #72 procesado con éxito.
+2025-04-27 16:32:25,596 - INFO - root - Procesando documento: #53
+2025-04-27 16:32:25,689 - INFO - root - Documento #53 procesado con éxito.
+2025-04-27 16:32:25,689 - INFO - root - Procesando documento: #52
+2025-04-27 16:32:25,800 - INFO - root - Documento #52 procesado con éxito.
+2025-04-27 16:32:25,800 - INFO - root - Procesando documento: #66
+2025-04-27 16:32:25,923 - INFO - root - Documento #66 procesado con éxito.
+2025-04-27 16:32:25,923 - INFO - root - Procesando documento: #65
+2025-04-27 16:32:26,041 - INFO - root - Documento #65 procesado con éxito.
+2025-04-27 16:32:26,041 - INFO - root - Procesando documento: #69
+2025-04-27 16:32:26,124 - INFO - root - Documento #69 procesado con éxito.
+2025-04-27 16:32:26,124 - INFO - root - Procesando documento: #74
+2025-04-27 16:32:26,209 - INFO - root - Documento #74 procesado con éxito.
+2025-04-27 16:32:26,209 - INFO - root - Procesando documento: #57
+2025-04-27 16:32:26,300 - INFO - root - Documento #57 procesado con éxito.
+2025-04-27 16:32:26,300 - INFO - root - Procesando documento: #75
+2025-04-27 16:32:26,391 - INFO - root - Documento #75 procesado con éxito.
+2025-04-27 16:32:26,391 - INFO - root - Procesando documento: #71
+2025-04-27 16:32:26,484 - INFO - root - Documento #71 procesado con éxito.
+2025-04-27 16:32:26,485 - INFO - root - Procesando documento: #60
+2025-04-27 16:32:26,612 - INFO - root - Documento #60 procesado con éxito.
+2025-04-27 16:32:26,612 - INFO - root - Procesando documento: #70
+2025-04-27 16:32:26,702 - INFO - root - Documento #70 procesado con éxito.
+2025-04-27 16:32:26,702 - INFO - root - Procesando documento: #59
+2025-04-27 16:32:26,806 - INFO - root - Documento #59 procesado con éxito.
+2025-04-27 16:32:26,806 - INFO - root - Procesando documento: #62
+2025-04-27 16:32:26,891 - INFO - root - Documento #62 procesado con éxito.
+2025-04-27 16:32:26,891 - INFO - root - Procesando documento: #58
+2025-04-27 16:32:26,983 - INFO - root - Documento #58 procesado con éxito.
+2025-04-27 16:32:26,983 - INFO - root - Procesando documento: #61
+2025-04-27 16:32:27,080 - INFO - root - Documento #61 procesado con éxito.
+2025-04-27 16:32:27,080 - INFO - root - Procesando documento: #56
+2025-04-27 16:32:27,197 - INFO - root - Documento #56 procesado con éxito.
+2025-04-27 16:32:27,198 - INFO - root - Procesando documento: #63
+2025-04-27 16:32:27,294 - INFO - root - Documento #63 procesado con éxito.
+2025-04-27 16:32:27,295 - INFO - root - Procesando documento: #51
+2025-04-27 16:32:27,390 - INFO - root - Documento #51 procesado con éxito.
+2025-04-27 16:32:27,390 - INFO - root - Procesando documento: #55
+2025-04-27 16:32:27,492 - INFO - root - Documento #55 procesado con éxito.
+2025-04-27 16:32:27,492 - INFO - root - Procesando documento: #54
+2025-04-27 16:32:27,601 - INFO - root - Documento #54 procesado con éxito.
+2025-04-27 16:32:27,601 - INFO - root - Procesando documento: #68
+2025-04-27 16:32:27,702 - INFO - root - Documento #68 procesado con éxito.
+2025-04-27 16:32:27,702 - INFO - root - Procesando documento: #67
+2025-04-27 16:32:27,839 - INFO - root - Documento #67 procesado con éxito.
+2025-04-27 16:32:27,839 - INFO - root - Procesando documento: #73
+2025-04-27 16:32:27,946 - INFO - root - Documento #73 procesado con éxito.
+2025-04-27 16:32:27,946 - INFO - root - Procesando documento: #64
+2025-04-27 16:32:28,038 - INFO - root - Documento #64 procesado con éxito.
+2025-04-27 16:32:40,548 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-27 16:32:41,299 - INFO - root - Parámetros de descarga -> Año: 2025, Mes: 4, Día: Todos, Tipo de descarga: 1, Tipo de documento: 3
+2025-04-27 16:32:42,341 - INFO - root - WebDriver configurado exitosamente.
+2025-04-27 16:32:43,686 - INFO - root - Inicio de sesión completado.
+2025-04-27 16:32:46,111 - INFO - root - Opciones de consulta seleccionadas.
+2025-04-27 16:32:46,208 - INFO - root - Botón de consulta presionado, verificando resultados.
+2025-04-27 16:32:46,235 - INFO - root - Mensaje de 'No existen datos' no encontrado inmediatamente, buscando tabla de resultados.
+2025-04-27 16:32:46,750 - INFO - root - Consulta completada, tabla de resultados encontrada.
+2025-04-27 16:32:47,827 - INFO - root - Se encontraron 2 filas para procesar.
+2025-04-27 16:32:48,829 - INFO - root - Procesando documento: #2
+2025-04-27 16:32:48,944 - INFO - root - Documento #2 procesado con éxito.
+2025-04-27 16:32:48,944 - INFO - root - Procesando documento: #1
+2025-04-27 16:32:49,041 - INFO - root - Documento #1 procesado con éxito.
+2025-04-27 16:33:05,561 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-27 16:33:06,342 - INFO - root - Parámetros de descarga -> Año: 2025, Mes: 4, Día: Todos, Tipo de descarga: 1, Tipo de documento: 6
+2025-04-27 16:33:07,392 - INFO - root - WebDriver configurado exitosamente.
+2025-04-27 16:33:09,045 - INFO - root - Inicio de sesión completado.
+2025-04-27 16:33:11,454 - INFO - root - Opciones de consulta seleccionadas.
+2025-04-27 16:33:11,544 - INFO - root - Botón de consulta presionado, verificando resultados.
+2025-04-27 16:33:11,552 - INFO - root - Mensaje de 'No existen datos' no encontrado inmediatamente, buscando tabla de resultados.
+2025-04-27 16:33:12,076 - INFO - root - Consulta completada, tabla de resultados encontrada.
+2025-04-27 16:33:13,427 - INFO - root - Se encontraron 13 filas para procesar.
+2025-04-27 16:33:14,433 - INFO - root - Procesando documento: #12
+2025-04-27 16:33:14,531 - INFO - root - Documento #12 procesado con éxito.
+2025-04-27 16:33:14,531 - INFO - root - Procesando documento: #1
+2025-04-27 16:33:14,644 - INFO - root - Documento #1 procesado con éxito.
+2025-04-27 16:33:14,644 - INFO - root - Procesando documento: #9
+2025-04-27 16:33:14,740 - INFO - root - Documento #9 procesado con éxito.
+2025-04-27 16:33:14,740 - INFO - root - Procesando documento: #3
+2025-04-27 16:33:14,838 - INFO - root - Documento #3 procesado con éxito.
+2025-04-27 16:33:14,838 - INFO - root - Procesando documento: #2
+2025-04-27 16:33:14,937 - INFO - root - Documento #2 procesado con éxito.
+2025-04-27 16:33:14,937 - INFO - root - Procesando documento: #5
+2025-04-27 16:33:15,035 - INFO - root - Documento #5 procesado con éxito.
+2025-04-27 16:33:15,036 - INFO - root - Procesando documento: #6
+2025-04-27 16:33:15,141 - INFO - root - Documento #6 procesado con éxito.
+2025-04-27 16:33:15,141 - INFO - root - Procesando documento: #10
+2025-04-27 16:33:15,255 - INFO - root - Documento #10 procesado con éxito.
+2025-04-27 16:33:15,255 - INFO - root - Procesando documento: #13
+2025-04-27 16:33:15,346 - INFO - root - Documento #13 procesado con éxito.
+2025-04-27 16:33:15,347 - INFO - root - Procesando documento: #11
+2025-04-27 16:33:15,464 - INFO - root - Documento #11 procesado con éxito.
+2025-04-27 16:33:15,464 - INFO - root - Procesando documento: #4
+2025-04-27 16:33:15,557 - INFO - root - Documento #4 procesado con éxito.
+2025-04-27 16:33:15,558 - INFO - root - Procesando documento: #7
+2025-04-27 16:33:15,658 - INFO - root - Documento #7 procesado con éxito.
+2025-04-27 16:33:15,658 - INFO - root - Procesando documento: #8
+2025-04-27 16:33:15,749 - INFO - root - Documento #8 procesado con éxito.
+2025-04-27 16:43:22,707 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-27 16:43:29,836 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-27 16:53:09,468 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-27 16:53:09,523 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-27 16:53:12,194 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-27 16:53:15,415 - INFO - root - Iniciando descarga de documentos.
+2025-04-27 16:53:15,588 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura (20).xml
+2025-04-27 16:53:15,910 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura (71).xml
+2025-04-27 16:53:15,916 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura (72).xml
+2025-04-27 16:53:15,923 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura (73).xml
+2025-04-27 16:53:15,929 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura (74).xml
+2025-04-27 16:53:15,935 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura (75).xml
+2025-04-27 16:53:15,941 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura (76).xml
+2025-04-27 16:53:15,948 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura (77).xml
+2025-04-27 16:53:15,954 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura (78).xml
+2025-04-27 16:53:15,960 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura (79).xml
+2025-04-27 16:53:15,975 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura (80).xml
+2025-04-27 16:53:15,980 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura (81).xml
+2025-04-27 16:53:15,985 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura (82).xml
+2025-04-27 16:53:15,992 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura (83).xml
+2025-04-27 16:53:15,999 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura (84).xml
+2025-04-27 16:53:16,006 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura (85).xml
+2025-04-27 16:53:16,012 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura (86).xml
+2025-04-27 16:53:16,012 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura (87).xml
+2025-04-27 16:53:16,025 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura (88).xml
+2025-04-27 16:53:16,031 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura (89).xml
+2025-04-27 16:53:16,044 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura (90).xml
+2025-04-27 16:53:16,055 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura (92).xml
+2025-04-27 16:53:16,062 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura (93).xml
+2025-04-27 16:53:16,069 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura (94).xml
+2025-04-27 16:53:16,075 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura (95).xml
+2025-04-27 16:53:16,081 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura (96).xml
+2025-04-27 16:53:16,087 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura (97).xml
+2025-04-27 16:53:16,093 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura (98).xml
+2025-04-27 16:53:16,098 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura (99).xml
+2025-04-27 16:53:16,105 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura - 2025-04-27T163218.930.xml
+2025-04-27 16:53:16,110 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura - 2025-04-27T163219.019.xml
+2025-04-27 16:53:16,118 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura - 2025-04-27T163219.121.xml
+2025-04-27 16:53:16,128 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura - 2025-04-27T163219.242.xml
+2025-04-27 16:53:16,135 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura - 2025-04-27T163219.349.xml
+2025-04-27 16:53:16,144 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura - 2025-04-27T163219.462.xml
+2025-04-27 16:53:16,153 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura - 2025-04-27T163219.579.xml
+2025-04-27 16:53:16,160 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura - 2025-04-27T163219.686.xml
+2025-04-27 16:53:16,168 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura - 2025-04-27T163219.784.xml
+2025-04-27 16:53:16,176 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura - 2025-04-27T163219.887.xml
+2025-04-27 16:53:16,184 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura - 2025-04-27T163219.993.xml
+2025-04-27 16:53:16,192 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura - 2025-04-27T163220.089.xml
+2025-04-27 16:53:16,200 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura - 2025-04-27T163220.208.xml
+2025-04-27 16:53:16,207 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura - 2025-04-27T163220.344.xml
+2025-04-27 16:53:16,217 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura - 2025-04-27T163220.494.xml
+2025-04-27 16:53:16,225 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura - 2025-04-27T163220.626.xml
+2025-04-27 16:53:16,235 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura - 2025-04-27T163220.768.xml
+2025-04-27 16:53:16,243 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura - 2025-04-27T163220.892.xml
+2025-04-27 16:53:16,250 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura - 2025-04-27T163221.020.xml
+2025-04-27 16:53:16,258 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura - 2025-04-27T163221.152.xml
+2025-04-27 16:53:16,268 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura - 2025-04-27T163225.593.xml
+2025-04-27 16:53:16,275 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura - 2025-04-27T163225.687.xml
+2025-04-27 16:53:16,284 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura - 2025-04-27T163225.798.xml
+2025-04-27 16:53:16,292 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura - 2025-04-27T163225.911.xml
+2025-04-27 16:53:16,298 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura - 2025-04-27T163226.037.xml
+2025-04-27 16:53:16,304 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura - 2025-04-27T163226.123.xml
+2025-04-27 16:53:16,316 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura - 2025-04-27T163226.298.xml
+2025-04-27 16:53:16,332 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura - 2025-04-27T163226.483.xml
+2025-04-27 16:53:16,340 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura - 2025-04-27T163226.606.xml
+2025-04-27 16:53:16,349 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura - 2025-04-27T163226.699.xml
+2025-04-27 16:53:16,358 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura - 2025-04-27T163226.799.xml
+2025-04-27 16:53:16,365 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura - 2025-04-27T163226.890.xml
+2025-04-27 16:53:16,374 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura - 2025-04-27T163226.982.xml
+2025-04-27 16:53:16,382 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura - 2025-04-27T163227.078.xml
+2025-04-27 16:53:16,393 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura - 2025-04-27T163227.195.xml
+2025-04-27 16:53:16,408 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura - 2025-04-27T163227.386.xml
+2025-04-27 16:53:16,415 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura - 2025-04-27T163227.488.xml
+2025-04-27 16:53:16,422 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura - 2025-04-27T163227.599.xml
+2025-04-27 16:53:16,429 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura - 2025-04-27T163227.697.xml
+2025-04-27 16:53:16,437 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura - 2025-04-27T163227.834.xml
+2025-04-27 16:53:16,450 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura - 2025-04-27T163228.036.xml
+2025-04-27 16:53:16,458 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Factura.xml
+2025-04-27 16:53:16,478 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Nota de Crédito (3).xml
+2025-04-27 16:53:16,485 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Nota de Crédito (4).xml
+2025-04-27 16:53:16,492 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Nota de Crédito (5).xml
+2025-04-27 16:53:16,499 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads\Nota de Crédito.xml
+2025-04-27 16:53:16,499 - INFO - root - Proceso de eliminación de duplicados finalizado.
+2025-04-27 17:17:06,258 - INFO - root - Ordenación de documentos completada.
+2025-04-27 17:19:31,061 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-27 17:26:28,160 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-27 17:26:32,140 - INFO - root - Iniciando descarga de documentos.
+2025-04-27 17:26:32,140 - INFO - root - Proceso de eliminación de duplicados finalizado.
+2025-04-27 17:26:32,251 - INFO - root - Ordenación de documentos completada.
+2025-04-27 17:26:44,962 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-27 17:27:08,136 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-27 17:27:09,817 - INFO - root - Iniciando descarga de documentos.
+2025-04-27 17:27:09,839 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads/2025\0990005737001_100-002-022400672 - copia (3).xml
+2025-04-27 17:27:09,839 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads/2025\0990005737001_100-002-022400672 - copia.xml
+2025-04-27 17:27:09,839 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads/2025\0990005737001_100-002-022400672.xml
+2025-04-27 17:27:09,848 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads/2025\0990005737001_100-002-022423664 - copia (3).xml
+2025-04-27 17:27:09,864 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads/2025\0990005737001_100-002-022423664 - copia.xml
+2025-04-27 17:27:09,864 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads/2025\0990005737001_100-002-022423664.xml
+2025-04-27 17:27:09,864 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads/2025\0990005737001_100-002-022443969 - copia (3).xml
+2025-04-27 17:27:09,880 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads/2025\0990005737001_100-002-022443969 - copia.xml
+2025-04-27 17:27:09,880 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads/2025\0990005737001_100-002-022443969.xml
+2025-04-27 17:27:09,880 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads/2025\0990005737001_100-002-022451669 - copia (3).xml
+2025-04-27 17:27:09,900 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads/2025\0990005737001_100-002-022451669 - copia.xml
+2025-04-27 17:27:09,900 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads/2025\0990005737001_100-002-022451669.xml
+2025-04-27 17:27:09,912 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads/2025\0990005737001_100-002-022459284 - copia (3).xml
+2025-04-27 17:27:09,928 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads/2025\0990005737001_100-002-022459284 - copia.xml
+2025-04-27 17:27:09,928 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads/2025\0990005737001_100-002-022459284.xml
+2025-04-27 17:27:09,928 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads/2025\0990005737001_100-002-022486448 - copia (3).xml
+2025-04-27 17:27:09,944 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads/2025\0990005737001_100-002-022486448 - copia.xml
+2025-04-27 17:27:09,944 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads/2025\0990005737001_100-002-022486448.xml
+2025-04-27 17:27:09,960 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads/2025\0990005737001_100-002-022501913 - copia (3).xml
+2025-04-27 17:27:09,960 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads/2025\0990005737001_100-002-022501913 - copia.xml
+2025-04-27 17:27:09,960 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads/2025\0990005737001_100-002-022501913.xml
+2025-04-27 17:27:09,982 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads/2025\0990005737001_100-002-022511574 - copia (3).xml
+2025-04-27 17:27:09,992 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads/2025\0990005737001_100-002-022511574 - copia.xml
+2025-04-27 17:27:09,992 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads/2025\0990005737001_100-002-022511574.xml
+2025-04-27 17:27:10,008 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads/2025\0990005737001_100-002-022537288 - copia (3).xml
+2025-04-27 17:27:10,008 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads/2025\0990005737001_100-002-022537288 - copia.xml
+2025-04-27 17:27:10,008 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads/2025\0990005737001_100-002-022537288.xml
+2025-04-27 17:27:10,026 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads/2025\0990005737001_100-002-022545883 - copia (3).xml
+2025-04-27 17:27:10,040 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads/2025\0990005737001_100-002-022545883 - copia.xml
+2025-04-27 17:27:10,040 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads/2025\0990005737001_100-002-022545883.xml
+2025-04-27 17:27:10,056 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads/2025\0990049459001_001-002-016361567 - copia (3).xml
+2025-04-27 17:27:10,056 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads/2025\0990049459001_001-002-016361567 - copia.xml
+2025-04-27 17:27:10,056 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads/2025\0990049459001_001-002-016361567.xml
+2025-04-27 17:27:10,091 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads/2025\1790283380001_001-014-013967522 - copia (3).xml
+2025-04-27 17:27:10,099 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads/2025\1790283380001_001-014-013967522 - copia.xml
+2025-04-27 17:27:10,099 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads/2025\1790283380001_001-014-013967522.xml
+2025-04-27 17:27:10,116 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads/2025\1790283380001_001-014-014042884 - copia (3).xml
+2025-04-27 17:27:10,124 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads/2025\1790283380001_001-014-014042884 - copia.xml
+2025-04-27 17:27:10,126 - INFO - root - Archivo duplicado eliminado: C:/Users/rolan/Downloads/2025\1790283380001_001-014-014042884.xml
+2025-04-27 17:27:10,126 - INFO - root - Proceso de eliminación de duplicados finalizado.
+2025-04-27 17:27:10,213 - INFO - root - Ordenación de documentos completada.
+2025-04-27 17:29:03,487 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-27 17:29:03,525 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-27 17:29:06,170 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-27 17:29:08,133 - INFO - root - Iniciando ordenación de documentos.
+2025-04-27 17:30:44,913 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-27 17:30:44,950 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-27 17:30:50,752 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-27 17:31:01,391 - INFO - root - Configuración 'ruta_guardado' guardada exitosamente en C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini.
+2025-04-27 17:31:03,129 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-27 17:31:07,930 - INFO - root - Iniciando ordenación de documentos.
+2025-04-27 17:31:08,013 - INFO - root - Ordenación de documentos completada.
+2025-04-27 17:34:25,654 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-27 17:34:25,691 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-27 17:35:51,912 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-27 17:35:52,154 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-27 17:35:54,721 - INFO - root - Información 'Acerca de' mostrada.
+2025-04-27 17:49:05,797 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-27 17:49:05,835 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-27 17:49:07,458 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-27 17:54:20,933 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-27 17:54:20,968 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-27 17:54:22,587 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-27 17:55:02,290 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-27 17:55:02,327 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-27 17:55:04,538 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
