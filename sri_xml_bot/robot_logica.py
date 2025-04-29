@@ -233,16 +233,33 @@ def configurar_webdriver():
         "profile.default_content_setting_values.automatic_downloads": 1  # Permite múltiples descargas
     }
     chrome_options.add_experimental_option("prefs", prefs)
-    ruta_chromedriver = ruta_relativa_recurso('archivos_necesarios/chromedriver.exe')
+    ruta_chromedriver = ruta_relativa_recurso('archivos_necesarios/chromedri1ver.exe')
     # Verificación de existencia del archivo
     if not os.path.exists(ruta_chromedriver):
         directorio_actual = os.path.dirname(os.path.abspath(__file__))
-        ruta_chromedriver = os.path.join(directorio_actual, '../archivos_necesarios/chromedriver.exe')
+        ruta_chromedriver = os.path.join(directorio_actual, '../archivos_necesarios/chromedr1iver.exe')
+
+        # Si aún no se encuentra, solicitar al usuario
+        if not os.path.exists(ruta_chromedriver):
+            ruta_chromedriver = seleccionar_chromedriver()
+            if not ruta_chromedriver:
+                raise FileNotFoundError("No se seleccionó ningún archivo chromedriver.exe")
+
     service = Service(executable_path=ruta_chromedriver)
     # Redirigir la salida estándar y de error para ocultar la ventana cmd
     service.creationflags = subprocess.CREATE_NO_WINDOW
     driver = webdriver.Chrome(service=service, options=chrome_options)
     return driver
+
+
+def seleccionar_chromedriver():
+    from tkinter import Tk
+    from tkinter.filedialog import askopenfilename
+    """Abre una ventana para seleccionar manualmente el chromedriver."""
+    root = Tk()
+    root.withdraw()  # Oculta la ventana principal
+    ruta = askopenfilename(title="Seleccione chromedriver.exe", filetypes=[("ChromeDriver", "chromedriver.exe")])
+    return ruta
 
 
 # Inicia sesión en el sitio web del SRI
