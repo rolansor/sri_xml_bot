@@ -72,7 +72,7 @@ def generar_reporte_xlxs(parent, directorio):
                 ventana.update_idletasks()
 
                 # Pausa breve para percibir el avance
-                #time.sleep(0.1)
+                time.sleep(0.1)
 
             # 6) Si hay documentos procesados, generar el Excel
             if documentos_procesados:

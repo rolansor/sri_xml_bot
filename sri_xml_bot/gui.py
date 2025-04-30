@@ -10,7 +10,7 @@ from PIL import Image, ImageTk
 from datetime import datetime
 
 from sri_xml_bot.librerias.encriptar import encriptar_texto, desencriptar_texto
-from sri_xml_bot.librerias.menus.generar_pdfs import generar_pdfs
+from sri_xml_bot.librerias.menus.generar_pdfs import generar_archivos_pdfs
 from sri_xml_bot.librerias.menus.generar_reporte import generar_reporte_xlxs
 from sri_xml_bot.librerias.menus.imprimir_pdfs import imprimir_pdfs
 from sri_xml_bot.librerias.menus.ordenar_documentos import ordenar_documentos, desclasificar_xmls
@@ -331,7 +331,7 @@ class Application:
                     # Ordenar documentos y obtener mensajes de progreso
                     generar_reporte_xlxs(self.root, directorio)
                 except Exception as e:
-                    logging.exception(f"Error durante la genarción del reporte Excel: {e}")
+                    logging.exception(f"Error durante la generación del reporte Excel: {e}")
             else:
                 messagebox.showinfo("Información", f"No se selecciono ninguna carpeta raiz.")
         except Exception as e:
@@ -341,13 +341,21 @@ class Application:
         """
         Maneja la opción de generar PDFs.
         """
+        self.configuraciones = cargar_configuracion_ini()
         try:
-            generar_pdfs()
-            messagebox.showinfo("Éxito", "PDFs generados correctamente.")
-            logging.info("PDFs generados exitosamente.")
+            # Pedir directorio y organizar archivos
+            directorio = filedialog.askdirectory(
+                title="Seleccione la carpeta raiz, desde donde se procesaran los xmls.")
+            if directorio:
+                try:
+                    # Ordenar documentos y obtener mensajes de progreso
+                    generar_archivos_pdfs(self.root, directorio)
+                except Exception as e:
+                    logging.exception(f"Error durante la generación de los PDFs: {e}")
+            else:
+                messagebox.showinfo("Información", f"No se selecciono ninguna carpeta raiz.")
         except Exception as e:
-            messagebox.showerror("Error", f"No se pudo generar los PDFs: {e}")
-            logging.exception("Error al generar PDFs.")
+            logging.exception(f"Error al iniciar la ventana de progreso: {e}")
 
     def imprimir_pdfs(self):
         """
