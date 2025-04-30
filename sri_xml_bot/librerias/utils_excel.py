@@ -1,6 +1,6 @@
 from openpyxl import Workbook
 from datetime import datetime
-from librerias.diccionarios import nombres_comprobantes_excel
+from sri_xml_bot.librerias.diccionarios import nombres_comprobantes_excel
 
 
 def adjust_column_width(ws):
@@ -14,14 +14,6 @@ def adjust_column_width(ws):
         max_length = max(len(str(cell.value)) for cell in column_cells)
         index = column_cells[0].column_letter
         ws.column_dimensions[index].width = max_length + 2  # Ajuste adicional
-
-
-# Esta función solo se utiliza una vez hay que buscar como eliminarla.
-def formatear_fecha(fecha_str):
-    try:
-        return datetime.strptime(fecha_str, "%d/%m/%Y").date()
-    except ValueError:
-        return fecha_str
 
 
 def aplanar_diccionario_nc(d, items=None, omitir_campos=None):
@@ -170,7 +162,9 @@ def guardar_documentos_emitidos(diccionario_documento, file_path):
     sheets_data = {
         "Facturas": [],
         "Comprobantes de Retención": [],
-        "Notas de Crédito": []
+        "Notas de Crédito": [],
+        "Notas de Débito": [],
+        "Liquidación de Compras": [],
     }
 
     wb = Workbook()
@@ -241,15 +235,19 @@ def guardar_documentos_emitidos(diccionario_documento, file_path):
                            "IVA 0%", "IVA 5%", "IVA 12%", "IVA 15%", "importeTotal", "valorModificacion", "IVA", "Renta", "ISD"] and valor != "N/A":
                     valor = float(valor)
                 elif key in ["fechaEmision", "fechaEmisionDocSustento"]:
-                    valor = formatear_fecha(valor)
+                    try:
+                        valor = datetime.strptime(valor, "%d/%m/%Y").date()
+                    except ValueError:
+                        pass
 
                 ws.cell(row=row_index, column=col_num, value=valor)
             id_receptor = aplanado["ruc_receptor"]
 
         sheet_index += 1  # Incrementa el contador después de procesar una hoja
         adjust_column_width(ws)
+
     fecha_creacion = datetime.now().strftime("%d-%m-%Y")
     file_name = f"{id_receptor}_reporte_contabilidad_{fecha_creacion}.xlsx"
     # Guardar el archivo
     wb.save(file_path + file_name)
-    print(f"Datos guardados en el archivo {file_name}")
+    return file_name

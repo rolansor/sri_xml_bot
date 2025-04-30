@@ -1901,3 +1901,163 @@ AttributeError: 'NoneType' object has no attribute 'get'
 2025-04-27 17:55:02,290 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
 2025-04-27 17:55:02,327 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
 2025-04-27 17:55:04,538 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-29 22:51:05,674 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-29 22:51:06,028 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-29 22:51:07,867 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-29 22:59:22,858 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-29 22:59:22,896 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-29 22:59:24,909 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-29 23:01:32,637 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-29 23:01:32,675 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-29 23:01:34,580 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-29 23:02:26,949 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-29 23:02:26,987 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-29 23:02:28,583 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-29 23:03:16,894 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-29 23:03:16,931 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-29 23:03:18,479 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-29 23:14:50,379 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-29 23:14:50,418 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-29 23:16:05,710 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-29 23:16:05,746 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-29 23:16:42,951 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-29 23:16:42,988 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-29 23:18:05,679 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-29 23:18:05,716 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-29 23:18:09,138 - INFO - root - Configuración 'ruta_guardado' guardada exitosamente en C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini.
+2025-04-29 23:18:21,147 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-29 23:18:21,183 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-29 23:18:24,531 - INFO - root - Configuración 'ruta_guardado' guardada exitosamente en C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini.
+2025-04-29 23:21:48,633 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-29 23:21:48,672 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-29 23:21:55,207 - INFO - root - Configuración 'ruta_guardado' guardada exitosamente en C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini.
+2025-04-29 23:21:58,102 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-29 23:21:58,138 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-29 23:22:12,876 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-29 23:22:12,910 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-29 23:22:44,641 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-29 23:22:44,679 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-29 23:23:00,533 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-29 23:23:00,572 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-29 23:25:22,602 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-29 23:25:22,638 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-29 23:27:17,169 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-29 23:27:17,205 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-29 23:27:19,723 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-29 23:27:45,885 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-29 23:27:49,023 - INFO - root - Iniciando ordenación de documentos.
+2025-04-29 23:27:49,033 - INFO - root - Proceso de eliminación de duplicados finalizado.
+2025-04-29 23:27:49,117 - INFO - root - Ordenación de documentos completada.
+2025-04-29 23:28:20,107 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-29 23:28:20,144 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-29 23:28:22,172 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-29 23:28:27,801 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-29 23:28:34,088 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-29 23:29:10,770 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-29 23:29:10,806 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-29 23:29:13,923 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-29 23:29:18,430 - INFO - root - Iniciando ordenación de documentos.
+2025-04-29 23:29:18,440 - INFO - root - Proceso de eliminación de duplicados finalizado.
+2025-04-29 23:29:18,523 - INFO - root - Ordenación de documentos completada.
+2025-04-29 23:29:37,718 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-29 23:29:37,752 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-29 23:29:53,814 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-29 23:33:12,058 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-29 23:33:12,095 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-29 23:33:29,700 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-29 23:33:29,735 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-29 23:33:31,251 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-29 23:34:33,395 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-29 23:34:33,613 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-29 23:34:44,438 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-29 23:34:44,473 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-29 23:34:46,487 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-29 23:35:00,917 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-29 23:35:40,901 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-29 23:36:07,939 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-29 23:36:07,977 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-29 23:36:24,259 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-29 23:36:38,077 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-29 23:39:33,169 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-29 23:39:33,209 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-29 23:39:34,984 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-29 23:40:12,674 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-29 23:40:12,704 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-29 23:40:14,591 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-29 23:40:46,621 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-29 23:40:46,649 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-29 23:40:48,179 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-29 23:41:28,353 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-29 23:41:28,383 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-29 23:41:30,085 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-29 23:46:38,715 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-29 23:46:38,752 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-29 23:46:40,201 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-29 23:48:19,045 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-29 23:48:19,085 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-29 23:48:20,903 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-29 23:48:22,531 - ERROR - root - Error durante la generación del reporte: [Errno 13] Permission denied: 'C:/Users/rolan/Downloads/Documentos Electronicos\\0930808662001_reporte_contabilidad_29-04-2025.xlsx'
+Traceback (most recent call last):
+  File "C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\menus\generar_reporte.py", line 81, in _procesar
+    ruta_salida = guardar_documentos_emitidos(documentos_procesados, directorio + os.sep)
+  File "C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\utils_excel.py", line 252, in guardar_documentos_emitidos
+    wb.save(file_path + file_name)
+  File "C:\Users\rolan\PycharmProjects\sri_xml_bot\venv\lib\site-packages\openpyxl\workbook\workbook.py", line 386, in save
+    save_workbook(self, filename)
+  File "C:\Users\rolan\PycharmProjects\sri_xml_bot\venv\lib\site-packages\openpyxl\writer\excel.py", line 291, in save_workbook
+    archive = ZipFile(filename, 'w', ZIP_DEFLATED, allowZip64=True)
+  File "C:\Program Files\Python37\lib\zipfile.py", line 1240, in __init__
+    self.fp = io.open(file, filemode)
+PermissionError: [Errno 13] Permission denied: 'C:/Users/rolan/Downloads/Documentos Electronicos\\0930808662001_reporte_contabilidad_29-04-2025.xlsx'
+2025-04-29 23:48:28,536 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-30 00:11:08,221 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-30 00:11:08,261 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-30 00:11:09,919 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-30 00:11:11,461 - ERROR - root - Error durante la generación del reporte: 'ruc_receptor'
+Traceback (most recent call last):
+  File "C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\menus\generar_reporte.py", line 81, in _procesar
+    ruta_salida = guardar_documentos_emitidos(documentos_procesados, directorio + os.sep)
+  File "C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\utils_excel.py", line 196, in guardar_documentos_emitidos
+    id_receptor = aplanado["ruc_receptor"]
+KeyError: 'ruc_receptor'
+2025-04-30 00:12:36,313 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-30 00:12:36,350 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-30 00:12:37,776 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-30 00:12:39,284 - ERROR - root - Error durante la generación del reporte: Cannot convert Ellipsis to Excel
+Traceback (most recent call last):
+  File "C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\menus\generar_reporte.py", line 81, in _procesar
+    ruta_salida = guardar_documentos_emitidos(documentos_procesados, directorio + os.sep)
+  File "C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\utils_excel.py", line 165, in guardar_documentos_emitidos
+    ws.cell(row=1,column=c,value=col_name)
+  File "C:\Users\rolan\PycharmProjects\sri_xml_bot\venv\lib\site-packages\openpyxl\worksheet\worksheet.py", line 247, in cell
+    cell.value = value
+  File "C:\Users\rolan\PycharmProjects\sri_xml_bot\venv\lib\site-packages\openpyxl\cell\cell.py", line 218, in value
+    self._bind_value(value)
+  File "C:\Users\rolan\PycharmProjects\sri_xml_bot\venv\lib\site-packages\openpyxl\cell\cell.py", line 187, in _bind_value
+    raise ValueError("Cannot convert {0!r} to Excel".format(value))
+ValueError: Cannot convert Ellipsis to Excel
+2025-04-30 00:13:59,731 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-30 00:13:59,768 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-30 00:14:01,107 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-30 00:19:18,080 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-30 00:19:18,111 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-30 00:19:19,704 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-30 00:35:12,518 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-30 00:35:12,555 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-30 00:35:13,964 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-30 00:35:15,689 - ERROR - root - Error durante la generación del reporte: 'Exento'
+Traceback (most recent call last):
+  File "C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\menus\generar_reporte.py", line 81, in _procesar
+    ruta_salida = guardar_documentos_emitidos(documentos_procesados, directorio + os.sep)
+  File "C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\utils_excel.py", line 211, in guardar_documentos_emitidos
+    aplanado = aplanar_diccionario_fac(doc) if sheet_name == "Facturas" \
+  File "C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\utils_excel.py", line 140, in aplanar_diccionario_fac
+    fields_ruc=('ruc', 'identificacionComprador')
+  File "C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\utils_excel.py", line 72, in aplanar_diccionario
+    fields_ruc=fields_ruc)
+  File "C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\utils_excel.py", line 54, in aplanar_diccionario
+    items[iva_key] += float(imp.get('valor') if 'valor' in imp else imp.get('valorRetenido', 0))
+KeyError: 'Exento'
+2025-04-30 00:35:29,191 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-04-30 00:35:29,227 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-04-30 00:35:31,585 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini

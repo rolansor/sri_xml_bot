@@ -131,6 +131,8 @@ def organizar_archivos_xml(estructura_nombre, estructura_ruta, ruc_procesado, em
                     ruta_guardado = os.path.join(ruta_guardado, anio)
                 elif parte == "Mes":
                     ruta_guardado = os.path.join(ruta_guardado, mes)
+                elif parte == "RutaBase":
+                    ruta_guardado = os.path.join(ruta_guardado, "Documentos Electronicos")
                 elif parte == "RUC":
                     ruta_guardado = os.path.join(ruta_guardado, ruc_valido)
                 elif parte == "RecEmi":

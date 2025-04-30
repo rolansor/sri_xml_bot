@@ -11,7 +11,7 @@ from datetime import datetime
 
 from sri_xml_bot.librerias.encriptar import encriptar_texto, desencriptar_texto
 from sri_xml_bot.librerias.menus.generar_pdfs import generar_pdfs
-from sri_xml_bot.librerias.menus.generar_reporte import generar_reporte
+from sri_xml_bot.librerias.menus.generar_reporte import generar_reporte_xlxs
 from sri_xml_bot.librerias.menus.imprimir_pdfs import imprimir_pdfs
 from sri_xml_bot.librerias.menus.ordenar_documentos import ordenar_documentos, desclasificar_xmls
 from sri_xml_bot.librerias.menus.descargar_documentos import descargar_documentos
@@ -329,11 +329,7 @@ class Application:
             if directorio:
                 try:
                     # Ordenar documentos y obtener mensajes de progreso
-                    resultado = generar_reporte(directorio)
-                    messagebox.showinfo(
-                        "Proceso Completado",
-                        f"Archivo Creado:\n{resultado}")
-
+                    generar_reporte_xlxs(self.root, directorio)
                 except Exception as e:
                     logging.exception(f"Error durante la genarción del reporte Excel: {e}")
             else:
@@ -437,8 +433,6 @@ class Application:
         """
         Abre una ventana para configurar la ruta de guardado para los archivos recibidos.
         """
-        # TODO: La estructura de ruta de guardado no se actualiza siempre se muestra la misma.
-
         self.ventana_configuracion_ruta = Toplevel(self.root)
         centrar_ventana("Configurar Ruta de Archivos XMLs", self.ventana_configuracion_ruta, ancho=350, alto=450)
 
@@ -453,16 +447,27 @@ class Application:
         # Configurar ruta de guardado con Listbox reordenable
         tk.Label(self.ventana_configuracion_ruta, text="\nRuta de Guardado (Ordenable):").pack()
 
-        ruta_opciones = ["Año", "Mes", "RUC", "Recibido/Emitido", "PDF/XML", "Tipo Documento"]
-
+        # Cargar orden de ruta desde la configuración INI
+        ruta_guardado_conf = self.configuraciones.get('ruta_guardado', '')
+        # Definimos el mapeo entre texto visible y su abreviatura en configuración
         abreviaciones_ruta = {
-            "Año": "Año",
-            "Mes": "Mes",
+            "Ruta Base": "RutaBase",
             "RUC": "RUC",
             "Recibido/Emitido": "RecEmi",
+            "Año": "Año",
+            "Mes": "Mes",
             "PDF/XML": "XML",
             "Tipo Documento": "TipoDocumento"
         }
+        # Construir mapeo inverso: abreviatura -> texto visible
+        rev_abreviaciones = {abrev: display for display, abrev in abreviaciones_ruta.items()}
+
+        # Intentar derivar el orden de opción desde la configuración
+        ruta_opciones = []  # Lista de textos visibles en el orden deseado
+        for parte in ruta_guardado_conf.split('/'):
+            texto = rev_abreviaciones.get(parte)
+            if texto:
+                ruta_opciones.append(texto)
 
         ruta_listbox = Listbox(self.ventana_configuracion_ruta, selectmode="single", width=30, height=len(ruta_opciones))
         for opcion in ruta_opciones:
