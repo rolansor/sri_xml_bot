@@ -74,7 +74,7 @@ def generar_archivos_pdfs(parent, directorio):
                     dic_doc = procesar_archivo_xml(ruta)
                     clave_acceso = dic_doc['infoTributaria']['claveAcceso']
                     nombre_archivo_pdf = f"{clave_acceso}.pdf"
-                    ruta_carpeta_pdf = ruta.replace('\\xml', '\\pdf')
+                    ruta_carpeta_pdf = os.path.dirname(ruta).replace('\\xml', '\\pdf')
                     os.makedirs(ruta_carpeta_pdf, exist_ok=True)
                     ruta_archivo_pdf = os.path.join(ruta_carpeta_pdf, nombre_archivo_pdf)
                     funcion_impresion = seleccionar_funcion_impresion(dic_doc['datos_extras']['tipoDocumento'])
@@ -90,9 +90,8 @@ def generar_archivos_pdfs(parent, directorio):
 
                 # Pausa breve para percibir el avance
                 time.sleep(0.1)
-            else:
-                # No se procesó ningún XML válido
-                messagebox.showwarning("Sin datos", "No se generó ningún documento. Verifica tus XML.", parent=parent)
+            # No se procesó ningún XML válido
+            messagebox.showwarning("Bello", "Todo quedo bombis, mi perris.", parent=parent)
 
         except Exception as e_general:
             # Captura de errores inesperados en _todo el proceso
