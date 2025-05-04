@@ -1,6 +1,7 @@
 import os
 import threading
 import logging
+import time
 from tkinter import Toplevel, Label, ttk, messagebox
 from sri_xml_bot.librerias.utils import centrar_ventana
 from sri_xml_bot.librerias.utils_excel import guardar_documentos_emitidos

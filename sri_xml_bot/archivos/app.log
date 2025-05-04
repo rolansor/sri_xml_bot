@@ -1,0 +1,614 @@
+2025-05-03 23:33:20,108 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-05-03 23:33:20,464 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-05-03 23:33:43,410 - INFO - root - Configuración 'ruc_actual' guardada exitosamente en C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini.
+2025-05-03 23:33:43,419 - INFO - root - Configuración 'razon_social' guardada exitosamente en C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini.
+2025-05-03 23:33:43,424 - INFO - root - Configuración 'clave_ruc_encriptada' guardada exitosamente en C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini.
+2025-05-03 23:33:43,429 - INFO - root - Configuración 'clave_salt' guardada exitosamente en C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini.
+2025-05-03 23:33:55,308 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-05-03 23:35:15,468 - INFO - root - Parámetros de descarga -> Año: 2025, Mes: 4, Día: Todos, Tipo de descarga: 1, Tipo de documento: 1
+2025-05-03 23:35:17,380 - INFO - root - WebDriver configurado exitosamente.
+2025-05-03 23:35:19,129 - INFO - root - Inicio de sesión completado.
+2025-05-03 23:35:37,672 - ERROR - root - Error durante la descarga de documentos.
+Traceback (most recent call last):
+  File "C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\menus\descargar_documentos.py", line 47, in descargar_documentos
+    seleccionar_opciones_de_consulta(anio, mes, dia, tipo_documento)
+  File "C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\menus\descargar_documentos.py", line 131, in seleccionar_opciones_de_consulta
+    WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.XPATH, "//span[contains(text(), 'Perfil')]")))
+  File "C:\Users\rolan\PycharmProjects\sri_xml_bot\venv\lib\site-packages\selenium\webdriver\support\wait.py", line 86, in until
+    value = method(self._driver)
+  File "C:\Users\rolan\PycharmProjects\sri_xml_bot\venv\lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 82, in _predicate
+    return driver.find_element(*locator)
+  File "C:\Users\rolan\PycharmProjects\sri_xml_bot\venv\lib\site-packages\selenium\webdriver\remote\webdriver.py", line 739, in find_element
+    return self.execute(Command.FIND_ELEMENT, {"using": by, "value": value})["value"]
+  File "C:\Users\rolan\PycharmProjects\sri_xml_bot\venv\lib\site-packages\selenium\webdriver\remote\webdriver.py", line 345, in execute
+    self.error_handler.check_response(response)
+  File "C:\Users\rolan\PycharmProjects\sri_xml_bot\venv\lib\site-packages\selenium\webdriver\remote\errorhandler.py", line 229, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.InvalidSessionIdException: Message: invalid session id: session deleted as the browser has closed the connection
+from disconnected: not connected to DevTools
+  (Session info: chrome=136.0.7103.48)
+Stacktrace:
+	GetHandleVerifier [0x00007FF74B2FEFA5+77893]
+	GetHandleVerifier [0x00007FF74B2FF000+77984]
+	(No symbol) [0x00007FF74B0C91BA]
+	(No symbol) [0x00007FF74B0B4F15]
+	(No symbol) [0x00007FF74B0D9F04]
+	(No symbol) [0x00007FF74B14EACF]
+	(No symbol) [0x00007FF74B16E972]
+	(No symbol) [0x00007FF74B146F03]
+	(No symbol) [0x00007FF74B110328]
+	(No symbol) [0x00007FF74B111093]
+	GetHandleVerifier [0x00007FF74B5B7B6D+2931725]
+	GetHandleVerifier [0x00007FF74B5B2132+2908626]
+	GetHandleVerifier [0x00007FF74B5D00F3+3031443]
+	GetHandleVerifier [0x00007FF74B3191EA+184970]
+	GetHandleVerifier [0x00007FF74B32086F+215311]
+	GetHandleVerifier [0x00007FF74B306EC4+110436]
+	GetHandleVerifier [0x00007FF74B307072+110866]
+	GetHandleVerifier [0x00007FF74B2ED479+5401]
+	BaseThreadInitThunk [0x00007FF99D7AE8D7+23]
+	RtlUserThreadStart [0x00007FF99E6714FC+44]
+
+2025-05-03 23:40:15,548 - INFO - root - Configuración 'ruc_actual' guardada exitosamente en C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini.
+2025-05-03 23:40:15,550 - INFO - root - Configuración 'razon_social' guardada exitosamente en C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini.
+2025-05-03 23:40:15,551 - INFO - root - Configuración 'clave_ruc_encriptada' guardada exitosamente en C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini.
+2025-05-03 23:40:15,559 - INFO - root - Configuración 'clave_salt' guardada exitosamente en C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini.
+2025-05-03 23:40:19,154 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-05-03 23:40:21,990 - INFO - root - Parámetros de descarga -> Año: 2025, Mes: 4, Día: Todos, Tipo de descarga: 1, Tipo de documento: 1
+2025-05-03 23:40:23,728 - INFO - root - WebDriver configurado exitosamente.
+2025-05-03 23:40:25,345 - INFO - root - Inicio de sesión completado.
+2025-05-03 23:40:27,800 - INFO - root - Opciones de consulta seleccionadas.
+2025-05-03 23:40:27,885 - INFO - root - Botón de consulta presionado, verificando resultados.
+2025-05-03 23:40:27,892 - INFO - root - Mensaje de 'No existen datos' no encontrado inmediatamente, buscando tabla de resultados.
+2025-05-03 23:40:28,418 - INFO - root - Consulta completada, tabla de resultados encontrada.
+2025-05-03 23:40:30,695 - INFO - root - Se encontraron 50 filas para procesar.
+2025-05-03 23:40:31,711 - INFO - root - Procesando documento: #49
+2025-05-03 23:40:31,849 - INFO - root - Documento #49 procesado con éxito.
+2025-05-03 23:40:31,849 - INFO - root - Procesando documento: #30
+2025-05-03 23:40:31,965 - INFO - root - Documento #30 procesado con éxito.
+2025-05-03 23:40:31,965 - INFO - root - Procesando documento: #3
+2025-05-03 23:40:32,072 - INFO - root - Documento #3 procesado con éxito.
+2025-05-03 23:40:32,072 - INFO - root - Procesando documento: #5
+2025-05-03 23:40:32,188 - INFO - root - Documento #5 procesado con éxito.
+2025-05-03 23:40:32,188 - INFO - root - Procesando documento: #1
+2025-05-03 23:40:32,305 - INFO - root - Documento #1 procesado con éxito.
+2025-05-03 23:40:32,305 - INFO - root - Procesando documento: #15
+2025-05-03 23:40:32,402 - INFO - root - Documento #15 procesado con éxito.
+2025-05-03 23:40:32,402 - INFO - root - Procesando documento: #22
+2025-05-03 23:40:32,519 - INFO - root - Documento #22 procesado con éxito.
+2025-05-03 23:40:32,519 - INFO - root - Procesando documento: #47
+2025-05-03 23:40:32,628 - INFO - root - Documento #47 procesado con éxito.
+2025-05-03 23:40:32,628 - INFO - root - Procesando documento: #26
+2025-05-03 23:40:32,729 - INFO - root - Documento #26 procesado con éxito.
+2025-05-03 23:40:32,729 - INFO - root - Procesando documento: #10
+2025-05-03 23:40:32,836 - INFO - root - Documento #10 procesado con éxito.
+2025-05-03 23:40:32,836 - INFO - root - Procesando documento: #40
+2025-05-03 23:40:32,944 - INFO - root - Documento #40 procesado con éxito.
+2025-05-03 23:40:32,945 - INFO - root - Procesando documento: #7
+2025-05-03 23:40:33,039 - INFO - root - Documento #7 procesado con éxito.
+2025-05-03 23:40:33,039 - INFO - root - Procesando documento: #28
+2025-05-03 23:40:33,140 - INFO - root - Documento #28 procesado con éxito.
+2025-05-03 23:40:33,140 - INFO - root - Procesando documento: #6
+2025-05-03 23:40:33,244 - INFO - root - Documento #6 procesado con éxito.
+2025-05-03 23:40:33,244 - INFO - root - Procesando documento: #14
+2025-05-03 23:40:33,348 - INFO - root - Documento #14 procesado con éxito.
+2025-05-03 23:40:33,348 - INFO - root - Procesando documento: #24
+2025-05-03 23:40:33,442 - INFO - root - Documento #24 procesado con éxito.
+2025-05-03 23:40:33,442 - INFO - root - Procesando documento: #44
+2025-05-03 23:40:33,542 - INFO - root - Documento #44 procesado con éxito.
+2025-05-03 23:40:33,543 - INFO - root - Procesando documento: #43
+2025-05-03 23:40:33,667 - INFO - root - Documento #43 procesado con éxito.
+2025-05-03 23:40:33,668 - INFO - root - Procesando documento: #42
+2025-05-03 23:40:33,764 - INFO - root - Documento #42 procesado con éxito.
+2025-05-03 23:40:33,765 - INFO - root - Procesando documento: #21
+2025-05-03 23:40:33,867 - INFO - root - Documento #21 procesado con éxito.
+2025-05-03 23:40:33,867 - INFO - root - Procesando documento: #50
+2025-05-03 23:40:33,978 - INFO - root - Documento #50 procesado con éxito.
+2025-05-03 23:40:33,978 - INFO - root - Procesando documento: #34
+2025-05-03 23:40:34,078 - INFO - root - Documento #34 procesado con éxito.
+2025-05-03 23:40:34,079 - INFO - root - Procesando documento: #35
+2025-05-03 23:40:34,190 - INFO - root - Documento #35 procesado con éxito.
+2025-05-03 23:40:34,190 - INFO - root - Procesando documento: #45
+2025-05-03 23:40:34,293 - INFO - root - Documento #45 procesado con éxito.
+2025-05-03 23:40:34,293 - INFO - root - Procesando documento: #48
+2025-05-03 23:40:34,382 - INFO - root - Documento #48 procesado con éxito.
+2025-05-03 23:40:34,382 - INFO - root - Procesando documento: #27
+2025-05-03 23:40:34,477 - INFO - root - Documento #27 procesado con éxito.
+2025-05-03 23:40:34,477 - INFO - root - Procesando documento: #25
+2025-05-03 23:40:34,578 - INFO - root - Documento #25 procesado con éxito.
+2025-05-03 23:40:34,578 - INFO - root - Procesando documento: #19
+2025-05-03 23:40:34,701 - INFO - root - Documento #19 procesado con éxito.
+2025-05-03 23:40:34,702 - INFO - root - Procesando documento: #20
+2025-05-03 23:40:34,808 - INFO - root - Documento #20 procesado con éxito.
+2025-05-03 23:40:34,809 - INFO - root - Procesando documento: #37
+2025-05-03 23:40:34,933 - INFO - root - Documento #37 procesado con éxito.
+2025-05-03 23:40:34,934 - INFO - root - Procesando documento: #9
+2025-05-03 23:40:35,028 - INFO - root - Documento #9 procesado con éxito.
+2025-05-03 23:40:35,029 - INFO - root - Procesando documento: #13
+2025-05-03 23:40:35,131 - INFO - root - Documento #13 procesado con éxito.
+2025-05-03 23:40:35,131 - INFO - root - Procesando documento: #32
+2025-05-03 23:40:35,230 - INFO - root - Documento #32 procesado con éxito.
+2025-05-03 23:40:35,230 - INFO - root - Procesando documento: #2
+2025-05-03 23:40:35,347 - INFO - root - Documento #2 procesado con éxito.
+2025-05-03 23:40:35,347 - INFO - root - Procesando documento: #38
+2025-05-03 23:40:35,443 - INFO - root - Documento #38 procesado con éxito.
+2025-05-03 23:40:35,443 - INFO - root - Procesando documento: #18
+2025-05-03 23:40:35,541 - INFO - root - Documento #18 procesado con éxito.
+2025-05-03 23:40:35,542 - INFO - root - Procesando documento: #16
+2025-05-03 23:40:35,664 - INFO - root - Documento #16 procesado con éxito.
+2025-05-03 23:40:35,664 - INFO - root - Procesando documento: #23
+2025-05-03 23:40:35,753 - INFO - root - Documento #23 procesado con éxito.
+2025-05-03 23:40:35,754 - INFO - root - Procesando documento: #39
+2025-05-03 23:40:35,850 - INFO - root - Documento #39 procesado con éxito.
+2025-05-03 23:40:35,850 - INFO - root - Procesando documento: #4
+2025-05-03 23:40:35,942 - INFO - root - Documento #4 procesado con éxito.
+2025-05-03 23:40:35,942 - INFO - root - Procesando documento: #11
+2025-05-03 23:40:36,028 - INFO - root - Documento #11 procesado con éxito.
+2025-05-03 23:40:36,028 - INFO - root - Procesando documento: #46
+2025-05-03 23:40:36,128 - INFO - root - Documento #46 procesado con éxito.
+2025-05-03 23:40:36,128 - INFO - root - Procesando documento: #12
+2025-05-03 23:40:36,242 - INFO - root - Documento #12 procesado con éxito.
+2025-05-03 23:40:36,242 - INFO - root - Procesando documento: #29
+2025-05-03 23:40:36,350 - INFO - root - Documento #29 procesado con éxito.
+2025-05-03 23:40:36,350 - INFO - root - Procesando documento: #41
+2025-05-03 23:40:36,446 - INFO - root - Documento #41 procesado con éxito.
+2025-05-03 23:40:36,446 - INFO - root - Procesando documento: #33
+2025-05-03 23:40:36,547 - INFO - root - Documento #33 procesado con éxito.
+2025-05-03 23:40:36,547 - INFO - root - Procesando documento: #31
+2025-05-03 23:40:36,655 - INFO - root - Documento #31 procesado con éxito.
+2025-05-03 23:40:36,655 - INFO - root - Procesando documento: #36
+2025-05-03 23:40:36,763 - INFO - root - Documento #36 procesado con éxito.
+2025-05-03 23:40:36,763 - INFO - root - Procesando documento: #17
+2025-05-03 23:40:36,859 - INFO - root - Documento #17 procesado con éxito.
+2025-05-03 23:40:36,859 - INFO - root - Procesando documento: #8
+2025-05-03 23:40:36,948 - INFO - root - Documento #8 procesado con éxito.
+2025-05-03 23:40:40,388 - INFO - root - Se encontraron 50 filas para procesar.
+2025-05-03 23:40:41,394 - INFO - root - Procesando documento: #75
+2025-05-03 23:40:41,506 - INFO - root - Documento #75 procesado con éxito.
+2025-05-03 23:40:41,506 - INFO - root - Procesando documento: #59
+2025-05-03 23:40:41,614 - INFO - root - Documento #59 procesado con éxito.
+2025-05-03 23:40:41,614 - INFO - root - Procesando documento: #72
+2025-05-03 23:40:41,719 - INFO - root - Documento #72 procesado con éxito.
+2025-05-03 23:40:41,719 - INFO - root - Procesando documento: #73
+2025-05-03 23:40:41,849 - INFO - root - Documento #73 procesado con éxito.
+2025-05-03 23:40:41,850 - INFO - root - Procesando documento: #98
+2025-05-03 23:40:41,948 - INFO - root - Documento #98 procesado con éxito.
+2025-05-03 23:40:41,948 - INFO - root - Procesando documento: #74
+2025-05-03 23:40:42,062 - INFO - root - Documento #74 procesado con éxito.
+2025-05-03 23:40:42,062 - INFO - root - Procesando documento: #81
+2025-05-03 23:40:42,171 - INFO - root - Documento #81 procesado con éxito.
+2025-05-03 23:40:42,171 - INFO - root - Procesando documento: #97
+2025-05-03 23:40:42,277 - INFO - root - Documento #97 procesado con éxito.
+2025-05-03 23:40:42,278 - INFO - root - Procesando documento: #55
+2025-05-03 23:40:42,390 - INFO - root - Documento #55 procesado con éxito.
+2025-05-03 23:40:42,390 - INFO - root - Procesando documento: #67
+2025-05-03 23:40:42,514 - INFO - root - Documento #67 procesado con éxito.
+2025-05-03 23:40:42,515 - INFO - root - Procesando documento: #57
+2025-05-03 23:40:42,616 - INFO - root - Documento #57 procesado con éxito.
+2025-05-03 23:40:42,616 - INFO - root - Procesando documento: #60
+2025-05-03 23:40:42,719 - INFO - root - Documento #60 procesado con éxito.
+2025-05-03 23:40:42,720 - INFO - root - Procesando documento: #87
+2025-05-03 23:40:42,817 - INFO - root - Documento #87 procesado con éxito.
+2025-05-03 23:40:42,817 - INFO - root - Procesando documento: #58
+2025-05-03 23:40:42,922 - INFO - root - Documento #58 procesado con éxito.
+2025-05-03 23:40:42,922 - INFO - root - Procesando documento: #63
+2025-05-03 23:40:43,031 - INFO - root - Documento #63 procesado con éxito.
+2025-05-03 23:40:43,031 - INFO - root - Procesando documento: #76
+2025-05-03 23:40:43,145 - INFO - root - Documento #76 procesado con éxito.
+2025-05-03 23:40:43,145 - INFO - root - Procesando documento: #80
+2025-05-03 23:40:43,254 - INFO - root - Documento #80 procesado con éxito.
+2025-05-03 23:40:43,254 - INFO - root - Procesando documento: #53
+2025-05-03 23:40:43,360 - INFO - root - Documento #53 procesado con éxito.
+2025-05-03 23:40:43,360 - INFO - root - Procesando documento: #70
+2025-05-03 23:40:43,458 - INFO - root - Documento #70 procesado con éxito.
+2025-05-03 23:40:43,458 - INFO - root - Procesando documento: #99
+2025-05-03 23:40:43,552 - INFO - root - Documento #99 procesado con éxito.
+2025-05-03 23:40:43,553 - INFO - root - Procesando documento: #56
+2025-05-03 23:40:43,654 - INFO - root - Documento #56 procesado con éxito.
+2025-05-03 23:40:43,655 - INFO - root - Procesando documento: #88
+2025-05-03 23:40:43,766 - INFO - root - Documento #88 procesado con éxito.
+2025-05-03 23:40:43,766 - INFO - root - Procesando documento: #91
+2025-05-03 23:40:43,878 - INFO - root - Documento #91 procesado con éxito.
+2025-05-03 23:40:43,878 - INFO - root - Procesando documento: #51
+2025-05-03 23:40:44,004 - INFO - root - Documento #51 procesado con éxito.
+2025-05-03 23:40:44,004 - INFO - root - Procesando documento: #52
+2025-05-03 23:40:44,126 - INFO - root - Documento #52 procesado con éxito.
+2025-05-03 23:40:44,127 - INFO - root - Procesando documento: #68
+2025-05-03 23:40:44,237 - INFO - root - Documento #68 procesado con éxito.
+2025-05-03 23:40:44,238 - INFO - root - Procesando documento: #100
+2025-05-03 23:40:44,339 - INFO - root - Documento #100 procesado con éxito.
+2025-05-03 23:40:44,339 - INFO - root - Procesando documento: #93
+2025-05-03 23:40:44,449 - INFO - root - Documento #93 procesado con éxito.
+2025-05-03 23:40:44,450 - INFO - root - Procesando documento: #85
+2025-05-03 23:40:44,569 - INFO - root - Documento #85 procesado con éxito.
+2025-05-03 23:40:44,569 - INFO - root - Procesando documento: #65
+2025-05-03 23:40:44,662 - INFO - root - Documento #65 procesado con éxito.
+2025-05-03 23:40:44,662 - INFO - root - Procesando documento: #92
+2025-05-03 23:40:44,775 - INFO - root - Documento #92 procesado con éxito.
+2025-05-03 23:40:44,776 - INFO - root - Procesando documento: #90
+2025-05-03 23:40:44,879 - INFO - root - Documento #90 procesado con éxito.
+2025-05-03 23:40:44,879 - INFO - root - Procesando documento: #69
+2025-05-03 23:40:44,985 - INFO - root - Documento #69 procesado con éxito.
+2025-05-03 23:40:44,985 - INFO - root - Procesando documento: #66
+2025-05-03 23:40:45,094 - INFO - root - Documento #66 procesado con éxito.
+2025-05-03 23:40:45,094 - INFO - root - Procesando documento: #82
+2025-05-03 23:40:45,197 - INFO - root - Documento #82 procesado con éxito.
+2025-05-03 23:40:45,198 - INFO - root - Procesando documento: #83
+2025-05-03 23:40:45,307 - INFO - root - Documento #83 procesado con éxito.
+2025-05-03 23:40:45,307 - INFO - root - Procesando documento: #71
+2025-05-03 23:40:45,422 - INFO - root - Documento #71 procesado con éxito.
+2025-05-03 23:40:45,422 - INFO - root - Procesando documento: #79
+2025-05-03 23:40:45,541 - INFO - root - Documento #79 procesado con éxito.
+2025-05-03 23:40:45,542 - INFO - root - Procesando documento: #86
+2025-05-03 23:40:45,651 - INFO - root - Documento #86 procesado con éxito.
+2025-05-03 23:40:45,651 - INFO - root - Procesando documento: #95
+2025-05-03 23:40:45,746 - INFO - root - Documento #95 procesado con éxito.
+2025-05-03 23:40:45,746 - INFO - root - Procesando documento: #77
+2025-05-03 23:40:45,861 - INFO - root - Documento #77 procesado con éxito.
+2025-05-03 23:40:45,861 - INFO - root - Procesando documento: #78
+2025-05-03 23:40:45,968 - INFO - root - Documento #78 procesado con éxito.
+2025-05-03 23:40:45,968 - INFO - root - Procesando documento: #62
+2025-05-03 23:40:46,103 - INFO - root - Documento #62 procesado con éxito.
+2025-05-03 23:40:46,104 - INFO - root - Procesando documento: #84
+2025-05-03 23:40:46,220 - INFO - root - Documento #84 procesado con éxito.
+2025-05-03 23:40:46,220 - INFO - root - Procesando documento: #89
+2025-05-03 23:40:46,330 - INFO - root - Documento #89 procesado con éxito.
+2025-05-03 23:40:46,330 - INFO - root - Procesando documento: #94
+2025-05-03 23:40:46,429 - INFO - root - Documento #94 procesado con éxito.
+2025-05-03 23:40:46,429 - INFO - root - Procesando documento: #61
+2025-05-03 23:40:46,520 - INFO - root - Documento #61 procesado con éxito.
+2025-05-03 23:40:46,520 - INFO - root - Procesando documento: #54
+2025-05-03 23:40:46,617 - INFO - root - Documento #54 procesado con éxito.
+2025-05-03 23:40:46,618 - INFO - root - Procesando documento: #64
+2025-05-03 23:40:46,732 - INFO - root - Documento #64 procesado con éxito.
+2025-05-03 23:40:46,732 - INFO - root - Procesando documento: #96
+2025-05-03 23:40:46,861 - INFO - root - Documento #96 procesado con éxito.
+2025-05-03 23:40:50,299 - INFO - root - Se encontraron 50 filas para procesar.
+2025-05-03 23:40:51,313 - INFO - root - Procesando documento: #129
+2025-05-03 23:40:51,411 - INFO - root - Documento #129 procesado con éxito.
+2025-05-03 23:40:51,411 - INFO - root - Procesando documento: #120
+2025-05-03 23:40:51,513 - INFO - root - Documento #120 procesado con éxito.
+2025-05-03 23:40:51,513 - INFO - root - Procesando documento: #142
+2025-05-03 23:40:51,605 - INFO - root - Documento #142 procesado con éxito.
+2025-05-03 23:40:51,606 - INFO - root - Procesando documento: #144
+2025-05-03 23:40:51,735 - INFO - root - Documento #144 procesado con éxito.
+2025-05-03 23:40:51,735 - INFO - root - Procesando documento: #106
+2025-05-03 23:40:51,832 - INFO - root - Documento #106 procesado con éxito.
+2025-05-03 23:40:51,832 - INFO - root - Procesando documento: #124
+2025-05-03 23:40:51,935 - INFO - root - Documento #124 procesado con éxito.
+2025-05-03 23:40:51,936 - INFO - root - Procesando documento: #131
+2025-05-03 23:40:52,046 - INFO - root - Documento #131 procesado con éxito.
+2025-05-03 23:40:52,046 - INFO - root - Procesando documento: #118
+2025-05-03 23:40:52,142 - INFO - root - Documento #118 procesado con éxito.
+2025-05-03 23:40:52,142 - INFO - root - Procesando documento: #143
+2025-05-03 23:40:52,279 - INFO - root - Documento #143 procesado con éxito.
+2025-05-03 23:40:52,280 - INFO - root - Procesando documento: #135
+2025-05-03 23:40:52,389 - INFO - root - Documento #135 procesado con éxito.
+2025-05-03 23:40:52,389 - INFO - root - Procesando documento: #122
+2025-05-03 23:40:52,481 - INFO - root - Documento #122 procesado con éxito.
+2025-05-03 23:40:52,481 - INFO - root - Procesando documento: #145
+2025-05-03 23:40:52,583 - INFO - root - Documento #145 procesado con éxito.
+2025-05-03 23:40:52,583 - INFO - root - Procesando documento: #103
+2025-05-03 23:40:52,692 - INFO - root - Documento #103 procesado con éxito.
+2025-05-03 23:40:52,692 - INFO - root - Procesando documento: #148
+2025-05-03 23:40:52,805 - INFO - root - Documento #148 procesado con éxito.
+2025-05-03 23:40:52,806 - INFO - root - Procesando documento: #138
+2025-05-03 23:40:52,921 - INFO - root - Documento #138 procesado con éxito.
+2025-05-03 23:40:52,922 - INFO - root - Procesando documento: #111
+2025-05-03 23:40:53,019 - INFO - root - Documento #111 procesado con éxito.
+2025-05-03 23:40:53,019 - INFO - root - Procesando documento: #140
+2025-05-03 23:40:53,129 - INFO - root - Documento #140 procesado con éxito.
+2025-05-03 23:40:53,129 - INFO - root - Procesando documento: #123
+2025-05-03 23:40:53,246 - INFO - root - Documento #123 procesado con éxito.
+2025-05-03 23:40:53,246 - INFO - root - Procesando documento: #119
+2025-05-03 23:40:53,336 - INFO - root - Documento #119 procesado con éxito.
+2025-05-03 23:40:53,337 - INFO - root - Procesando documento: #150
+2025-05-03 23:40:53,439 - INFO - root - Documento #150 procesado con éxito.
+2025-05-03 23:40:53,440 - INFO - root - Procesando documento: #104
+2025-05-03 23:40:53,550 - INFO - root - Documento #104 procesado con éxito.
+2025-05-03 23:40:53,550 - INFO - root - Procesando documento: #141
+2025-05-03 23:40:53,650 - INFO - root - Documento #141 procesado con éxito.
+2025-05-03 23:40:53,650 - INFO - root - Procesando documento: #116
+2025-05-03 23:40:53,747 - INFO - root - Documento #116 procesado con éxito.
+2025-05-03 23:40:53,747 - INFO - root - Procesando documento: #147
+2025-05-03 23:40:53,843 - INFO - root - Documento #147 procesado con éxito.
+2025-05-03 23:40:53,843 - INFO - root - Procesando documento: #117
+2025-05-03 23:40:53,940 - INFO - root - Documento #117 procesado con éxito.
+2025-05-03 23:40:53,941 - INFO - root - Procesando documento: #112
+2025-05-03 23:40:54,042 - INFO - root - Documento #112 procesado con éxito.
+2025-05-03 23:40:54,042 - INFO - root - Procesando documento: #146
+2025-05-03 23:40:54,139 - INFO - root - Documento #146 procesado con éxito.
+2025-05-03 23:40:54,139 - INFO - root - Procesando documento: #101
+2025-05-03 23:40:54,238 - INFO - root - Documento #101 procesado con éxito.
+2025-05-03 23:40:54,238 - INFO - root - Procesando documento: #128
+2025-05-03 23:40:54,357 - INFO - root - Documento #128 procesado con éxito.
+2025-05-03 23:40:54,358 - INFO - root - Procesando documento: #114
+2025-05-03 23:40:54,463 - INFO - root - Documento #114 procesado con éxito.
+2025-05-03 23:40:54,463 - INFO - root - Procesando documento: #130
+2025-05-03 23:40:54,579 - INFO - root - Documento #130 procesado con éxito.
+2025-05-03 23:40:54,580 - INFO - root - Procesando documento: #137
+2025-05-03 23:40:54,676 - INFO - root - Documento #137 procesado con éxito.
+2025-05-03 23:40:54,676 - INFO - root - Procesando documento: #149
+2025-05-03 23:40:54,796 - INFO - root - Documento #149 procesado con éxito.
+2025-05-03 23:40:54,796 - INFO - root - Procesando documento: #134
+2025-05-03 23:40:54,898 - INFO - root - Documento #134 procesado con éxito.
+2025-05-03 23:40:54,899 - INFO - root - Procesando documento: #109
+2025-05-03 23:40:55,010 - INFO - root - Documento #109 procesado con éxito.
+2025-05-03 23:40:55,010 - INFO - root - Procesando documento: #102
+2025-05-03 23:40:55,108 - INFO - root - Documento #102 procesado con éxito.
+2025-05-03 23:40:55,108 - INFO - root - Procesando documento: #108
+2025-05-03 23:40:55,231 - INFO - root - Documento #108 procesado con éxito.
+2025-05-03 23:40:55,231 - INFO - root - Procesando documento: #121
+2025-05-03 23:40:55,332 - INFO - root - Documento #121 procesado con éxito.
+2025-05-03 23:40:55,332 - INFO - root - Procesando documento: #113
+2025-05-03 23:40:55,440 - INFO - root - Documento #113 procesado con éxito.
+2025-05-03 23:40:55,441 - INFO - root - Procesando documento: #125
+2025-05-03 23:40:55,541 - INFO - root - Documento #125 procesado con éxito.
+2025-05-03 23:40:55,541 - INFO - root - Procesando documento: #139
+2025-05-03 23:40:55,651 - INFO - root - Documento #139 procesado con éxito.
+2025-05-03 23:40:55,652 - INFO - root - Procesando documento: #105
+2025-05-03 23:40:55,760 - INFO - root - Documento #105 procesado con éxito.
+2025-05-03 23:40:55,760 - INFO - root - Procesando documento: #107
+2025-05-03 23:40:55,865 - INFO - root - Documento #107 procesado con éxito.
+2025-05-03 23:40:55,865 - INFO - root - Procesando documento: #133
+2025-05-03 23:40:55,986 - INFO - root - Documento #133 procesado con éxito.
+2025-05-03 23:40:55,986 - INFO - root - Procesando documento: #127
+2025-05-03 23:40:56,106 - INFO - root - Documento #127 procesado con éxito.
+2025-05-03 23:40:56,107 - INFO - root - Procesando documento: #110
+2025-05-03 23:40:56,217 - INFO - root - Documento #110 procesado con éxito.
+2025-05-03 23:40:56,217 - INFO - root - Procesando documento: #115
+2025-05-03 23:40:56,342 - INFO - root - Documento #115 procesado con éxito.
+2025-05-03 23:40:56,342 - INFO - root - Procesando documento: #126
+2025-05-03 23:40:56,439 - INFO - root - Documento #126 procesado con éxito.
+2025-05-03 23:40:56,439 - INFO - root - Procesando documento: #136
+2025-05-03 23:40:56,546 - INFO - root - Documento #136 procesado con éxito.
+2025-05-03 23:40:56,546 - INFO - root - Procesando documento: #132
+2025-05-03 23:40:56,650 - INFO - root - Documento #132 procesado con éxito.
+2025-05-03 23:40:59,037 - INFO - root - Se encontraron 9 filas para procesar.
+2025-05-03 23:41:00,041 - INFO - root - Procesando documento: #158
+2025-05-03 23:41:00,149 - INFO - root - Documento #158 procesado con éxito.
+2025-05-03 23:41:00,149 - INFO - root - Procesando documento: #151
+2025-05-03 23:41:00,271 - INFO - root - Documento #151 procesado con éxito.
+2025-05-03 23:41:00,271 - INFO - root - Procesando documento: #152
+2025-05-03 23:41:00,382 - INFO - root - Documento #152 procesado con éxito.
+2025-05-03 23:41:00,382 - INFO - root - Procesando documento: #155
+2025-05-03 23:41:00,483 - INFO - root - Documento #155 procesado con éxito.
+2025-05-03 23:41:00,484 - INFO - root - Procesando documento: #159
+2025-05-03 23:41:00,590 - INFO - root - Documento #159 procesado con éxito.
+2025-05-03 23:41:00,591 - INFO - root - Procesando documento: #154
+2025-05-03 23:41:01,206 - INFO - root - Documento #154 procesado con éxito.
+2025-05-03 23:41:01,207 - INFO - root - Procesando documento: #156
+2025-05-03 23:41:01,309 - INFO - root - Documento #156 procesado con éxito.
+2025-05-03 23:41:01,309 - INFO - root - Procesando documento: #153
+2025-05-03 23:41:01,425 - INFO - root - Documento #153 procesado con éxito.
+2025-05-03 23:41:01,426 - INFO - root - Procesando documento: #157
+2025-05-03 23:41:01,521 - INFO - root - Documento #157 procesado con éxito.
+2025-05-03 23:41:23,598 - INFO - root - Parámetros de descarga -> Año: 2025, Mes: 5, Día: Todos, Tipo de descarga: 1, Tipo de documento: 1
+2025-05-03 23:41:25,272 - INFO - root - WebDriver configurado exitosamente.
+2025-05-03 23:41:26,872 - INFO - root - Inicio de sesión completado.
+2025-05-03 23:41:29,296 - INFO - root - Opciones de consulta seleccionadas.
+2025-05-03 23:41:29,380 - INFO - root - Botón de consulta presionado, verificando resultados.
+2025-05-03 23:41:29,387 - INFO - root - Mensaje de 'No existen datos' no encontrado inmediatamente, buscando tabla de resultados.
+2025-05-03 23:41:29,907 - INFO - root - Consulta completada, tabla de resultados encontrada.
+2025-05-03 23:41:31,064 - INFO - root - Se encontraron 5 filas para procesar.
+2025-05-03 23:41:32,078 - INFO - root - Procesando documento: #2
+2025-05-03 23:41:32,181 - INFO - root - Documento #2 procesado con éxito.
+2025-05-03 23:41:32,182 - INFO - root - Procesando documento: #3
+2025-05-03 23:41:32,309 - INFO - root - Documento #3 procesado con éxito.
+2025-05-03 23:41:32,310 - INFO - root - Procesando documento: #5
+2025-05-03 23:41:32,397 - INFO - root - Documento #5 procesado con éxito.
+2025-05-03 23:41:32,397 - INFO - root - Procesando documento: #1
+2025-05-03 23:41:32,495 - INFO - root - Documento #1 procesado con éxito.
+2025-05-03 23:41:32,496 - INFO - root - Procesando documento: #4
+2025-05-03 23:41:32,588 - INFO - root - Documento #4 procesado con éxito.
+2025-05-03 23:41:46,505 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-05-03 23:41:51,510 - INFO - root - Parámetros de descarga -> Año: 2025, Mes: 4, Día: Todos, Tipo de descarga: 1, Tipo de documento: 3
+2025-05-03 23:41:53,169 - INFO - root - WebDriver configurado exitosamente.
+2025-05-03 23:41:54,671 - INFO - root - Inicio de sesión completado.
+2025-05-03 23:41:57,028 - INFO - root - Opciones de consulta seleccionadas.
+2025-05-03 23:41:57,114 - INFO - root - Botón de consulta presionado, verificando resultados.
+2025-05-03 23:41:57,135 - INFO - root - Mensaje de 'No existen datos' no encontrado inmediatamente, buscando tabla de resultados.
+2025-05-03 23:41:57,655 - INFO - root - Consulta completada, tabla de resultados encontrada.
+2025-05-03 23:41:58,863 - INFO - root - Se encontraron 8 filas para procesar.
+2025-05-03 23:41:59,869 - INFO - root - Procesando documento: #2
+2025-05-03 23:41:59,969 - INFO - root - Documento #2 procesado con éxito.
+2025-05-03 23:41:59,969 - INFO - root - Procesando documento: #7
+2025-05-03 23:42:00,051 - INFO - root - Documento #7 procesado con éxito.
+2025-05-03 23:42:00,051 - INFO - root - Procesando documento: #3
+2025-05-03 23:42:00,138 - INFO - root - Documento #3 procesado con éxito.
+2025-05-03 23:42:00,138 - INFO - root - Procesando documento: #5
+2025-05-03 23:42:00,238 - INFO - root - Documento #5 procesado con éxito.
+2025-05-03 23:42:00,238 - INFO - root - Procesando documento: #4
+2025-05-03 23:42:00,343 - INFO - root - Documento #4 procesado con éxito.
+2025-05-03 23:42:00,343 - INFO - root - Procesando documento: #6
+2025-05-03 23:42:00,435 - INFO - root - Documento #6 procesado con éxito.
+2025-05-03 23:42:00,435 - INFO - root - Procesando documento: #8
+2025-05-03 23:42:00,540 - INFO - root - Documento #8 procesado con éxito.
+2025-05-03 23:42:00,540 - INFO - root - Procesando documento: #1
+2025-05-03 23:42:00,631 - INFO - root - Documento #1 procesado con éxito.
+2025-05-03 23:42:12,297 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-05-03 23:42:15,336 - INFO - root - Parámetros de descarga -> Año: 2025, Mes: 4, Día: Todos, Tipo de descarga: 1, Tipo de documento: 6
+2025-05-03 23:42:16,958 - INFO - root - WebDriver configurado exitosamente.
+2025-05-03 23:42:18,474 - INFO - root - Inicio de sesión completado.
+2025-05-03 23:42:20,876 - INFO - root - Opciones de consulta seleccionadas.
+2025-05-03 23:42:20,962 - INFO - root - Botón de consulta presionado, verificando resultados.
+2025-05-03 23:42:20,969 - INFO - root - Mensaje de 'No existen datos' no encontrado inmediatamente, buscando tabla de resultados.
+2025-05-03 23:42:21,492 - INFO - root - Consulta completada, tabla de resultados encontrada.
+2025-05-03 23:42:23,774 - INFO - root - Se encontraron 50 filas para procesar.
+2025-05-03 23:42:24,786 - INFO - root - Procesando documento: #6
+2025-05-03 23:42:24,920 - INFO - root - Documento #6 procesado con éxito.
+2025-05-03 23:42:24,921 - INFO - root - Procesando documento: #8
+2025-05-03 23:42:25,032 - INFO - root - Documento #8 procesado con éxito.
+2025-05-03 23:42:25,032 - INFO - root - Procesando documento: #18
+2025-05-03 23:42:25,151 - INFO - root - Documento #18 procesado con éxito.
+2025-05-03 23:42:25,151 - INFO - root - Procesando documento: #13
+2025-05-03 23:42:25,257 - INFO - root - Documento #13 procesado con éxito.
+2025-05-03 23:42:25,257 - INFO - root - Procesando documento: #22
+2025-05-03 23:42:25,375 - INFO - root - Documento #22 procesado con éxito.
+2025-05-03 23:42:25,375 - INFO - root - Procesando documento: #11
+2025-05-03 23:42:25,493 - INFO - root - Documento #11 procesado con éxito.
+2025-05-03 23:42:25,493 - INFO - root - Procesando documento: #4
+2025-05-03 23:42:25,590 - INFO - root - Documento #4 procesado con éxito.
+2025-05-03 23:42:25,591 - INFO - root - Procesando documento: #28
+2025-05-03 23:42:25,696 - INFO - root - Documento #28 procesado con éxito.
+2025-05-03 23:42:25,696 - INFO - root - Procesando documento: #24
+2025-05-03 23:42:25,798 - INFO - root - Documento #24 procesado con éxito.
+2025-05-03 23:42:25,798 - INFO - root - Procesando documento: #39
+2025-05-03 23:42:25,909 - INFO - root - Documento #39 procesado con éxito.
+2025-05-03 23:42:25,909 - INFO - root - Procesando documento: #40
+2025-05-03 23:42:26,008 - INFO - root - Documento #40 procesado con éxito.
+2025-05-03 23:42:26,008 - INFO - root - Procesando documento: #37
+2025-05-03 23:42:26,120 - INFO - root - Documento #37 procesado con éxito.
+2025-05-03 23:42:26,120 - INFO - root - Procesando documento: #49
+2025-05-03 23:42:26,228 - INFO - root - Documento #49 procesado con éxito.
+2025-05-03 23:42:26,228 - INFO - root - Procesando documento: #50
+2025-05-03 23:42:26,341 - INFO - root - Documento #50 procesado con éxito.
+2025-05-03 23:42:26,341 - INFO - root - Procesando documento: #48
+2025-05-03 23:42:26,457 - INFO - root - Documento #48 procesado con éxito.
+2025-05-03 23:42:26,457 - INFO - root - Procesando documento: #31
+2025-05-03 23:42:26,563 - INFO - root - Documento #31 procesado con éxito.
+2025-05-03 23:42:26,563 - INFO - root - Procesando documento: #43
+2025-05-03 23:42:26,662 - INFO - root - Documento #43 procesado con éxito.
+2025-05-03 23:42:26,662 - INFO - root - Procesando documento: #46
+2025-05-03 23:42:26,768 - INFO - root - Documento #46 procesado con éxito.
+2025-05-03 23:42:26,768 - INFO - root - Procesando documento: #25
+2025-05-03 23:42:26,870 - INFO - root - Documento #25 procesado con éxito.
+2025-05-03 23:42:26,870 - INFO - root - Procesando documento: #36
+2025-05-03 23:42:26,978 - INFO - root - Documento #36 procesado con éxito.
+2025-05-03 23:42:26,978 - INFO - root - Procesando documento: #41
+2025-05-03 23:42:27,094 - INFO - root - Documento #41 procesado con éxito.
+2025-05-03 23:42:27,094 - INFO - root - Procesando documento: #9
+2025-05-03 23:42:27,189 - INFO - root - Documento #9 procesado con éxito.
+2025-05-03 23:42:27,189 - INFO - root - Procesando documento: #17
+2025-05-03 23:42:27,647 - INFO - root - Documento #17 procesado con éxito.
+2025-05-03 23:42:27,647 - INFO - root - Procesando documento: #32
+2025-05-03 23:42:27,762 - INFO - root - Documento #32 procesado con éxito.
+2025-05-03 23:42:27,762 - INFO - root - Procesando documento: #16
+2025-05-03 23:42:27,866 - INFO - root - Documento #16 procesado con éxito.
+2025-05-03 23:42:27,866 - INFO - root - Procesando documento: #27
+2025-05-03 23:42:27,974 - INFO - root - Documento #27 procesado con éxito.
+2025-05-03 23:42:27,974 - INFO - root - Procesando documento: #29
+2025-05-03 23:42:28,078 - INFO - root - Documento #29 procesado con éxito.
+2025-05-03 23:42:28,078 - INFO - root - Procesando documento: #33
+2025-05-03 23:42:28,187 - INFO - root - Documento #33 procesado con éxito.
+2025-05-03 23:42:28,187 - INFO - root - Procesando documento: #15
+2025-05-03 23:42:28,290 - INFO - root - Documento #15 procesado con éxito.
+2025-05-03 23:42:28,290 - INFO - root - Procesando documento: #47
+2025-05-03 23:42:28,409 - INFO - root - Documento #47 procesado con éxito.
+2025-05-03 23:42:28,409 - INFO - root - Procesando documento: #7
+2025-05-03 23:42:28,508 - INFO - root - Documento #7 procesado con éxito.
+2025-05-03 23:42:28,508 - INFO - root - Procesando documento: #21
+2025-05-03 23:42:28,605 - INFO - root - Documento #21 procesado con éxito.
+2025-05-03 23:42:28,605 - INFO - root - Procesando documento: #26
+2025-05-03 23:42:28,715 - INFO - root - Documento #26 procesado con éxito.
+2025-05-03 23:42:28,715 - INFO - root - Procesando documento: #45
+2025-05-03 23:42:28,823 - INFO - root - Documento #45 procesado con éxito.
+2025-05-03 23:42:28,823 - INFO - root - Procesando documento: #35
+2025-05-03 23:42:28,923 - INFO - root - Documento #35 procesado con éxito.
+2025-05-03 23:42:28,923 - INFO - root - Procesando documento: #19
+2025-05-03 23:42:29,018 - INFO - root - Documento #19 procesado con éxito.
+2025-05-03 23:42:29,018 - INFO - root - Procesando documento: #3
+2025-05-03 23:42:29,121 - INFO - root - Documento #3 procesado con éxito.
+2025-05-03 23:42:29,121 - INFO - root - Procesando documento: #30
+2025-05-03 23:42:29,231 - INFO - root - Documento #30 procesado con éxito.
+2025-05-03 23:42:29,231 - INFO - root - Procesando documento: #1
+2025-05-03 23:42:29,352 - INFO - root - Documento #1 procesado con éxito.
+2025-05-03 23:42:29,352 - INFO - root - Procesando documento: #14
+2025-05-03 23:42:29,450 - INFO - root - Documento #14 procesado con éxito.
+2025-05-03 23:42:29,450 - INFO - root - Procesando documento: #12
+2025-05-03 23:42:29,549 - INFO - root - Documento #12 procesado con éxito.
+2025-05-03 23:42:29,549 - INFO - root - Procesando documento: #20
+2025-05-03 23:42:29,659 - INFO - root - Documento #20 procesado con éxito.
+2025-05-03 23:42:29,659 - INFO - root - Procesando documento: #42
+2025-05-03 23:42:29,761 - INFO - root - Documento #42 procesado con éxito.
+2025-05-03 23:42:29,761 - INFO - root - Procesando documento: #23
+2025-05-03 23:42:29,871 - INFO - root - Documento #23 procesado con éxito.
+2025-05-03 23:42:29,871 - INFO - root - Procesando documento: #34
+2025-05-03 23:42:29,982 - INFO - root - Documento #34 procesado con éxito.
+2025-05-03 23:42:29,983 - INFO - root - Procesando documento: #10
+2025-05-03 23:42:30,088 - INFO - root - Documento #10 procesado con éxito.
+2025-05-03 23:42:30,088 - INFO - root - Procesando documento: #38
+2025-05-03 23:42:30,201 - INFO - root - Documento #38 procesado con éxito.
+2025-05-03 23:42:30,201 - INFO - root - Procesando documento: #5
+2025-05-03 23:42:30,315 - INFO - root - Documento #5 procesado con éxito.
+2025-05-03 23:42:30,315 - INFO - root - Procesando documento: #2
+2025-05-03 23:42:30,419 - INFO - root - Documento #2 procesado con éxito.
+2025-05-03 23:42:30,420 - INFO - root - Procesando documento: #44
+2025-05-03 23:42:30,526 - INFO - root - Documento #44 procesado con éxito.
+2025-05-03 23:42:32,900 - INFO - root - Se encontraron 6 filas para procesar.
+2025-05-03 23:42:33,907 - INFO - root - Procesando documento: #55
+2025-05-03 23:42:34,019 - INFO - root - Documento #55 procesado con éxito.
+2025-05-03 23:42:34,019 - INFO - root - Procesando documento: #52
+2025-05-03 23:42:34,116 - INFO - root - Documento #52 procesado con éxito.
+2025-05-03 23:42:34,117 - INFO - root - Procesando documento: #54
+2025-05-03 23:42:34,236 - INFO - root - Documento #54 procesado con éxito.
+2025-05-03 23:42:34,237 - INFO - root - Procesando documento: #56
+2025-05-03 23:42:34,339 - INFO - root - Documento #56 procesado con éxito.
+2025-05-03 23:42:34,339 - INFO - root - Procesando documento: #53
+2025-05-03 23:42:34,467 - INFO - root - Documento #53 procesado con éxito.
+2025-05-03 23:42:34,467 - INFO - root - Procesando documento: #51
+2025-05-03 23:42:34,589 - INFO - root - Documento #51 procesado con éxito.
+2025-05-03 23:42:56,886 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-05-03 23:42:59,794 - INFO - root - Parámetros de descarga -> Año: 2025, Mes: 4, Día: Todos, Tipo de descarga: 1, Tipo de documento: 4
+2025-05-03 23:43:01,139 - INFO - root - WebDriver configurado exitosamente.
+2025-05-03 23:43:03,315 - INFO - root - Inicio de sesión completado.
+2025-05-03 23:43:05,763 - INFO - root - Opciones de consulta seleccionadas.
+2025-05-03 23:43:05,849 - INFO - root - Botón de consulta presionado, verificando resultados.
+2025-05-03 23:43:05,871 - INFO - root - Mensaje de 'No existen datos' no encontrado inmediatamente, buscando tabla de resultados.
+2025-05-03 23:43:35,750 - ERROR - root - Error durante la descarga de documentos.
+Traceback (most recent call last):
+  File "C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\menus\descargar_documentos.py", line 48, in descargar_documentos
+    hay_respuesta = click_consulta()
+  File "C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\menus\descargar_documentos.py", line 170, in click_consulta
+    EC.presence_of_element_located((By.ID, "frmPrincipal:tablaCompRecibidos_data"))
+  File "C:\Users\rolan\PycharmProjects\sri_xml_bot\venv\lib\site-packages\selenium\webdriver\support\wait.py", line 86, in until
+    value = method(self._driver)
+  File "C:\Users\rolan\PycharmProjects\sri_xml_bot\venv\lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 82, in _predicate
+    return driver.find_element(*locator)
+  File "C:\Users\rolan\PycharmProjects\sri_xml_bot\venv\lib\site-packages\selenium\webdriver\remote\webdriver.py", line 739, in find_element
+    return self.execute(Command.FIND_ELEMENT, {"using": by, "value": value})["value"]
+  File "C:\Users\rolan\PycharmProjects\sri_xml_bot\venv\lib\site-packages\selenium\webdriver\remote\webdriver.py", line 345, in execute
+    self.error_handler.check_response(response)
+  File "C:\Users\rolan\PycharmProjects\sri_xml_bot\venv\lib\site-packages\selenium\webdriver\remote\errorhandler.py", line 229, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.InvalidSessionIdException: Message: invalid session id: session deleted as the browser has closed the connection
+from disconnected: not connected to DevTools
+  (Session info: chrome=136.0.7103.48)
+Stacktrace:
+	GetHandleVerifier [0x00007FF74B2FEFA5+77893]
+	GetHandleVerifier [0x00007FF74B2FF000+77984]
+	(No symbol) [0x00007FF74B0C91BA]
+	(No symbol) [0x00007FF74B0B4F15]
+	(No symbol) [0x00007FF74B0D9F04]
+	(No symbol) [0x00007FF74B14EACF]
+	(No symbol) [0x00007FF74B16E972]
+	(No symbol) [0x00007FF74B146F03]
+	(No symbol) [0x00007FF74B110328]
+	(No symbol) [0x00007FF74B111093]
+	GetHandleVerifier [0x00007FF74B5B7B6D+2931725]
+	GetHandleVerifier [0x00007FF74B5B2132+2908626]
+	GetHandleVerifier [0x00007FF74B5D00F3+3031443]
+	GetHandleVerifier [0x00007FF74B3191EA+184970]
+	GetHandleVerifier [0x00007FF74B32086F+215311]
+	GetHandleVerifier [0x00007FF74B306EC4+110436]
+	GetHandleVerifier [0x00007FF74B307072+110866]
+	GetHandleVerifier [0x00007FF74B2ED479+5401]
+	BaseThreadInitThunk [0x00007FF99D7AE8D7+23]
+	RtlUserThreadStart [0x00007FF99E6714FC+44]
+
+2025-05-03 23:55:17,375 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-05-03 23:55:20,086 - INFO - root - Iniciando ordenación de documentos.
+2025-05-03 23:55:21,491 - INFO - root - Proceso de eliminación de duplicados finalizado.
+2025-05-03 23:55:21,706 - INFO - root - Ordenación de documentos completada.
+2025-05-04 15:37:03,602 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-05-04 15:37:03,971 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-05-04 15:37:06,745 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-05-04 15:37:29,145 - ERROR - root - Error durante la generación del reporte: name 'time' is not defined
+Traceback (most recent call last):
+  File "C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\menus\generar_reporte.py", line 75, in _procesar
+    time.sleep(0.1)
+NameError: name 'time' is not defined
+2025-05-04 15:37:47,377 - INFO - root - Logging configurado correctamente. Archivo de log: C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/app.log
+2025-05-04 15:37:47,412 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-05-04 15:37:49,492 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini
+2025-05-04 15:51:38,273 - INFO - root - Configuración cargada desde C:\Users\rolan\PycharmProjects\sri_xml_bot\sri_xml_bot\librerias\../archivos/configuraciones.ini

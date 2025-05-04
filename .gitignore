@@ -14,4 +14,5 @@ __pycache__/
 
 # Archivos de configuración de PyCharm
 .idea/
-sri_xml_bot/librerias/archivos/rucs.txt
+/sri_xml_bot/librerias/archivos/rucs.txt
+/sri_xml_bot/archivos/*.xlsx
