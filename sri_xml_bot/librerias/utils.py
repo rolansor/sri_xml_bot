@@ -89,7 +89,7 @@ def cargar_configuracion_ini() -> dict:
     """
     configuraciones = {
         "nombre_archivo": "ruc_secuencial",
-        "ruta_guardado": "RutaBase/RUC/RecEmi/Año/Mes/XML/TipoDocumento",
+        "ruta_guardado": "RutaBase/RUC/RecEmi/Anio/Mes/XML/TipoDocumento",
         "ruc_actual": "9999999999999",
         "razon_social": "S/N",
         "clave_ruc_encriptada": "",

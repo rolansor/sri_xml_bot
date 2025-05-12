@@ -462,7 +462,7 @@ class Application:
             "Ruta Base": "RutaBase",
             "RUC": "RUC",
             "Recibido/Emitido": "RecEmi",
-            "Año": "Año",
+            "Anio": "Anio",
             "Mes": "Mes",
             "PDF/XML": "XML",
             "Tipo Documento": "TipoDocumento"

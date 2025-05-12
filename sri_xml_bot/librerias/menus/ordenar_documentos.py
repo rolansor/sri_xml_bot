@@ -127,7 +127,7 @@ def organizar_archivos_xml(estructura_nombre, estructura_ruta, ruc_procesado, em
             # Construir la ruta de guardado en base a la estructura proporcionada
             ruta_guardado = directorio
             for parte in partes_ruta:
-                if parte == "Año":
+                if parte == "Anio":
                     ruta_guardado = os.path.join(ruta_guardado, anio)
                 elif parte == "Mes":
                     ruta_guardado = os.path.join(ruta_guardado, mes)
